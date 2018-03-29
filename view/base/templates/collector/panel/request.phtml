@@ -1,0 +1,103 @@
+<?php
+/** @var ClawRock\Debug\Block\Profiler\Collector\Request $block */
+/** @var \ClawRock\Debug\Model\DataCollector\RequestDataCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-tabs">
+    <div class="tab">
+        <h3 class="tab-title">Request</h3>
+        <div class="tab-content">
+            <h3>GET Parameters</h3>
+            <?php if (!count($collector->getRequestGet())): ?>
+                <div class="empty">
+                    <p>No GET parameters</p>
+                </div>
+            <?php else: ?>
+                <?php echo $block->renderParameters($collector->getRequestGet()) ?>
+            <?php endif ?>
+
+            <h3>POST Parameters</h3>
+            <?php if (!count($collector->getRequestPost())): ?>
+                <div class="empty">
+                    <p>No POST parameters</p>
+                </div>
+            <?php else: ?>
+                <?php echo $block->renderParameters($collector->getRequestPost()) ?>
+            <?php endif ?>
+
+            <h3>Request Attributes</h3>
+            <?php if (!count($collector->getRequestAttributes())): ?>
+                <div class="empty">
+                    <?php if ($collector->isFPCHit()): ?>
+                        <p>Not available during FPC hit</p>
+                    <?php else: ?>
+                        <p>No attributes</p>
+                    <?php endif; ?>
+                </div>
+            <?php else: ?>
+                <?php echo $block->renderParameters($collector->getRequestAttributes()) ?>
+            <?php endif ?>
+
+            <h3>Cookies</h3>
+            <?php if (!count($collector->getRequestCookies())): ?>
+                <div class="empty">
+                    <p>No cookies</p>
+                </div>
+            <?php else: ?>
+                <?php echo $block->renderParameters($collector->getRequestCookies()) ?>
+            <?php endif ?>
+
+            <h3>Request Headers</h3>
+            <?php echo $block->renderParameters($collector->getRequestHeaders()) ?>
+
+            <h3>Request Content</h3>
+            <?php if ($collector->getContent() === false): ?>
+                <div class="empty">
+                    <p>Request content not available (it was retrieved as a resource).</p>
+                </div>
+            <?php elseif ($collector->getContent()): ?>
+                <div class="card">
+                    <pre class="break-long-words"><?php echo $collector->getContent() ?></pre>
+                </div>
+            <?php else: ?>
+                <div class="empty">
+                    <p>No content</p>
+                </div>
+            <?php endif ?>
+
+            <h3>Server Parameters</h3>
+            <?php echo $block->renderParameters($collector->getRequestServer()) ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title">Response</h3>
+        <div class="tab-content">
+            <h3>Response Headers</h3>
+            <?php echo $block->renderParameters($collector->getResponseHeaders()) ?>
+        </div>
+    </div>
+
+    <div class="tab <?php echo $collector->hasSessionData() ? '' : 'disabled' ?>">
+        <h3 class="tab-title">Session</h3>
+        <div class="tab-content">
+            <h3>Session Metadata</h3>
+            <?php if (empty($collector->getSessionMetadata())): ?>
+                <div class="empty">
+                    <p>No session metadata</p>
+                </div>
+            <?php else: ?>
+                <?php echo $block->renderTable($collector->getSessionMetadata()); ?>
+            <?php endif ?>
+
+            <h3>Session</h3>
+            <?php if (empty($collector->getSessionAttributes())): ?>
+                <div class="empty">
+                    <p>No session attributes</p>
+                </div>
+            <?php else: ?>
+                <?php echo $block->renderTable($collector->getSessionAttributes()); ?>
+            <?php endif ?>
+        </div>
+    </div>
+</div>

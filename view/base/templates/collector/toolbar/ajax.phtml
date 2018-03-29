@@ -1,0 +1,31 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector $block */
+/** @var \ClawRock\Debug\Model\DataCollector\AjaxDataCollector $collector */
+$collector = $block->getCollector();
+$token = $block->getToken();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?php echo $collector->getCollectorName()?> sf-toolbar-status-normal">
+    <div class="sf-toolbar-icon">
+        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/collector/ajax.svg'); ?>" alt="Ajax"/>
+        <span class="sf-toolbar-value sf-toolbar-ajax-requests">0</span>
+    </div>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b class="sf-toolbar-ajax-info"></b>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <table class="sf-toolbar-ajax-requests">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>URL</th>
+                        <th>Time</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody class="sf-toolbar-ajax-request-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>

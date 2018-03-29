@@ -1,0 +1,145 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Model $block */
+/** @var \ClawRock\Debug\Model\DataCollector\ModelDataCollector $collector */
+$collector  = $block->getCollector();
+?>
+<h2>Model CRUD metrics</h2>
+<div class="metrics">
+    <?php foreach ($collector->getMetric() as $name => $value): ?>
+        <div class="metric">
+            <span class="value"><?php echo $value ?></span>
+            <span class="label"><?php echo ucfirst(str_replace('_', ' ', $name)) ?> count</span>
+        </div>
+    <?php endforeach; ?>
+    <div class="metric">
+        <span class="value"><?php echo $collector->getTime(); ?> ms</span>
+        <span class="label">Total time</span>
+    </div>
+</div>
+<div class="sf-tabs">
+    <div class="tab">
+        <?php $callLog = $collector->getLog(); ?>
+        <h3 class="tab-title">All <span class="badge"><?php echo count($callLog) ?></span></h3>
+        <div id="all-crud-operations" class="tab-content">
+            <strong>Operation: </strong>
+            <?php foreach ($block->getOperations() as $operation): ?>
+                <span data-toggle="crud-operation" data-operation="<?php echo $operation ?>" class="label">
+                    <strong><?php echo strtoupper($operation) ?></strong>
+                    <span class="count">
+                        (<span><?php echo $collector->getMetric($operation) ?></span>)
+                    </span>
+                </span>
+            <?php endforeach; ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Action</th>
+                        <th>Time</th>
+                        <th style="width:100%;">Class</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $prefix = 'all-'; ?>
+                    <?php foreach ($callLog as $index => $log): ?>
+                        <tr data-operation="<?php echo $log['action'] ?>">
+                            <td class="nowrap"><?php echo $index + 1 ?></td>
+                            <td><?php echo $log['action'] ?></td>
+                            <td class="nowrap"><?php echo sprintf('%0.2f', $log['time'] * 1000) ?> ms</td>
+                            <td>
+                                <?php echo $log['model'] ?><br>
+                                <div class="text-small font-normal">
+                                    <?php if (isset($log['trace'])): ?>
+                                        <a href="#" class="sf-toggle link-inverse"
+                                           data-toggle-selector="#stack-<?php echo $prefix . $index ?>"
+                                           data-toggle-alt-content="Hide stack trace">Show trace</a>
+                                    <?php endif; ?>
+                                </div>
+                                <?php echo $block->renderCallStack($prefix . $index, $log['trace']) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tab">
+        <?php $loadLoopCalls = $collector->getLoadLoopCalls(); ?>
+        <h3 class="tab-title">Load calls in loops <span class="badge"><?php echo count($loadLoopCalls) ?></span></h3>
+        <div class="tab-content">
+            <?php if (!$loadLoopCalls): ?>
+                <div class="empty">
+                    <p>No load calls in loops detected</p>
+                </div>
+            <?php else: ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Count</th>
+                            <th>Time</th>
+                            <th style="width:100%;">Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $prefix = 'loop-'; ?>
+                        <?php foreach ($loadLoopCalls as $index => $log): ?>
+                            <tr>
+                                <td class="nowrap"><?php echo $index + 1 ?></td>
+                                <td class="nowrap"><?php echo $log['count'] ?></td>
+                                <td class="nowrap"><?php echo sprintf('%0.2f', $log['time'] * 1000) ?> ms</td>
+                                <td>
+                                    <?php echo $log['model'] ?><br>
+                                    <div class="text-small font-normal">
+                                        <?php if (isset($log['trace'])): ?>
+                                            <a href="#" class="sf-toggle link-inverse"
+                                               data-toggle-selector="#stack-<?php echo $prefix . $index ?>"
+                                               data-toggle-alt-content="Hide stack trace">Show trace</a>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php if (isset($log['trace'])): ?>
+                                        <?php echo $block->renderCallStack($prefix . $index, $log['trace']) ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<script>
+    require(['jquery'], function($) {
+        var allOperations = $('#all-crud-operations'),
+            crudOperations = allOperations.find('span[data-toggle="crud-operation"]');
+
+        crudOperations.click(function () {
+            var $this = $(this),
+                operation = $this.data('operation'),
+                makeActive = !$this.hasClass('status-success');
+
+            crudOperations.removeClass('status-success');
+            allOperations.removeAttr('data-operation');
+
+            if (makeActive) {
+                $this.addClass('status-success');
+                allOperations.attr('data-operation', operation);
+            }
+        });
+    });
+</script>
+<style>
+    #all-crud-operations span[data-toggle="crud-operation"] {
+        cursor: pointer;
+    }
+    <?php foreach ($block->getOperations() as $name): ?>
+        #all-crud-operations[data-operation="<?php echo $name ?>"] tbody > tr:not([data-operation="<?php echo $name ?>"]) {
+            display: none;
+        }
+    <?php endforeach;?>
+</style>
+
+
+
+

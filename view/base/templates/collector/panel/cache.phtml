@@ -1,0 +1,164 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Cache $block */
+/** @var \ClawRock\Debug\Model\DataCollector\CacheDataCollector $collector */
+$collector = $block->getCollector();
+$cacheTypes = $block->getCacheTypes();
+?>
+<h2>Cache metrics</h2>
+<div class="metrics">
+    <?php foreach ($collector->getStats() as $key => $value): ?>
+        <div class="metric">
+            <span class="value"><?php echo $value ?></span>
+            <span class="label"><?php echo ucwords($key) ?></span>
+        </div>
+    <?php endforeach; ?>
+    <div class="metric">
+        <span class="value"><?php echo sprintf('%0.2f', $collector->getTotalTime()); ?> ms</span>
+        <span class="label">Time</span>
+    </div>
+</div>
+
+<h2>Cache configuration</h2>
+<table class="cache-table">
+    <thead>
+        <tr>
+            <th class="key">Id</th>
+            <th>Type</th>
+            <th class="text-center">Profiled Status</th>
+            <th class="text-center">Current Status</th>
+            <th class="text-center">Valid</th>
+            <th class="text-right">
+                <a data-url="<?php echo $block->getUrl('_debug/cache/clean', ['type' => 'all']) ?>"
+                   class="btn btn-sm ajax-action">Clean all</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getCacheList() as $cache): ?>
+            <?php $currentStatus = $cacheTypes[$cache['id']]->getData('status'); ?>
+            <tr>
+                <td><?php echo $cache['id'] ?></td>
+                <td><?php echo $cache['cache_type'] ?></td>
+                <td class="text-center">
+                    <?php if ($cache['status']): ?>
+                        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                             alt="Yes"/>
+                    <?php else: ?>
+                        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                             alt="No"/>
+                    <?php endif; ?>
+                </td>
+                <td class="text-center">
+                    <?php if ($currentStatus): ?>
+                        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                             alt="Yes"/>
+                    <?php else: ?>
+                        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                             alt="No"/>
+                    <?php endif; ?>
+                </td>
+                <td class="text-center">
+                    <?php if (!$currentStatus): ?>
+                        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                             alt="No"/>
+                    <?php else: ?>
+                        <?php if ($block->isInvalidated($cache['id'])): ?>
+                            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                                 alt="No"/>
+                        <?php else: ?>
+                            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                                 alt="Yes"/>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </td>
+                <td class="text-right">
+                    <?php if ($currentStatus): ?>
+                        <a href="#"
+                           data-url="<?php echo $block->getUrl('_debug/cache/clean', ['type' => $cache['id']]) ?>"
+                           class="btn btn-sm ajax-action">Clean</a>
+                        <a href="#"
+                           data-url="<?php echo $block->getUrl('_debug/cache/disable', ['type' => $cache['id']]) ?>"
+                           class="btn btn-sm ajax-action">Disable</a>
+                    <?php else: ?>
+                        <a href="#"
+                           data-url="<?php echo $block->getUrl('_debug/cache/enable', ['type' => $cache['id']]) ?>"
+                           class="btn btn-sm ajax-action">Enable</a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<h2>Cache Backend<br><small><?php echo $collector->getBackendName() ?></small></h2>
+<table>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getBackendOptions() as $key => $value): ?>
+            <tr>
+                <td class="nowrap"><?php echo $key ?> </td>
+                <td class="nowrap"><?php echo $value ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<h2>Cache Calls</h2>
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Action</th>
+            <th style="width: 100%;">Id</th>
+            <th>Hit</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getCacheCalls() as $index => $call): ?>
+            <tr>
+                <td class="nowrap"><?php echo $index + 1 ?> </td>
+                <td><?php echo $call['action'] ?></td>
+                <td>
+                    <?php echo isset($call['id']) ? $call['id'] : '-'; ?>
+                    <?php if (!empty($call['tags'])): ?>
+                        <br>
+                        <small><strong>Tags:</strong> <?php echo implode(', ', $call['tags']) ?></small>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if (isset($call['hit'])): ?>
+                        <span class="label status-<?php echo $call['hit'] ? 'success' : 'error' ?>">
+                    <?php echo $call['hit'] ? 'Hit' : 'Miss' ?>
+                    </span>
+                    <?php else: ?>
+                        -
+                    <?php endif ?>
+                </td>
+                <td class="nowrap"><?php echo sprintf('%0.2f', $call['time'] * 1000) ?> ms</td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script>
+    (function () {
+        var actions = document.querySelectorAll('.cache-table .ajax-action');
+        for (var i = 0; i < actions.length; i++) {
+            (function () {
+                var button = actions[i],
+                    url    = button.getAttribute('data-url');
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Sfjs.request(url, function () {
+                        window.location.reload();
+                    });
+                });
+            })();
+        }
+    })();
+</script>

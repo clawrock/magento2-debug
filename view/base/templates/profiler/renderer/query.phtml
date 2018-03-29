@@ -1,0 +1,46 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Renderer\QueryRenderer $block */
+$prefix = $block->getData('prefix');
+?>
+<table class="alt queries-table">
+    <thead>
+        <tr>
+            <th class="nowrap">#</th>
+            <th class="nowrap">Time</th>
+            <th style="width: 100%;">Info</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($block->getData('queries') as $index => $queryData): ?>
+            <tr>
+                <td class="nowrap"><?php echo $index + 1 ?> </td>
+                <td class="nowrap">
+                    <?php echo sprintf('%0.2f', $queryData['profile']->getElapsedSecs() * 1000) ?> ms
+                </td>
+                <td>
+                    <?php echo $queryData['sql_highlighted']; ?>
+                    <?php if (!empty($queryData['profile']->getQueryParams())) : ?>
+                        <div>
+                            <strong class="font-normal text-small">Parameters</strong>:
+                            <?php echo $block->dump($queryData['profile']->getQueryParams()) ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="text-small font-normal">
+                        <a href="#" class="sf-toggle link-inverse"
+                           data-toggle-selector="#formatted-query-<?php echo $prefix . $index ?>"
+                           data-toggle-alt-content="Hide formatted query">View formatted query</a>
+                        <a href="#" class="sf-toggle link-inverse"
+                           data-toggle-selector="#original-query-<?php echo $prefix . $index ?>"
+                           data-toggle-alt-content="Hide runnable query">View runnable query</a>
+                    </div>
+                    <div id="formatted-query-<?php echo $prefix . $index ?>" class="sql-runnable hidden">
+                        <?php echo $queryData['sql_formatted']; ?>
+                    </div>
+                    <div id="original-query-<?php echo $prefix . $index ?>" class="sql-runnable hidden">
+                        <?php echo $queryData['sql_runnable']; ?>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

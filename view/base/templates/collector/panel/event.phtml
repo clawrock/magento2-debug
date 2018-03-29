@@ -1,0 +1,93 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector $block */
+/** @var \ClawRock\Debug\Model\DataCollector\EventDataCollector $collector */
+$collector = $block->getCollector();
+?>
+<div>
+    <h2>Stats</h2>
+    <div class="metrics">
+        <div class="metric">
+            <span class="value"><?php echo $collector->getEventsCount() ?></span>
+            <span class="label">Events dispatched</span>
+        </div>
+        <div class="metric">
+            <span class="value"><?php echo $collector->getObserversCount() ?></span>
+            <span class="label">Called observers</span>
+        </div>
+        <div class="metric">
+            <span class="value"><?php echo $collector->getTime() ?> ms</span>
+            <span class="label">Total time</span>
+        </div>
+    </div>
+</div>
+
+<?php if (!$collector->getObservers()): ?>
+    <div class="empty">
+        <p>No events have been recorded.</p>
+    </div>
+<?php else: ?>
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">Events <span class="badge"><?php echo $collector->getEventsCount(); ?></span></h3>
+            <div class="tab-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Observers</th>
+                            <th>Count</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($collector->getEvents() as $eventName => $event): ?>
+                            <tr>
+                                <td>
+                                    <?php echo $eventName; ?>
+                                    <a href="#" class="sf-toggle link-inverse text-small"
+                                       data-toggle-selector="#event-observer-<?php echo $eventName ?>"
+                                       data-toggle-alt-content="Hide observer">Show observers</a>
+                                    <div id="event-observer-<?php echo $eventName ?>" class="hidden">
+                                        <ul>
+                                            <?php foreach ($event['observers'] as $observer): ?>
+                                                <li><?php echo $observer; ?></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td><?php echo count($event['observers']); ?></td>
+                                <td><?php echo $event['count']; ?></td>
+                                <td><?php echo $event['time']; ?> ms</td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">
+                Observers <span class="badge"><?php echo $collector->getObserversCount() ?></span>
+            </h3>
+            <div class="tab-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Observer</th>
+                            <th>Event</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($collector->getObservers() as $observer): ?>
+                            <tr>
+                                <td><?php echo $observer['class']; ?></td>
+                                <td><?php echo $observer['event'] ?></td>
+                                <td><?php echo $observer['time']; ?> ms</td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

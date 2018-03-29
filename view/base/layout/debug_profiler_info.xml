@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="profiler"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="ClawRock_Debug::css/profiler.css"/>
+        <remove src="css/styles-m.css"/>
+        <remove src="css/styles-l.css"/>
+    </head>
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Magento\Framework\View\Element\Template" name="debug.profiler.js" template="ClawRock_Debug::profiler/js.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

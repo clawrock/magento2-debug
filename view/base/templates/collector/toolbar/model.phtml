@@ -1,0 +1,44 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Model $block */
+/** @var \ClawRock\Debug\Model\DataCollector\ModelDataCollector $collector */
+$collector = $block->getCollector();
+$token = $block->getToken();
+?>
+<?php $statusColor = $collector->getMetric('loop_load') ? 'red' : ($collector->getMetric('load') > $collector->getLoadCallThreshold() ? 'yellow' : 'normal') ?>
+<div class="sf-toolbar-block sf-toolbar-block-<?php echo $collector->getCollectorName()?> sf-toolbar-status-<?php echo $statusColor ?>">
+    <a target="_blank"
+       href="<?php echo $block->getCollectorUrl($token, $collector); ?>">
+        <div class="sf-toolbar-icon">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 576 448">
+                <path fill="#AAAAAA" d="M576 192h-32v160h32v96h-96v-32h-224v32h-96v-96h32v-32h-96v32h-96v-96h32v-160h-32v-96h96v32h224v-32h96v96h-32v32h96v-32h96v96zM512 128v32h32v-32h-32zM352 32v32h32v-32h-32zM32 32v32h32v-32h-32zM64 320v-32h-32v32h32zM384 288h-32v32h32v-32zM96 288h224v-32h32v-160h-32v-32h-224v32h-32v160h32v32zM224 416v-32h-32v32h32zM544 416v-32h-32v32h32zM512 352v-160h-32v-32h-96v96h32v96h-96v-32h-96v32h32v32h224v-32h32z"></path>
+            </svg>
+            <span class="sf-toolbar-value"><?php echo array_sum($collector->getMetric()) - $collector->getMetric('loop_load') ?></span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b>Model loads</b>
+            <span class="sf-toolbar-status sf-toolbar-status-<?php echo $collector->getMetric('load') > $collector->getLoadCallThreshold() ? 'yellow' : '' ?>">
+                 <?php echo $collector->getMetric('load') ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Loads in loops</b>
+            <span class="sf-toolbar-status sf-toolbar-status-<?php echo $collector->getMetric('loop_load') ? 'red' : '' ?>">
+                 <?php echo $collector->getMetric('loop_load') ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Model save</b>
+            <span class="sf-toolbar-status">
+                 <?php echo $collector->getMetric('save') ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Model delete</b>
+            <span class="sf-toolbar-status">
+                 <?php echo $collector->getMetric('delete') ?>
+            </span>
+        </div>
+    </div>
+</div>

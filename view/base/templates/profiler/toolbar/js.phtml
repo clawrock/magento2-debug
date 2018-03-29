@@ -1,0 +1,97 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Toolbar $block */
+$token = $block->getToken();
+?>
+
+<div id="sfwdt<?php echo $token?>" class="sf-toolbar" style="display: none"></div>
+<iframe name="profiler_link_target" style="display: none;"></iframe>
+<?php echo $block->getChildHtml('debug_profiler_js'); ?>
+<script>
+    (function () {
+        Sfjs.load(
+            'sfwdt<?php echo $token?>',
+            '<?php echo $block->getToolbarUrl(); ?>',
+            function(xhr, el) {
+                el.style.display = -1 !== xhr.responseText.indexOf('sf-toolbarreset') ? 'block' : 'none';
+                if (el.style.display == 'none') {
+                    return;
+                }
+                if (Sfjs.getPreference('toolbar/displayState') == 'none') {
+                    document.getElementById('sfToolbarMainContent-<?php echo $token?>').style.display = 'none';
+                    document.getElementById('sfToolbarClearer-<?php echo $token?>').style.display = 'none';
+                    document.getElementById('sfMiniToolbar-<?php echo $token?>').style.display = 'block';
+                } else {
+                    document.getElementById('sfToolbarMainContent-<?php echo $token?>').style.display = 'block';
+                    document.getElementById('sfToolbarClearer-<?php echo $token?>').style.display = 'block';
+                    document.getElementById('sfMiniToolbar-<?php echo $token?>').style.display = 'none';
+                }
+                Sfjs.addEventListener(document.getElementById('sfToolbarHideButton-<?php echo $token; ?>'), 'click', function (event) {
+                    event.preventDefault();
+                    var p = this.parentNode;
+                    p.style.display = 'none';
+                    (p.previousElementSibling || p.previousSibling).style.display = 'none';
+                    document.getElementById('sfMiniToolbar-<?php echo $token; ?>').style.display = 'block';
+                    Sfjs.setPreference('toolbar/displayState', 'none');
+                });
+                Sfjs.addEventListener(document.getElementById('sfToolbarMiniToggler-<?php echo $token; ?>'), 'click', function (event) {
+                    event.preventDefault();
+                    var elem = this.parentNode;
+                    if (elem.style.display == 'none') {
+                        document.getElementById('sfToolbarMainContent-<?php echo $token; ?>').style.display = 'none';
+                        document.getElementById('sfToolbarClearer-<?php echo $token; ?>').style.display = 'none';
+                        elem.style.display = 'block';
+                    } else {
+                        document.getElementById('sfToolbarMainContent-<?php echo $token; ?>').style.display = 'block';
+                        document.getElementById('sfToolbarClearer-<?php echo $token; ?>').style.display = 'block';
+                        elem.style.display = 'none'
+                    }
+                    Sfjs.setPreference('toolbar/displayState', 'block');
+                });
+                Sfjs.renderAjaxRequests();
+                /* Handle toolbar-info position */
+                var toolbarBlocks = document.querySelectorAll('.sf-toolbar-block');
+                for (var i = 0; i < toolbarBlocks.length; i += 1) {
+                    toolbarBlocks[i].onmouseover = function () {
+                        var toolbarInfo = this.querySelectorAll('.sf-toolbar-info')[0];
+                        var pageWidth = document.body.clientWidth;
+                        var elementWidth = toolbarInfo.offsetWidth;
+                        var leftValue = (elementWidth + this.offsetLeft) - pageWidth;
+                        var rightValue = (elementWidth + (pageWidth - this.offsetLeft)) - pageWidth;
+                        /* Reset right and left value, useful on window resize */
+                        toolbarInfo.style.right = '';
+                        toolbarInfo.style.left = '';
+                        if (elementWidth > pageWidth) {
+                            toolbarInfo.style.left = 0;
+                        }
+                        else if (leftValue > 0 && rightValue > 0) {
+                            toolbarInfo.style.right = (rightValue * -1) + 'px';
+                        } else if (leftValue < 0) {
+                            toolbarInfo.style.left = 0;
+                        } else {
+                            toolbarInfo.style.right = '0px';
+                        }
+                    };
+                }
+                var actions = document.querySelectorAll('.sf-toolbar .ajax-action');
+                for (var j = 0; j < actions.length; j++) {
+                    (function () {
+                        var button = actions[j],
+                            url    = button.getAttribute('data-url');
+                        button.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            Sfjs.request(url, function () {
+                                window.location.reload();
+                            });
+                        });
+                    })();
+                }
+            },
+            function(xhr) {
+                if (xhr.status !== 0) {
+                    confirm('An error occurred while loading the web debug toolbar (' + xhr.status + ': ' + xhr.statusText + ').\n\nDo you want to open the profiler?') && (window.location = '<?php echo $block->getTokenUrl($token); ?>');
+                }
+            },
+            {'maxTries': 5}
+        );
+    })();
+</script>

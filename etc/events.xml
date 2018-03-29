@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_front_send_response_before">
+        <observer name="ClawRock_Debug::before_send_resposne" instance="ClawRock\Debug\Observer\BeforeSendResponse"/>
+    </event>
+    <event name="controller_action_predispatch">
+        <observer name="ClawRock_Debug::validate_redirect" instance="ClawRock\Debug\Observer\ValidateRedirect"/>
+    </event>
+    <event name="controller_action_predispatch_debug">
+        <observer name="ClawRock_Debug::allowed_ip" instance="ClawRock\Debug\Observer\AllowedIP"/>
+    </event>
+    <event name="layout_load_before">
+        <observer name="ClawRock_Debug::debug_handle" instance="ClawRock\Debug\Observer\DebugHandle"/>
+    </event>
+    <event name="view_block_abstract_to_html_before">
+        <observer name="ClawRock_Debug::block_render_before"
+                  instance="ClawRock\Debug\Observer\Collector\LayoutDataCollector\BeforeToHtml"/>
+    </event>
+    <event name="view_block_abstract_to_html_after">
+        <observer name="ClawRock_Debug::block_render_after"
+                  instance="ClawRock\Debug\Observer\Collector\LayoutDataCollector\AfterToHtml"/>
+    </event>
+</config>

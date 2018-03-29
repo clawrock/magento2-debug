@@ -1,0 +1,21 @@
+<?php /** @var \ClawRock\Debug\Block\Profiler\Menu $block */ ?>
+<?php if ($block->getProfile()): ?>
+    <?php $token  = $block->getToken(); ?>
+    <?php foreach ($block->getMenuBlocks() as $name => $menuBlock): ?>
+        <li class="<?php echo $name ?> <?php echo $name === $menuBlock->getPanel() ? 'selected' : '' ?>">
+            <a href="<?php echo $menuBlock->getProfilerUrl($token, $name); ?>">
+                <?php echo $menuBlock->toHtml(); ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+<?php endif;?>
+<li class="settings">
+    <a href="<?php echo $block->getConfigurationUrl(); ?>">
+        <span class="label">
+            <span class="icon">
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/settings.svg'); ?>" alt="Settings"/>
+            </span>
+            <strong>Settings</strong>
+        </span>
+    </a>
+</li>

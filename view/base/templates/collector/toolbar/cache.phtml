@@ -1,0 +1,64 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Cache $block */
+/** @var \ClawRock\Debug\Model\DataCollector\CacheDataCollector $collector */
+$collector = $block->getCollector();
+$token = $block->getToken();
+$cacheList = $collector->getCacheList();
+$cacheTypes = $block->getCacheTypes();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?php echo $collector->getCollectorName() ?>">
+    <a target="_blank" href="<?php echo $block->getCollectorUrl($token, $collector); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/collector/cache.svg'); ?>" alt="Cache"/>
+            <span class="sf-toolbar-value"><?php echo sprintf('%0.2f', $collector->getTotalTime()) ?> ms</span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <?php foreach ($cacheList as $cache): ?>
+                <div class="sf-toolbar-info-piece">
+                    <b><?php echo ucwords($cache['id'], ' ')?></b>
+                    <?php if ($cache['status'] == 1): ?>
+                        <?php if ($collector->isInvalidated($cache['id'])): ?>
+                            <span class="sf-toolbar-status sf-toolbar-status-yellow">Inv</span>
+                        <?php else: ?>
+                            <span class="sf-toolbar-status sf-toolbar-status-green">Yes</span>
+                        <?php endif; ?>
+                    <?php else:?>
+                        <span class="sf-toolbar-status">No</span>
+                    <?php endif;?>
+                    &nbsp;
+                    <?php if ($cacheTypes[$cache['id']]->getData('status')): ?>
+                        <a href="#"
+                           data-url="<?php echo $block->getUrl('_debug/cache/clean', ['type' => $cache['id']]) ?>"
+                           class="ajax-action">Clean</a> /
+                        <a href="#"
+                           data-url="<?php echo $block->getUrl('_debug/cache/disable', ['type' => $cache['id']]) ?>"
+                           class="ajax-action">Disable</a>
+                    <?php else: ?>
+                        <a href="#"
+                           data-url="<?php echo $block->getUrl('_debug/cache/enable', ['type' => $cache['id']]) ?>"
+                           class="ajax-action">Enable</a>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="sf-toolbar-info-group" >
+            <div class="sf-toolbar-info-piece" style="text-align: right; display: block;">
+                <a data-url="<?php echo $block->getUrl('_debug/cache/clean', ['type' => 'all']) ?>" class="ajax-action">
+                    Clean all
+                </a>
+            </div>
+        </div>
+        <div class="sf-toolbar-info-group" >
+            <div class="sf-toolbar-info-piece">
+                <b>Cache calls</b>
+                <span class="sf-toolbar-status"><?php echo $collector->getStats('stats_total') ?></span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Time</b>
+                <span><?php echo sprintf('%0.2f', $collector->getTotalTime()) ?> ms</span>
+            </div>
+        </div>
+    </div>
+</div>

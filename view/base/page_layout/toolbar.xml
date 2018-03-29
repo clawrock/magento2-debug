@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+    <container name="root">
+        <block class="ClawRock\Debug\Block\Profiler\Toolbar" name="debug.toolbar.content"
+               template="ClawRock_Debug::profiler/toolbar.phtml">
+            <container name="debug.toolbar.collectors"/>
+        </block>
+    </container>
+</layout>

@@ -1,0 +1,61 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Layout $block */
+/** @var \ClawRock\Debug\Model\DataCollector\LayoutDataCollector $collector */
+$collector = $block->getCollector();
+?>
+<h2>Render Metrics </h2>
+<div class="metrics">
+    <div class="metric">
+        <span class="value"><?php echo $collector->getRenderTime() ?> <span class="unit">ms</span></span>
+        <span class="label">Render time</span>
+    </div>
+    <div class="metric">
+        <span class="value"><?php echo $collector->countCreatedBlocks()?></span>
+        <span class="label">Block created</span>
+    </div>
+    <div class="metric">
+        <span class="value"><?php echo $collector->countRenderedBlocks()?></span>
+        <span class="label">Block rendered</span>
+    </div>
+</div>
+
+<h2>Layout Handles</h2>
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getHandles() as $handle): ?>
+            <tr>
+                <td><?php echo $handle; ?></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+
+<h2>Created but not rendered blocks</h2>
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Module</th>
+            <th scope="col">Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($collector->getBlocksNotRendered() as $notRenderedBlock): ?>
+            <tr>
+                <td><?php echo $notRenderedBlock['name']?></td>
+                <td><?php echo $notRenderedBlock['module']?></td>
+                <td><?php echo $notRenderedBlock['class']?></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+
+<h2>Rendering Call Graph</h2>
+<div id="twig-dump">
+    <?php echo $block->renderTree(); ?>
+</div>

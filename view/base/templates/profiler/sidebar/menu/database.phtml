@@ -1,0 +1,11 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Menu $block */
+/** @var DatabaseDataCollector $collector */
+$collector = $block->getCollector(\ClawRock\Debug\Model\DataCollector\DatabaseDataCollector::NAME);
+?>
+<span class="label <?php echo $collector->getQueryCount() == 0 ? 'disabled' : '' ?>">
+    <span class="icon">
+        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/collector/database.svg'); ?>" alt="DB"/>
+    </span>
+    <strong>Database</strong>
+</span>

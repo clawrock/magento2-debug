@@ -1,0 +1,119 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Config $block */
+/** @var \ClawRock\Debug\Model\DataCollector\ConfigDataCollector $collector */
+$collector = $block->getCollector();
+?>
+<h2>PHP Configuration</h2>
+<div class="metrics">
+    <div class="metric">
+        <span class="value"><?php echo $collector->getPhpVersion() ?></span>
+        <span class="label">PHP version</span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasAccelerator()): ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>" alt="Yes"/>
+            <?php else: ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>" alt="No"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">PHP acceleration</span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasXDebug()): ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>" alt="Yes"/>
+            <?php else: ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>" alt="No"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">Xdebug</span>
+    </div>
+</div>
+<div class="metrics metrics-horizontal">
+    <div class="metric">
+        <span
+        <span class="value">
+            <?php if ($collector->hasZendOpcache()): ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>" alt="Yes"/>
+            <?php else: ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>" alt="No"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">OPcache</span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasApc()): ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>" alt="Yes"/>
+            <?php else: ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>" alt="No"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">APC</span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasXCache()): ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>" alt="Yes"/>
+            <?php else: ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>" alt="No"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">XCache</span>
+    </div>
+    <div class="metric">
+        <span
+        <span class="value">
+            <?php if ($collector->hasEAccelerator()): ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>" alt="Yes"/>
+            <?php else: ?>
+                <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>" alt="No"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">EAccelerator</span>
+    </div>
+</div>
+<p><a href="<?php echo $block->getUrl('_debug/profiler/phpinfo') ?>">View full PHP configuration</a></p>
+<h2>Magento</h2>
+<table>
+    <thead>
+        <tr>
+            <th class="key">Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Admin Url</td>
+            <td><a href="<?php echo $block->getAdminUrl(); ?>"><?php echo $block->getAdminUrl(); ?></a></td>
+        </tr>
+        <tr>
+            <td>Website</td>
+            <td><?php echo $collector->getWebsiteName() ?> (<?php echo $collector->getWebsiteCode() ?>)</td>
+        </tr>
+        <tr>
+            <td>Store</td>
+            <td><?php echo $collector->getStoreName() ?> (<?php echo $collector->getStoreCode() ?>)</td>
+        </tr>
+    </tbody>
+</table>
+<h2>Modules</h2>
+<table>
+    <thead>
+        <tr>
+            <th width="">Module</th>
+            <th>Version</th>
+            <th>Sequence</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getModules() as $name => $data): ?>
+            <tr>
+                <td style="white-space: nowrap;"><?php echo $name ?></td>
+                <td><?php echo $data['setup_version'] ?? 'n/a'; ?></td>
+                <td><?php echo implode(', ', $data['sequence']); ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

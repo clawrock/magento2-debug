@@ -1,0 +1,26 @@
+{
+    "name": "clawrock/m2-debug",
+    "description": "This module is based on Magento 1 Profiler with some extra features. The main goal was to create it as a module with simplified installation process.",
+    "require": {
+        "php": "~5.6.0|~7.0.0|~7.1.0",
+        "filp/whoops": "^2.1",
+        "jdorn/sql-formatter": "^1.2",
+        "symfony/var-dumper": "*",
+        "symfony/stopwatch": "3.*"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "ClawRock\\Debug\\": ""
+        }
+    }
+}
+

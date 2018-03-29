@@ -1,0 +1,21 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Renderer\CallStackRenderer $block */
+$trace = $block->getStack();
+?>
+
+<?php if ($trace): ?>
+    <div id="stack-<?php echo $block->getStackId() ?>" class="hidden">
+        <strong class="font-normal text-small">Trace:</strong>
+        <ol class="sf-call-stack">
+            <?php foreach ($trace as $call): ?>
+                <li>
+                    <?php echo $block->getFunction($call); ?>
+                    <br>
+                    <span class="text-small">
+                        <?php echo $block->getFile($call); ?>
+                    </span>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+<?php endif; ?>

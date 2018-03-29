@@ -1,0 +1,74 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Config $block */
+/** @var \ClawRock\Debug\Model\DataCollector\ConfigDataCollector $collector */
+$collector = $block->getCollector();
+$token = $block->getToken();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-clawrock sf-toolbar-status-normal">
+    <a target="_blank" href="http://clawrock.com">
+        <div class="sf-toolbar-icon">
+            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>" alt="ClawRock">
+        </div>
+    </a>
+</div>
+<div class="sf-toolbar-block sf-toolbar-block-<?php echo $collector->getCollectorName() ?> sf-toolbar-status-normal sf-toolbar-block-right">
+    <a target="_blank"
+       href="<?php echo $block->getCollectorUrl($token, $collector); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/collector/config.svg'); ?>" alt="Config"/>
+            <span class="sf-toolbar-value"><?php echo $collector->getVersion() ?></span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b>Website</b>
+                <span><?php echo $collector->getWebsiteName() ?> (<?php echo $collector->getWebsiteCode() ?>) </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Store</b>
+                <span><?php echo $collector->getStoreName() ?> (<?php echo $collector->getStoreCode() ?>) </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Profiler token</b>
+                <span>
+                    <a href="<?php echo $block->getTokenUrl($collector->getToken()) ?>"><?php echo $collector->getToken()?></a>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Admin Url</b>
+                <span>
+                    <a href="<?php echo $block->getAdminUrl(); ?>">Admin</a>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Developer mode</b>
+                <span>
+                    <?php echo $collector->isDeveloperMode() ? 'on' : 'off'; ?>
+                </span>
+            </div>
+        </div>
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece sf-toolbar-info-php">
+                <b>PHP version</b>
+                <span>
+                    <?php echo $collector->getPHPVersion() ?>
+                    <a href="<?php echo $block->getUrl('_debug/profiler/phpinfo') ?>">View phpinfo()</a>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece sf-toolbar-info-php-ext">
+                <b>PHP Extensions</b>
+                <span class="sf-toolbar-status sf-toolbar-status-<?php echo $collector->hasXDebug() ? 'green' : 'red' ?>">
+                    xdebug
+                </span>
+                <span class="sf-toolbar-status sf-toolbar-status-<?php echo $collector->hasAccelerator() ? 'green' : 'red' ?>">
+                    accel
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>PHP SAPI</b>
+                <span><?php echo $collector->getPHPSAPI() ?></span>
+            </div>
+        </div>
+    </div>
+</div>

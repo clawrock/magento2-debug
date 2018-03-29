@@ -1,0 +1,19 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Menu $block */
+$profile = $block->getProfile();
+$request = $block->getRequest();
+$token = false;
+if ($profile && $profile->getToken()) {
+    $token = $profile->getToken();
+}
+?>
+<div id="sidebar">
+    <div id="sidebar-shortcuts">
+        <div class="shortcuts">
+            <?php echo $block->getChildHtml('debug_profiler_search'); ?>
+        </div>
+    </div>
+    <ul id="menu-profiler">
+        <?php echo $block->getChildHtml('debug_profiler_menu'); ?>
+    </ul>
+</div>

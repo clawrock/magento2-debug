@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="ClawRock\Debug\Model\Profiler\StorageInterface" type="ClawRock\Debug\Model\Profiler\FileStorage"/>
+    <virtualType name="ClawRock\Debug\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">debug</argument>
+        </arguments>
+    </virtualType>
+    <type name="ClawRock\Debug\Model\Session">
+        <arguments>
+            <argument name="storage" xsi:type="object">ClawRock\Debug\Model\Session\Storage</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Phrase\Renderer\Translate">
+        <plugin name="ClawRock_Debug::translation_data_collector" type="ClawRock\Debug\Plugin\Collector\TranslationDataCollectorPlugin"/>
+    </type>
+    <type name="Magento\Framework\App\Cache">
+        <plugin name="ClawRock_Debug::cache_data_collector" type="ClawRock\Debug\Plugin\Collector\CacheDataCollectorPlugin"/>
+    </type>
+    <type name="Magento\Framework\App\Http">
+        <plugin name="ClawRock_Debug::time_data_collector" type="ClawRock\Debug\Plugin\Collector\TimeDataCollectorPlugin"/>
+        <plugin name="ClawRock_Debug::whoops_error_handler" type="ClawRock\Debug\Plugin\ErrorHandler\WhoopsPlugin"/>
+    </type>
+    <type name="Magento\Framework\Event\Invoker\InvokerDefault">
+        <plugin name="ClawRock_Debug::event_data_collector" type="ClawRock\Debug\Plugin\Collector\EventDataCollectorPlugin"/>
+    </type>
+    <type name="Magento\Framework\App\PageCache\Kernel">
+        <plugin name="ClawRock_Debug::page_cache_kernel" type="ClawRock\Debug\Plugin\PageCache\KernelPlugin"/>
+    </type>
+    <type name="Magento\Framework\Model\ResourceModel\Db\AbstractDb">
+        <plugin name="ClawRock_Debug::model_action" type="ClawRock\Debug\Plugin\Collector\ModelDataCollector\ModelPlugin"/>
+    </type>
+    <type name="Magento\Eav\Model\Entity\AbstractEntity">
+        <plugin name="ClawRock_Debug::eav_model_action" type="ClawRock\Debug\Plugin\Collector\ModelDataCollector\EavModelPlugin"/>
+    </type>
+</config>

@@ -1,0 +1,16 @@
+<?php /** @var \ClawRock\Debug\Block\Profiler\Toolbar $block */ ?>
+<?php $token = $block->getToken(); ?>
+<div id="sfMiniToolbar-<?php echo $token; ?>" class="sf-minitoolbar" data-no-turbolink>
+    <a href="#" title="Debug Toolbar" id="sfToolbarMiniToggler-<?php echo $token; ?>" tabindex="-1" accesskey="D">
+        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/magento.svg'); ?>" alt="Magento">
+    </a>
+</div>
+<div id="sfToolbarClearer-<?php echo $token; ?>" class="sf-toolbar-clearer"></div>
+<div id="sfToolbarMainContent-<?php echo $token; ?>" class="sf-toolbarreset clear-fix" data-no-turbolink>
+    <?php foreach ($block->getCollectorBlocks() as $collectorBlock): ?>
+        <?php echo $collectorBlock->toHtml(); ?>
+    <?Php endforeach;?>
+    <a href="#" class="hide-button" id="sfToolbarHideButton-<?php echo $token; ?>" title="Close Toolbar" tabindex="-1" accesskey="D">
+        <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/icon/close.svg'); ?>" alt="Close">
+    </a>
+</div>

@@ -1,0 +1,56 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler $block */
+$data = $block->getData();
+?>
+<div class="status">
+    <div class="container">
+        <h2>
+            Profile Search
+            <a href="<?php echo $block->getUrl('*/*/*', ['_current' => true, 'purge' => true]); ?>"
+               style="float: right;" class="btn btn-sm">Purge All</a>
+        </h2>
+    </div>
+</div>
+<?php if ($data['tokens']): ?>
+    <h3><?php echo count($data['tokens']); ?> results found</h3>
+    <table id="search-results">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col">IP</th>
+                <th scope="col">Method</th>
+                <th scope="col">URL</th>
+                <th scope="col">Size</th>
+                <th scope="col">Time</th>
+                <th scope="col">Token</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($data['tokens'] as $result): ?>
+                <?php
+                $statusCode = isset($result['status_code']) ? $result['status_code'] : 0;
+                $cssClass = $statusCode > 399 ? 'status-error' : $statusCode > 299 ? 'status-warning' : 'status-success';
+                ?>
+                <tr>
+                    <td class="text-center">
+                        <span class="label <?php echo $cssClass?>"><?php echo $statusCode ? $statusCode : 'n/a'?></span>
+                    </td>
+                    <td><span class="nowrap"><?php echo $result['ip']?></span></td>
+                    <td><?php echo $result['method']?></td>
+                    <td class="break-long-words"><?php echo $result['url']?></td>
+                    <td class="text-small nowrap"><?php echo sprintf('%.2f', $result['size'] / 1024 / 1024) ?> MB</td>
+                    <td class="text-small">
+                        <?php $date = (new DateTime())->setTimestamp($result['time']);?>
+                        <span class="nowrap"><?php echo $date->format('d-M-Y')?></span>
+                        <span class="nowrap newline"><?php echo $date->format('H:i:s')?></span>
+                    </td>
+                    <td class="nowrap"><a href="<?php echo $block->getProfilerUrl($result['token']); ?>"><?php echo $result['token']?></a></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <div class="empty">
+        <p>No results found.</p>
+    </div>
+<?php endif ?>

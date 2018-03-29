@@ -1,0 +1,40 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Layout $block */
+/** @var \ClawRock\Debug\Model\DataCollector\LayoutDataCollector $collector */
+$collector = $block->getCollector();
+$token = $block->getToken();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?php echo $collector->getCollectorName() ?>">
+    <a target="_blank" href="<?php echo $block->getCollectorUrl($token, $collector); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/collector/layout.svg'); ?>" alt="Layout"/>
+            <span class="sf-toolbar-value">
+                <?php echo $collector->getRenderTime() ?> <span class="unit">ms</span>
+            </span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b>Layout handles</b>
+                <?php foreach ($collector->getHandles() as $handle): ?>
+                    <?php echo $handle ?><br>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b>Render Time</b>
+                <span><?php echo $collector->getRenderTime(); ?> ms</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Block created</b>
+                <span class="sf-toolbar-status"><?php echo $collector->countCreatedBlocks() ?></span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Block rendered</b>
+                <span class="sf-toolbar-status"><?php echo $collector->countRenderedBlocks() ?></span>
+            </div>
+        </div>
+    </div>
+</div>
