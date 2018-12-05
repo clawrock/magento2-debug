@@ -40,14 +40,21 @@ class ProfilerConfig implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (!in_array(Profiler::CONFIG_DATA_COLLECTOR_DATABASE, $observer->getChangedPaths())) {
+        if (!$this->isDBProfilerDependentConfigChanged($observer->getChangedPaths())) {
             return;
         }
 
+        $flag = $this->profilerHelper->isDatabaseDataCollectorEnabled() && $this->profilerHelper->isEnabled();
+
         try {
-            $this->dbProfilerConfig->save($this->profilerHelper->isDatabaseDataCollectorEnabled());
+            $this->dbProfilerConfig->save($flag);
         } catch (FileSystemException $e) {
             $this->messageManager->addExceptionMessage($e);
         }
+    }
+
+    private function isDBProfilerDependentConfigChanged(array $paths): bool
+    {
+        return in_array(Profiler::CONFIG_DATA_COLLECTOR_DATABASE, $paths) || in_array(Profiler::CONFIG_ENABLED, $paths);
     }
 }

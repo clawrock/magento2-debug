@@ -210,7 +210,7 @@ class Profiler
 
     public function isAvailable(): bool
     {
-        return $this->registry->registry('current_profile') instanceof \ClawRock\Debug\Model\Profile;
+        return !$this->registry->registry('current_profile');
     }
 
     public function flush()
