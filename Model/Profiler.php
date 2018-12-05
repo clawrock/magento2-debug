@@ -73,7 +73,7 @@ class Profiler
 
     public function run(HttpRequest $request, HttpResponse $response)
     {
-        if (!$this->isEnabled() || !$this->helper->isAllowedIP()) {
+        if (!$this->isAvailable() || !$this->helper->isAllowedIP()) {
             return;
         }
 
@@ -195,10 +195,6 @@ class Profiler
      */
     public function saveProfile(Profile $profile)
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-
         foreach ($profile->getCollectors() as $collector) {
             if ($collector instanceof LateDataCollectorInterface) {
                 $collector->lateCollect();
@@ -212,13 +208,9 @@ class Profiler
         }
     }
 
-    public function isEnabled()
+    public function isAvailable(): bool
     {
-        if ($this->registry->registry('current_profile')) {
-            return false;
-        }
-
-        return $this->helper->isEnabled();
+        return $this->registry->registry('current_profile') instanceof \ClawRock\Debug\Model\Profile;
     }
 
     public function flush()
