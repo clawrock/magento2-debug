@@ -33,13 +33,13 @@ class ModelDataCollector extends AbstractDataCollector
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @param \Magento\Framework\App\Request\Http  $request
-     * @param \Magento\Framework\App\Response\Http $response
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Request  $request
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
      * @return $this
      */
     public function collect(
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\App\Response\Http $response
+        \Magento\Framework\HTTP\PhpEnvironment\Request $request,
+        \Magento\Framework\HTTP\PhpEnvironment\Response $response
     ) {
         $metrics = [
             self::ACTION_LOAD   => 0,

@@ -13,13 +13,13 @@ class ValidateRedirect implements ObserverInterface
      */
     private $session;
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var \Magento\Framework\HTTP\PhpEnvironment\Request
      */
     private $request;
 
     public function __construct(
         \ClawRock\Debug\Model\Session $session,
-        \Magento\Framework\App\Request\Http $request
+        \Magento\Framework\HTTP\PhpEnvironment\Request $request
     ) {
         $this->session = $session;
         $this->request = $request;

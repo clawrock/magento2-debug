@@ -7,6 +7,7 @@ use ClawRock\Debug\Model\DataCollector\DataCollectorInterface;
 use ClawRock\Debug\Model\Profiler as ProfilerModel;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\HTTP\PhpEnvironment\Response;
 
 class Profiler extends AbstractHelper
 {
@@ -74,7 +75,7 @@ class Profiler extends AbstractHelper
         return $this->_getUrl('_debug/profiler/info', $params);
     }
 
-    public function getTokenFromResponse(\Magento\Framework\App\Response\Http $response)
+    public function getTokenFromResponse(Response $response)
     {
         $token = null;
         /** @var \Zend\Http\Header\HeaderInterface $header */

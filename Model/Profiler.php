@@ -4,8 +4,8 @@ namespace ClawRock\Debug\Model;
 
 use ClawRock\Debug\Model\DataCollector\DataCollectorInterface;
 use ClawRock\Debug\Model\DataCollector\LateDataCollectorInterface;
-use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Framework\App\Response\Http as HttpResponse;
+use Magento\Framework\HTTP\PhpEnvironment\Request;
+use Magento\Framework\HTTP\PhpEnvironment\Response;
 use Magento\Framework\Profiler as MagentoProfiler;
 
 class Profiler
@@ -71,7 +71,7 @@ class Profiler
         $this->logger = $logger;
     }
 
-    public function run(HttpRequest $request, HttpResponse $response)
+    public function run(Request $request, Response $response)
     {
         if (!$this->isAvailable() || !$this->helper->isAllowedIP()) {
             return;
@@ -135,7 +135,7 @@ class Profiler
         return $this->dataCollectors;
     }
 
-    public function collect(HttpRequest $request, HttpResponse $response)
+    public function collect(Request $request, Response $response)
     {
         $start = microtime(true);
         $profile = new Profile(substr(hash('sha256', uniqid(mt_rand(), true)), 0, 6));

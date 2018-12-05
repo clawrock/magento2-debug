@@ -46,14 +46,14 @@ class CustomerDataCollector extends AbstractDataCollector
     }
 
     /**
-     * @param \Magento\Framework\App\Request\Http  $request
-     * @param \Magento\Framework\App\Response\Http $response
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Request  $request
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
      * @return $this;
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function collect(
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\App\Response\Http $response
+        \Magento\Framework\HTTP\PhpEnvironment\Request $request,
+        \Magento\Framework\HTTP\PhpEnvironment\Response $response
     ) {
         $customer = $this->session->getCustomer();
 

@@ -3,8 +3,8 @@
 namespace ClawRock\Debug\Helper;
 
 use ClawRock\Debug\Block\Profiler\Toolbar as ToolbarBlock;
-use Magento\Framework\App\Request\Http as Request;
-use Magento\Framework\App\Response\Http as Response;
+use Magento\Framework\HTTP\PhpEnvironment\Request;
+use Magento\Framework\HTTP\PhpEnvironment\Response;
 use Magento\Framework\View\Element\Template;
 
 class Toolbar

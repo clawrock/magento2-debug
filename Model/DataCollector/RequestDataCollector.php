@@ -2,6 +2,9 @@
 
 namespace ClawRock\Debug\Model\DataCollector;
 
+use Magento\Framework\HTTP\PhpEnvironment\Request;
+use Magento\Framework\HTTP\PhpEnvironment\Response;
+
 class RequestDataCollector extends AbstractDataCollector
 {
     const NAME = 'request';
@@ -133,13 +136,13 @@ class RequestDataCollector extends AbstractDataCollector
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @param \Magento\Framework\App\Request\Http  $request
-     * @param \Magento\Framework\App\Response\Http $response
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Request  $request
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
      * @return $this
      */
     public function collect(
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\App\Response\Http $response
+        \Magento\Framework\HTTP\PhpEnvironment\Request $request,
+        \Magento\Framework\HTTP\PhpEnvironment\Response $response
     ) {
         $responseHeaders = $this->collectResponseHeaders($response);
         $statusCode = $this->detectStatusCode($response);
@@ -305,7 +308,7 @@ class RequestDataCollector extends AbstractDataCollector
     }
 
 
-    protected function collectResponseHeaders(\Magento\Framework\App\Response\Http $response)
+    protected function collectResponseHeaders(Response $response)
     {
         $headers = [];
 
@@ -317,7 +320,7 @@ class RequestDataCollector extends AbstractDataCollector
         return $headers;
     }
 
-    protected function collectRequestAttributes(\Magento\Framework\App\Request\Http $request)
+    protected function collectRequestAttributes(Request $request)
     {
         $attributes = [
             self::REQUEST_STRING    => $request->getRequestString(),
@@ -331,7 +334,7 @@ class RequestDataCollector extends AbstractDataCollector
         return $attributes;
     }
 
-    protected function collectRequestHeaders(\Magento\Framework\App\Request\Http $request)
+    protected function collectRequestHeaders(Request $request)
     {
         $headers = [];
 
@@ -346,7 +349,7 @@ class RequestDataCollector extends AbstractDataCollector
         return $headers;
     }
 
-    protected function detectStatusCode(\Magento\Framework\App\Response\Http $response)
+    protected function detectStatusCode(Response $response)
     {
         $statusCode = $response->getHttpResponseCode();
         /** @var \Zend\Http\Header\HeaderInterface $header */
@@ -364,12 +367,12 @@ class RequestDataCollector extends AbstractDataCollector
         return $statusCode;
     }
 
-    protected function collectRequestGet(\Magento\Framework\App\Request\Http $request)
+    protected function collectRequestGet(Request $request)
     {
         return $request->getQuery() ?: [];
     }
 
-    protected function collectRequestPost(\Magento\Framework\App\Request\Http $request)
+    protected function collectRequestPost(Request $request)
     {
         return $request->getPost() ?: [];
     }
@@ -394,10 +397,8 @@ class RequestDataCollector extends AbstractDataCollector
         }
     }
 
-    protected function collectRedirect(
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\App\Response\Http $response
-    ) {
+    protected function collectRedirect(Request $request, Response $response)
+    {
         if ($request->getParam('_redirected')) {
             $this->data[self::REDIRECT] = $this->session->getData(self::REDIRECT_PARAM, true);
         }
