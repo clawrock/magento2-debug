@@ -1379,3 +1379,16 @@ table.logs .sf-call-stack abbr {
 .clawrock h4 {
     margin: 0;
 }
+
+/* Hide template hints */
+.debug-profiler-info .debugging-hint-template-file,
+.debug-profiler-info .debugging-hint-block-class {
+    display: none;
+}
+
+.debug-profiler-info .debugging-hints {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    position: static !important;
+}

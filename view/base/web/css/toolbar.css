@@ -577,3 +577,16 @@ img.redirect-img {
         display: none;
     }
 }
+
+/* Hide template hints */
+.sf-toolbar .debugging-hint-template-file,
+.sf-toolbar .debugging-hint-block-class {
+    display: none;
+}
+
+.sf-toolbar .debugging-hints {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    position: static !important;
+}
