@@ -4,6 +4,7 @@
     "require": {
         "magento/framework": "~101.0|~102.0",
         "magento/module-backend": "~100.2|~101.0",
+        "magento/module-developer": "^100.2",
         "filp/whoops": "^2.1",
         "jdorn/sql-formatter": "^1.2",
         "symfony/var-dumper": "*",

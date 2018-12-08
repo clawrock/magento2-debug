@@ -33,4 +33,39 @@
     <type name="Magento\Eav\Model\Entity\AbstractEntity">
         <plugin name="ClawRock_Debug::eav_model_action" type="ClawRock\Debug\Plugin\Collector\ModelDataCollector\EavModelPlugin"/>
     </type>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="clawrock_debug/general/allowed_ips" xsi:type="string">1</item>
+            </argument>
+            <argument name="environment" xsi:type="array">
+                <item name="clawrock_debug/general/active" xsi:type="string">1</item>
+                <item name="clawrock_debug/general/allowed_ips" xsi:type="string">1</item>
+                <item name="clawrock_debug/general/error_handler" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/ajax" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/cache" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/config" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/customer" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/database" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/event" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/plugin" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/layout" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/memory" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/model" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/request" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/time" xsi:type="string">1</item>
+                <item name="clawrock_debug/collector/translation" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/core_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/routing_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/config_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/event_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/layout_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/eav_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/controller_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/template_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/debug_color" xsi:type="string">1</item>
+                <item name="clawrock_debug/performance/unknown_color" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

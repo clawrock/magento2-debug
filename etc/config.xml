@@ -3,7 +3,7 @@
     <default>
         <clawrock_debug>
             <general>
-                <active>1</active>
+                <active>0</active>
                 <allowed_ips>127.0.0.1</allowed_ips>
                 <error_handler>whoops</error_handler>
             </general>
