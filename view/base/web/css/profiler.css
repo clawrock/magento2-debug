@@ -372,6 +372,10 @@ table tbody ul {
     padding: 0 0 0 1em;
 }
 
+.auto {
+    width: auto;
+}
+
 .block {
     display: block;
 }
@@ -669,7 +673,7 @@ tr.status-warning td {
 }
 
 .container {
-    max-width: 1300px;
+    max-width: 1920px;
     padding-right: 15px;
 }
 
@@ -688,6 +692,7 @@ tr.status-warning td {
     padding: 14px 0 14px 20px;
     float: left;
     width: calc(100% - 240px);
+    overflow-x: auto;
 }
 
 #main h2:first-of-type {
@@ -1378,4 +1383,17 @@ table.logs .sf-call-stack abbr {
 
 .clawrock h4 {
     margin: 0;
+}
+
+/* Hide template hints */
+.debug-profiler-info .debugging-hint-template-file,
+.debug-profiler-info .debugging-hint-block-class {
+    display: none;
+}
+
+.debug-profiler-info .debugging-hints {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    position: static !important;
 }

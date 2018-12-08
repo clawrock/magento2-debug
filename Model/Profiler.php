@@ -4,8 +4,8 @@ namespace ClawRock\Debug\Model;
 
 use ClawRock\Debug\Model\DataCollector\DataCollectorInterface;
 use ClawRock\Debug\Model\DataCollector\LateDataCollectorInterface;
-use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Framework\App\Response\Http as HttpResponse;
+use Magento\Framework\HTTP\PhpEnvironment\Request;
+use Magento\Framework\HTTP\PhpEnvironment\Response;
 use Magento\Framework\Profiler as MagentoProfiler;
 
 class Profiler
@@ -71,9 +71,9 @@ class Profiler
         $this->logger = $logger;
     }
 
-    public function run(HttpRequest $request, HttpResponse $response)
+    public function run(Request $request, Response $response)
     {
-        if (!$this->isEnabled() || !$this->helper->isAllowedIP()) {
+        if (!$this->isAvailable() || !$this->helper->isAllowedIP()) {
             return;
         }
 
@@ -135,7 +135,7 @@ class Profiler
         return $this->dataCollectors;
     }
 
-    public function collect(HttpRequest $request, HttpResponse $response)
+    public function collect(Request $request, Response $response)
     {
         $start = microtime(true);
         $profile = new Profile(substr(hash('sha256', uniqid(mt_rand(), true)), 0, 6));
@@ -195,10 +195,6 @@ class Profiler
      */
     public function saveProfile(Profile $profile)
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-
         foreach ($profile->getCollectors() as $collector) {
             if ($collector instanceof LateDataCollectorInterface) {
                 $collector->lateCollect();
@@ -212,13 +208,9 @@ class Profiler
         }
     }
 
-    public function isEnabled()
+    public function isAvailable(): bool
     {
-        if ($this->registry->registry('current_profile')) {
-            return false;
-        }
-
-        return $this->helper->isEnabled();
+        return !$this->registry->registry('current_profile');
     }
 
     public function flush()

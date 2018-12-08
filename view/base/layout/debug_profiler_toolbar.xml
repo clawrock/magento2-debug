@@ -30,6 +30,8 @@
                    template="collector/toolbar/config.phtml" cacheable="false"/>
             <block name="debug.toolbar.collectors.event" class="ClawRock\Debug\Block\Profiler\Collector"
                    template="collector/toolbar/event.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.plugin" class="ClawRock\Debug\Block\Profiler\Collector"
+                   template="collector/toolbar/plugin.phtml" cacheable="false"/>
         </referenceContainer>
     </body>
 </page>

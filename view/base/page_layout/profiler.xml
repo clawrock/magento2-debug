@@ -20,6 +20,8 @@
                            template="ClawRock_Debug::profiler/sidebar/menu/database.phtml"/>
                     <block class="ClawRock\Debug\Block\Profiler\Menu" name="event"
                            template="ClawRock_Debug::profiler/sidebar/menu/event.phtml"/>
+                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="plugin"
+                           template="ClawRock_Debug::profiler/sidebar/menu/plugin.phtml"/>
                     <block class="ClawRock\Debug\Block\Profiler\Menu" name="layout"
                            template="ClawRock_Debug::profiler/sidebar/menu/layout.phtml"/>
                     <block class="ClawRock\Debug\Block\Profiler\Menu" name="translation"

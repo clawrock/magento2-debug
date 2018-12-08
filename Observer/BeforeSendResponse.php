@@ -10,24 +10,31 @@ class BeforeSendResponse implements ObserverInterface
     /**
      * @var \ClawRock\Debug\Model\Profiler
      */
-    protected $profiler;
+    private $profiler;
+
+    /**
+     * @var \ClawRock\Debug\Helper\Profiler
+     */
+    private $profilerHelper;
 
     /**
      * @var \Magento\Framework\View\LayoutInterface
      */
-    protected $layout;
+    private $layout;
 
     public function __construct(
         \ClawRock\Debug\Model\Profiler $profiler,
+        \ClawRock\Debug\Helper\Profiler $profilerHelper,
         \Magento\Framework\View\LayoutInterface $layout
     ) {
         $this->profiler = $profiler;
+        $this->profilerHelper = $profilerHelper;
         $this->layout = $layout;
     }
 
     public function execute(Observer $observer)
     {
-        if ($this->isProfilerAction()) {
+        if ($this->isProfilerAction() || !$this->profilerHelper->isEnabled()) {
             return;
         }
 
@@ -37,7 +44,7 @@ class BeforeSendResponse implements ObserverInterface
         $this->profiler->run($request, $response);
     }
 
-    protected function isProfilerAction()
+    private function isProfilerAction()
     {
         return in_array('debug_profiler_info', $this->layout->getUpdate()->getHandles());
     }

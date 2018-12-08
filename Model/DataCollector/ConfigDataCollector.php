@@ -76,14 +76,14 @@ class ConfigDataCollector extends AbstractDataCollector
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @param \Magento\Framework\App\Request\Http  $request
-     * @param \Magento\Framework\App\Response\Http $response
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Request  $request
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
      * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function collect(
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\App\Response\Http $response
+        \Magento\Framework\HTTP\PhpEnvironment\Request $request,
+        \Magento\Framework\HTTP\PhpEnvironment\Response $response
     ) {
         $store = $this->storeManager->getStore();
         $website = $this->storeManager->getWebsite();

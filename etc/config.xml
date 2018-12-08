@@ -3,7 +3,7 @@
     <default>
         <clawrock_debug>
             <general>
-                <active>1</active>
+                <active>0</active>
                 <allowed_ips>127.0.0.1</allowed_ips>
                 <error_handler>whoops</error_handler>
             </general>
@@ -14,6 +14,7 @@
                 <customer>1</customer>
                 <database>1</database>
                 <event>1</event>
+                <plugin>1</plugin>
                 <layout>1</layout>
                 <memory>1</memory>
                 <model>1</model>
@@ -47,6 +48,7 @@
                     <config>ClawRock\Debug\Model\DataCollector\ConfigDataCollector</config>
                     <model>ClawRock\Debug\Model\DataCollector\ModelDataCollector</model>
                     <event>ClawRock\Debug\Model\DataCollector\EventDataCollector</event>
+                    <plugin>ClawRock\Debug\Model\DataCollector\PluginDataCollector</plugin>
                 </collectors>
             </profiler>
         </clawrock_debug>

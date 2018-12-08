@@ -1,36 +1,37 @@
-# Magento 2 Debug
-This module is based on [Magento 1 Profiler](https://github.com/ecoco/magento_profiler) with some extra features. The main goal was to create it as a module with simplified installation process.
+# Magento 2 - Debug module
+Module for debugging Magento 2 performance. It works without overwriting any core files and it can be installed with composer.
 
-## Requirements  
-- Magento 2
-
-## Instalation
-It should be simple as:
-```
-composer require --dev clawrock/m2-debug
-php bin/magento setup:upgrade
-```
-
-## Features
-- Data collectors:
-    - Ajax
-    - Cache
-    - Config
-    - Customer
-    - Database
-    - Events
-    - Layout
-    - Memory
-    - Models
-    - Request/Response
-    - Performance
-    - Translations
-- Whoops error handler
+## Installation
+1. Enable developer mode `php bin/magento deploy:mode:set developer`
+2. Install module via composer `composer require --dev clawrock/m2-debug`
+3. Register module `php bin/magento setup:upgrade`
+4. Enable profiler in configuration: `Stores -> Configuration -> Advanced -> Debug`
 
 ## Configuration
-Please navigate to `Stores -> Configuration -> ClawRock -> Debug`
+All settings have only default scope and config type pool is set to environment for better integration with `php bin/magento app:config:dump`
 
-For Database Collector you have to [enable Magento DB Profiler](http://devdocs.magento.com/guides/v2.2/config-guide/db-profiler/db-profiler.html)
+## Compatibility
+* Magento 2.2 - 2.3
+* PHP 7.0 - 7.2
 
-## TODO
-- Improved template hints
+## Data collectors
+- Ajax
+- Cache
+- Config
+- Customer
+- Database
+- Events
+- Layout
+- Memory
+- Models
+- Plugins
+- Request/Response
+- Performance
+- Translations
+    
+## Additional features
+- [Whoops error handler](http://filp.github.io/whoops/)
+
+## Credits
+- [Magento 1.x Web Profiler](https://github.com/ecoco/magento_profiler)
+- [Symfony WebProfilerBundle](https://github.com/symfony/web-profiler-bundle)

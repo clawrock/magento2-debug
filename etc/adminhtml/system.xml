@@ -1,80 +1,81 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="clawrock_tab" translate="label" sortOrder="410">
-            <label>ClawRock</label>
-        </tab>
-        <section id="clawrock_debug" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="clawrock_debug" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="0" showInStore="0">
             <class>separator-top</class>
             <label>Debug</label>
-            <tab>clawrock_tab</tab>
+            <tab>advanced</tab>
             <resource>ClawRock_Debug::config</resource>
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>General</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Debug is only enabled in Developer mode.</comment>
                 </field>
-                <field id="allowed_ips" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Allowed IPs</label>
-                    <comment>Separated by comma.</comment>
+                <field id="allowed_ips" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Allowed IPs (comma separated)</label>
+                    <comment>Leave empty for access from any location.</comment>
+                    <backend_model>Magento\Developer\Model\Config\Backend\AllowedIps</backend_model>
                 </field>
-                <field id="error_handler" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="error_handler" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Error Handler</label>
                     <source_model>ClawRock\Debug\Model\Config\Source\ErrorHandler</source_model>
                 </field>
             </group>
             <group id="collector" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Data collectors</label>
-                <field id="ajax" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="ajax" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Ajax</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="cache" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="cache" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Cache</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="config" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="config" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Config</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="customer" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="customer" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Customer</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>This collector is automatically disabled in backend.</comment>
                 </field>
-                <field id="database" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="database" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Database</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
-                    <comment>This collector is enabled only when Magento DB Profiler is enabled (see module readme).</comment>
                 </field>
-                <field id="event" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="event" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Event</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="layout" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="plugin" translate="label" type="select" sortOrder="65" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Plugin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+                <field id="layout" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Layout</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>This collector is automatically disabled during FPC request.</comment>
                 </field>
-                <field id="memory" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="memory" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Memory</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="model" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="model" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Model</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="request" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="request" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Request</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="time" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="time" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Performance</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="translation" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="translation" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Translation</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>This collector is automatically disabled during FPC request.</comment>
@@ -82,43 +83,43 @@
             </group>
             <group id="performance" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Performance collector</label>
-                <field id="core_color" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="core_color" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Core event color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="routing_color" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="routing_color" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Routing color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="config_color" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="config_color" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Config color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="event_color" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="event_color" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Event color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="layout_color" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="layout_color" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Layout color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="eav_color" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="eav_color" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>EAV color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="controller_color" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="controller_color" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Controller color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="template_color" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="template_color" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Template color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="debug_color" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="debug_color" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Debug color</label>
                     <comment>Hex value</comment>
                 </field>
-                <field id="unknown_color" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="unknown_color" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Unknown color</label>
                     <comment>Hex value</comment>
                 </field>
