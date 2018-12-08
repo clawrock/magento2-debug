@@ -49,6 +49,10 @@
                     <label>Event</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
+                <field id="plugin" translate="label" type="select" sortOrder="65" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Plugin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
                 <field id="layout" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Layout</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>

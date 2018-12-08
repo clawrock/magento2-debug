@@ -1,0 +1,96 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector $block */
+/** @var \ClawRock\Debug\Model\DataCollector\PluginDataCollector $collector */
+$collector = $block->getCollector();
+?>
+<div>
+    <h2>Plugins</h2>
+</div>
+
+<?php if (!$collector->hasPlugins()): ?>
+    <div class="empty">
+        <p>No plugins have been processed.</p>
+    </div>
+<?php else: ?>
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">Before plugins <span class="badge"><?php echo $collector->getBeforePluginsCount(); ?></span></h3>
+            <div class="tab-content">
+                <table class="auto">
+                    <?php foreach ($collector->getBeforePlugins() as $type => $plugins): ?>
+                        <thead>
+                            <tr>
+                                <th><?php echo $type; ?></th>
+                                <th>Name</th>
+                                <th>Sort order</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($plugins as $plugin): ?>
+                                <tr>
+                                    <td><?php echo $plugin['class']; ?>::<?php echo $plugin['method']; ?></td>
+                                    <td><?php echo $plugin['name']; ?></td>
+                                    <td class="text-center"><?php echo $plugin['sort_order']; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">
+                Around plugins <span class="badge"><?php echo $collector->getAroundPluginsCount() ?></span>
+            </h3>
+            <div class="tab-content">
+                <table class="auto">
+                    <?php foreach ($collector->getAroundPlugins() as $type => $plugins): ?>
+                        <thead>
+                        <tr>
+                            <th><?php echo $type; ?></th>
+                            <th>Name</th>
+                            <th>Sort order</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($plugins as $plugin): ?>
+                            <tr>
+                                <td><?php echo $plugin['class']; ?>::<?php echo $plugin['method']; ?></td>
+                                <td><?php echo $plugin['name']; ?></td>
+                                <td class="text-center"><?php echo $plugin['sort_order']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">
+                After plugins <span class="badge"><?php echo $collector->getAfterPluginsCount() ?></span>
+            </h3>
+            <div class="tab-content">
+                <table class="auto">
+                    <?php foreach ($collector->getAfterPlugins() as $type => $plugins): ?>
+                        <thead>
+                        <tr>
+                            <th><?php echo $type; ?></th>
+                            <th>Name</th>
+                            <th>Sort order</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($plugins as $plugin): ?>
+                            <tr>
+                                <td><?php echo $plugin['class']; ?>::<?php echo $plugin['method']; ?></td>
+                                <td><?php echo $plugin['name']; ?></td>
+                                <td class="text-center"><?php echo $plugin['sort_order']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

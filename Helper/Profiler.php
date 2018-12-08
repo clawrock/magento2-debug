@@ -21,6 +21,7 @@ class Profiler extends AbstractHelper
     const CONFIG_DATA_COLLECTOR_CUSTOMER    = 'clawrock_debug/collector/customer';
     const CONFIG_DATA_COLLECTOR_DATABASE    = 'clawrock_debug/collector/database';
     const CONFIG_DATA_COLLECTOR_EVENT       = 'clawrock_debug/collector/event';
+    const CONFIG_DATA_COLLECTOR_PLUGIN      = 'clawrock_debug/collector/plugin';
     const CONFIG_DATA_COLLECTOR_LAYOUT      = 'clawrock_debug/collector/layout';
     const CONFIG_DATA_COLLECTOR_MEMORY      = 'clawrock_debug/collector/memory';
     const CONFIG_DATA_COLLECTOR_MODEL       = 'clawrock_debug/collector/model';
@@ -176,6 +177,14 @@ class Profiler extends AbstractHelper
     {
         return (bool) $this->scopeConfig->getValue(
             self::CONFIG_DATA_COLLECTOR_EVENT,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    public function isPluginDataCollectorEnabled()
+    {
+        return (bool) $this->scopeConfig->getValue(
+            self::CONFIG_DATA_COLLECTOR_PLUGIN,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
     }
