@@ -8,19 +8,19 @@ use Magento\Framework\Event\ObserverInterface;
 class AllowedIP implements ObserverInterface
 {
     /**
-     * @var \ClawRock\Debug\Helper\Profiler
+     * @var \ClawRock\Debug\Helper\Config
      */
-    protected $profilerHelper;
+    private $config;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Profiler $profilerHelper
+        \ClawRock\Debug\Helper\Config $config
     ) {
-        $this->profilerHelper = $profilerHelper;
+        $this->config = $config;
     }
 
     public function execute(Observer $observer)
     {
-        if ($this->profilerHelper->isAllowedIP()) {
+        if ($this->config->isAllowedIP()) {
             return;
         }
 

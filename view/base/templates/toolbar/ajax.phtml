@@ -1,0 +1,31 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\AjaxCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= $block->escapeHtmlAttr($collector->getName()); ?> sf-toolbar-status-normal">
+    <div class="sf-toolbar-icon">
+        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/ajax.svg'); ?>"
+             alt="<?= $block->escapeHtmlAttr(__('Ajax')) ?>"/>
+        <span class="sf-toolbar-value sf-toolbar-ajax-requests">0</span>
+    </div>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b class="sf-toolbar-ajax-info"></b>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <table class="sf-toolbar-ajax-requests">
+                <thead>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Method')); ?></th>
+                        <th><?= $block->escapeHtml(__('Status')); ?></th>
+                        <th><?= $block->escapeHtml(__('URL')); ?></th>
+                        <th><?= $block->escapeHtml(__('Time')); ?></th>
+                        <th><?= $block->escapeHtml(__('Profile')); ?></th>
+                    </tr>
+                </thead>
+                <tbody class="sf-toolbar-ajax-request-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>

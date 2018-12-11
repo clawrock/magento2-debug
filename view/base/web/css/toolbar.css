@@ -363,6 +363,9 @@
     -moz-animation: sf-blink .5s ease-in-out infinite;
     animation: sf-blink .5s ease-in-out infinite;
 }
+.sf-ajax-request-ok .sf-toolbar-status {
+    background-color: #4F805D;
+}
 @-webkit-keyframes sf-blink {
     0% {
         background: #222;

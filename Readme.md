@@ -14,7 +14,7 @@ All settings have only default scope and config type pool is set to environment 
 * Magento 2.2 - 2.3
 * PHP 7.0 - 7.2
 
-## Data collectors
+## Profiler collectors
 - Ajax
 - Cache
 - Config

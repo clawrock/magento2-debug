@@ -1,0 +1,17 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \ClawRock\Debug\Model\View\Menu $viewModel */ ?>
+<?php $viewModel = $block->getViewModel(); ?>
+
+<?php if ($viewModel->isActive($block->getCollectorName())): ?>
+    <li class="request<?= $viewModel->isCurrentPanel($block->getCollectorName()) ? ' selected' : '' ?>">
+        <a href="<?= $block->escapeUrl($viewModel->getProfilerUrl($block->getCollectorName())); ?>">
+            <span class="label">
+                <span class="icon">
+                    <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/event.svg'); ?>"
+                         alt="<?= $block->escapeHtmlAttr(__('Events')); ?>"/>
+                </span>
+                <strong><?= $block->escapeHtml(__('Events')); ?></strong>
+            </span>
+        </a>
+    </li>
+<?php endif; ?>

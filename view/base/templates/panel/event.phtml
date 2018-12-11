@@ -1,0 +1,98 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\EventCollector $collector */
+$collector = $block->getCollector();
+/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<div>
+    <h2><?= $block->escapeHtml(__('Stats')) ?></h2>
+    <div class="metrics">
+        <div class="metric">
+            <span class="value"><?= count($collector->getEvents()) ?></span>
+            <span class="label"><?= $block->escapeHtml(__('Events dispatched')) ?></span>
+        </div>
+        <div class="metric">
+            <span class="value"><?= /* @noEscape */ $collector->getObserversCount() ?></span>
+            <span class="label"><?= $block->escapeHtml(__('Called observers')) ?></span>
+        </div>
+        <div class="metric">
+            <span class="value"><?= /* @noEscape */ $collector->getTime() ?> ms</span>
+            <span class="label"><?= $block->escapeHtml(__('Total time')) ?></span>
+        </div>
+    </div>
+</div>
+
+<?php if (!$collector->getEvents()): ?>
+    <div class="empty">
+        <p><?= $block->escapeHtml(__('No events have been dispatched.')) ?></p>
+    </div>
+<?php else: ?>
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title"><?= $block->escapeHtml(__('Events')) ?> <span class="badge"><?= count($collector->getEvents()); ?></span></h3>
+            <div class="tab-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Event')) ?></th>
+                            <th><?= $block->escapeHtml(__('Observers')) ?></th>
+                            <th><?= $block->escapeHtml(__('Time')) ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($collector->getEvents() as $event => $observers): ?>
+                            <tr>
+                                <td>
+                                    <?= /* @noEscape */$event; ?>
+                                    <a href="#" class="sf-toggle link-inverse text-small"
+                                       data-toggle-selector="#event-observer-<?= /* @noEscape */$event ?>"
+                                       data-toggle-alt-content="<?= $block->escapeHtmlAttr(__('Hide observer')) ?>">
+                                        <?= $block->escapeHtml(__('Show observers')) ?>
+                                    </a>
+                                    <div id="event-observer-<?= /* @noEscape */ $event ?>" class="hidden">
+                                        <ul>
+                                            <?php /** @var \ClawRock\Debug\Model\ValueObject\EventObserver $observer */ ?>
+                                            <?php foreach ($collector->filterObservers($observers) as $observer): ?>
+                                                <li><?= /* @noEscape */$observer->getClass(); ?></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td><?= count($observers); ?></td>
+                                <td><?= /* @noEscape */ $collector->getEventTime($observers) ?> ms</td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">
+                <?= $block->escapeHtml(__('Observers')) ?> <span class="badge"><?= /* @noEscape */ $collector->getObserversCount() ?></span>
+            </h3>
+            <div class="tab-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Observer')) ?></th>
+                            <th><?= $block->escapeHtml(__('Event')) ?></th>
+                            <th><?= $block->escapeHtml(__('Time')) ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($collector->getEvents() as $event => $observers): ?>
+                            <?php foreach ($observers as $observer): ?>
+                                <tr>
+                                    <td><?= /* @noEscape */$observer->getClass(); ?></td>
+                                    <td><?= /* @noEscape */$event ?></td>
+                                    <td><?= /* @noEscape */ $viewModel->getFormatter()->microtime($observer->getTime()); ?> ms</td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

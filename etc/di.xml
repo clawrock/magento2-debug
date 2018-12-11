@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="ClawRock\Debug\Model\Profiler\StorageInterface" type="ClawRock\Debug\Model\Profiler\FileStorage"/>
+    <preference for="ClawRock\Debug\Api\ProfileRepositoryInterface" type="ClawRock\Debug\Model\ProfileRepository"/>
+    <preference for="ClawRock\Debug\Serializer\SerializerInterface" type="ClawRock\Debug\Serializer\Serializer"/>
     <virtualType name="ClawRock\Debug\Model\Session\Storage" type="Magento\Framework\Session\Storage">
         <arguments>
             <argument name="namespace" xsi:type="string">debug</argument>
@@ -11,27 +12,40 @@
             <argument name="storage" xsi:type="object">ClawRock\Debug\Model\Session\Storage</argument>
         </arguments>
     </type>
+    <type name="ClawRock\Debug\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="ClawRock\Debug\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">profiler</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">ClawRock\Debug\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Magento\Framework\Phrase\Renderer\Translate">
-        <plugin name="ClawRock_Debug::translation_data_collector" type="ClawRock\Debug\Plugin\Collector\TranslationDataCollectorPlugin"/>
+        <plugin name="ClawRock_Debug::translation_collector_plugin" type="ClawRock\Debug\Plugin\Collector\TranslationCollectorPlugin"/>
     </type>
     <type name="Magento\Framework\App\Cache">
-        <plugin name="ClawRock_Debug::cache_data_collector" type="ClawRock\Debug\Plugin\Collector\CacheDataCollectorPlugin"/>
+        <plugin name="ClawRock_Debug::cache_collector_plugin" type="ClawRock\Debug\Plugin\Collector\CacheCollectorPlugin"/>
     </type>
     <type name="Magento\Framework\App\Http">
-        <plugin name="ClawRock_Debug::time_data_collector" type="ClawRock\Debug\Plugin\Collector\TimeDataCollectorPlugin"/>
-        <plugin name="ClawRock_Debug::whoops_error_handler" type="ClawRock\Debug\Plugin\ErrorHandler\WhoopsPlugin"/>
+        <plugin name="ClawRock_Debug::time_collector_plugin" type="ClawRock\Debug\Plugin\Collector\TimeCollectorPlugin"/>
+        <plugin name="ClawRock_Debug::whoops_error_handler_plugin" type="ClawRock\Debug\Plugin\ErrorHandler\WhoopsPlugin"/>
     </type>
     <type name="Magento\Framework\Event\Invoker\InvokerDefault">
-        <plugin name="ClawRock_Debug::event_data_collector" type="ClawRock\Debug\Plugin\Collector\EventDataCollectorPlugin"/>
+        <plugin name="ClawRock_Debug::event_collector_plugin" type="ClawRock\Debug\Plugin\Collector\EventCollectorPlugin"/>
     </type>
     <type name="Magento\Framework\App\PageCache\Kernel">
-        <plugin name="ClawRock_Debug::page_cache_kernel" type="ClawRock\Debug\Plugin\PageCache\KernelPlugin"/>
+        <plugin name="ClawRock_Debug::page_cache_kernel_plugin" type="ClawRock\Debug\Plugin\PageCache\KernelPlugin"/>
     </type>
     <type name="Magento\Framework\Model\ResourceModel\Db\AbstractDb">
-        <plugin name="ClawRock_Debug::model_action" type="ClawRock\Debug\Plugin\Collector\ModelDataCollector\ModelPlugin"/>
+        <plugin name="ClawRock_Debug::model_collector_plugin" type="ClawRock\Debug\Plugin\Collector\ModelCollectorPlugin"/>
     </type>
     <type name="Magento\Eav\Model\Entity\AbstractEntity">
-        <plugin name="ClawRock_Debug::eav_model_action" type="ClawRock\Debug\Plugin\Collector\ModelDataCollector\EavModelPlugin"/>
+        <plugin name="ClawRock_Debug::model_collector_plugin" type="ClawRock\Debug\Plugin\Collector\ModelCollectorPlugin"/>
     </type>
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
@@ -40,8 +54,10 @@
             </argument>
             <argument name="environment" xsi:type="array">
                 <item name="clawrock_debug/general/active" xsi:type="string">1</item>
+                <item name="clawrock_debug/general/active_adminhtml" xsi:type="string">1</item>
                 <item name="clawrock_debug/general/allowed_ips" xsi:type="string">1</item>
                 <item name="clawrock_debug/general/error_handler" xsi:type="string">1</item>
+                <item name="clawrock_debug/time/precision" xsi:type="string">1</item>
                 <item name="clawrock_debug/collector/ajax" xsi:type="string">1</item>
                 <item name="clawrock_debug/collector/cache" xsi:type="string">1</item>
                 <item name="clawrock_debug/collector/config" xsi:type="string">1</item>

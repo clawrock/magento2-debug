@@ -1,0 +1,27 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\TranslationCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
+    <a target="_blank"
+       href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/translation.svg'); ?>"
+                 alt="<?= $block->escapeHtmlAttr(__('Translation')) ?>"/>
+            <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getTotal() ?></span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Missing messages')); ?></b>
+            <span class="sf-toolbar-status sf-toolbar-status-<?= count($collector->getMissingTranslations()) ? 'red' : '' ?>">
+                 <?= count($collector->getMissingTranslations()); ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Defined messages')) ?></b>
+            <span class="sf-toolbar-status"><?= count($collector->getDefinedTranslations()) ?></span>
+        </div>
+    </div>
+</div>

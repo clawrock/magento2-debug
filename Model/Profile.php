@@ -2,89 +2,137 @@
 
 namespace ClawRock\Debug\Model;
 
-use ClawRock\Debug\Model\DataCollector\DataCollectorInterface;
-use Magento\Framework\DataObject;
+use ClawRock\Debug\Api\Data\ProfileInterface;
+use ClawRock\Debug\Model\Collector\CollectorInterface;
+use ClawRock\Debug\Model\Collector\RequestCollector;
+use ClawRock\Debug\Model\ValueObject\Redirect;
 
-class Profile extends DataObject
+class Profile implements ProfileInterface
 {
+    const SERIALIZE_PROPERTIES = [
+        'token',
+        'parent',
+        'ip',
+        'method',
+        'route',
+        'url',
+        'time',
+        'statusCode',
+        'collectTime',
+        'children',
+    ];
+
+    const INDEX_PROPERTIES = [
+        'token',
+        'ip',
+        'method',
+        'url',
+        'time',
+        'statusCode',
+        'fileSize',
+        'parentToken',
+    ];
+
     /**
      * @var string
      */
-    protected $token;
+    private $token;
+
+    /**
+     * @var \Magento\Framework\UrlInterface
+     */
+    private $urlBuilder;
 
     /**
      * @var array
      */
-    protected $collectors = [];
+    private $collectors = [];
 
     /**
      * @var string
      */
-    protected $ip;
+    private $ip;
 
     /**
      * @var string
      */
-    protected $method;
+    private $method;
 
     /**
      * @var string
      */
-    protected $url;
+    private $route;
+
+    /**
+     * @var string
+     */
+    private $url;
 
     /**
      * @var int
      */
-    protected $time;
+    private $time;
 
     /**
      * @var int
      */
-    protected $statusCode;
+    private $statusCode;
 
     /**
      * @var int
      */
-    protected $collectTime;
+    private $collectTime;
 
     /**
      * @var \ClawRock\Debug\Model\Profile
      */
-    protected $parent;
+    private $parent;
+
+    /**
+     * @var string
+     */
+    private $parentToken;
 
     /**
      * @var array
      */
-    protected $children = [];
+    private $children = [];
 
-    public function __construct($token, array $data = [])
-    {
+    /**
+     * @var int
+     */
+    private $fileSize;
+
+    public function __construct(
+        $token,
+        \Magento\Framework\UrlInterface $urlBuilder
+    ) {
         $this->token = $token;
-
-        parent::__construct($data);
+        $this->urlBuilder = $urlBuilder;
     }
 
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    public function setParent(Profile $parent)
+    public function setParent(ProfileInterface $parent)
     {
         $this->parent = $parent;
+        $this->parentToken = $parent->getToken();
     }
 
-    public function getParent()
+    public function getParent(): ProfileInterface
     {
         return $this->parent;
     }
 
-    public function getParentToken()
+    public function getParentToken(): string
     {
-        return $this->parent ? $this->parent->getToken() : null;
+        return (string) $this->parentToken;
     }
 
-    public function getIp()
+    public function getIp(): string
     {
         return $this->ip;
     }
@@ -94,9 +142,9 @@ class Profile extends DataObject
         $this->ip = $ip;
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
-        return $this->method;
+        return strtoupper($this->method);
     }
 
     public function setMethod($method)
@@ -104,7 +152,23 @@ class Profile extends DataObject
         $this->method = $method;
     }
 
-    public function getUrl()
+    /**
+     * @return string
+     */
+    public function getRoute(): string
+    {
+        return $this->route;
+    }
+
+    /**
+     * @param string $route
+     */
+    public function setRoute(string $route)
+    {
+        $this->route = $route;
+    }
+
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -114,13 +178,9 @@ class Profile extends DataObject
         $this->url = $url;
     }
 
-    public function getTime()
+    public function getTime(): string
     {
-        if (null === $this->time) {
-            return 0;
-        }
-
-        return $this->time;
+        return date('r', $this->time);
     }
 
     public function setTime($time)
@@ -128,17 +188,17 @@ class Profile extends DataObject
         $this->time = $time;
     }
 
-    public function setStatusCode($statusCode)
+    public function setStatusCode(int $statusCode)
     {
         $this->statusCode = $statusCode;
     }
 
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    public function getCollectTime()
+    public function getCollectTime(): float
     {
         return $this->collectTime;
     }
@@ -148,7 +208,7 @@ class Profile extends DataObject
         return $this->collectTime = $time;
     }
 
-    public function getChildren()
+    public function getChildren(): array
     {
         return $this->children;
     }
@@ -161,13 +221,13 @@ class Profile extends DataObject
         }
     }
 
-    public function addChild(Profile $child)
+    public function addChild(ProfileInterface $child)
     {
         $this->children[] = $child;
         $child->setParent($this);
     }
 
-    public function getCollector($name)
+    public function getCollector(string $name): CollectorInterface
     {
         if (!isset($this->collectors[$name])) {
             throw new \InvalidArgumentException(sprintf('Collector "%s" does not exist.', $name));
@@ -189,20 +249,103 @@ class Profile extends DataObject
         }
     }
 
-    public function addCollector(DataCollectorInterface $collector)
+    public function addCollector(CollectorInterface $collector)
     {
-        $this->collectors[$collector->getCollectorName()] = $collector;
+        $this->collectors[$collector->getName()] = $collector;
 
         return $this;
     }
 
-    public function hasCollector($name)
+    public function hasCollector(string $name): bool
     {
         return isset($this->collectors[$name]);
     }
 
-    public function __sleep()
+    public function getDebugUrl($token = null, $panel = null): string
     {
-        return ['token', 'parent', 'children', 'collectors', 'ip', 'method', 'url', 'time', 'statusCode', 'collectTime'];
+        $params = [];
+        if ($token) {
+            $params[Profiler::URL_TOKEN_PARAMETER] = $token;
+        }
+        if ($panel) {
+            $params['panel'] = $panel;
+        }
+
+        return $this->urlBuilder->getUrl('_debug/profiler/info', $params);
+    }
+
+    public function getIndex(): array
+    {
+        $data = [];
+
+        foreach (self::INDEX_PROPERTIES as $property) {
+            $data[] = $this->$property;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        $data = [];
+
+        foreach (self::SERIALIZE_PROPERTIES as $property) {
+            $data[$property] = $this->$property;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @return \ClawRock\Debug\Model\Profile
+     */
+    public function setData(array $data): ProfileInterface
+    {
+        foreach (self::SERIALIZE_PROPERTIES as $property) {
+            $this->$property = $data[$property];
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $fileSize
+     * @return \ClawRock\Debug\Api\Data\ProfileInterface
+     */
+    public function setFileSize(int $fileSize): ProfileInterface
+    {
+        $this->fileSize = $fileSize;
+
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        if ($this->getStatusCode() >= 400) {
+            return CollectorInterface::STATUS_ERROR;
+        }
+
+        if ($this->getStatusCode() >= 300) {
+            return CollectorInterface::STATUS_WARNING;
+        }
+
+        return CollectorInterface::STATUS_SUCCESS;
+    }
+
+    public function hasRedirect(): bool
+    {
+        return !$this->getRedirect()->isEmpty();
+    }
+
+    public function getRedirect(): Redirect
+    {
+        /** @var \ClawRock\Debug\Model\Collector\RequestCollector $collector */
+        $collector = $this->getCollector(RequestCollector::NAME);
+
+        return $collector->getRedirect();
     }
 }

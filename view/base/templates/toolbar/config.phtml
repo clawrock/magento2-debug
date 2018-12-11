@@ -1,0 +1,71 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\ConfigCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-normal sf-toolbar-block-right">
+    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/config.svg'); ?>"
+                 alt="<?= $block->escapeHtmlAttr(__('Config')) ?>"/>
+            <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getVersion() ?></span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Website')); ?></b>
+                <span><?= /* @noEscape */ $collector->getWebsiteName() ?> (<?= /* @noEscape */ $collector->getWebsiteCode() ?>) </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Store')); ?></b>
+                <span><?= /* @noEscape */ $collector->getStoreName() ?> (<?= /* @noEscape */ $collector->getStoreCode() ?>) </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Profiler token')); ?></b>
+                <span>
+                    <a href="<?= $block->escapeUrl($collector->getProfilerUrl()) ?>"><?= /* @noEscape */ $collector->getToken()?></a>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Admin')); ?></b>
+                <span>
+                    <a href="<?= $block->escapeUrl($collector->getAdminUrl()); ?>">
+                        <?= $block->escapeHtml(__('Dashboard')); ?>
+                    </a>
+                    <a href="<?= $block->escapeUrl($collector->getConfigurationUrl()); ?>">
+                        <?= $block->escapeHtml(__('Configuration')); ?>
+                    </a>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Developer mode')); ?></b>
+                <span>
+                    <?= $block->escapeHtml($collector->isDeveloperMode() ? __('on') : __('off')); ?>
+                </span>
+            </div>
+        </div>
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece sf-toolbar-info-php">
+                <b><?= $block->escapeHtml(__('PHP version')); ?></b>
+                <span>
+                    <?= /* @noEscape */ $collector->getPHPVersion() ?>
+                    <a href="<?= $block->escapeUrl($block->getUrl('_debug/profiler/phpinfo')) ?>">phpinfo()</a>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece sf-toolbar-info-php-ext">
+                <b><?= $block->escapeHtml(__('PHP Extensions')); ?></b>
+                <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->hasXDebug() ? 'green' : 'red' ?>">
+                    Xdebug
+                </span>
+                <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->hasAccelerator() ? 'green' : 'red' ?>">
+                    <?= $block->escapeHtml(__('accel')); ?>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>PHP SAPI</b>
+                <span><?= /* @noEscape */ $collector->getPHPSAPI() ?></span>
+            </div>
+        </div>
+    </div>
+</div>

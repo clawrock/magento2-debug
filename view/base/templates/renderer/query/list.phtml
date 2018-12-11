@@ -1,0 +1,25 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+$prefix = $block->getPrefix();
+?>
+<table class="alt queries-table">
+    <thead>
+        <tr>
+            <th class="nowrap">#</th>
+            <th class="nowrap"><?= $block->escapeHtml(__('Time')) ?></th>
+            <th style="width: 100%;"><?= $block->escapeHtml(__('Info')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php /** @var \Zend_Db_Profiler_Query $query */ ?>
+        <?php foreach ($block->getQueries() as $index => $query): ?>
+            <tr>
+                <td class="nowrap"><?= /* @noEscape */ ++$index ?> </td>
+                <td class="nowrap">
+                    <?= /* @noEscape */ $block->getFormatter()->microtime($query->getElapsedSecs()); ?> ms
+                </td>
+                <td><?= /* @noEscape */ $block->getQueryRenderer()->create(['query' => $query])->render(); ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

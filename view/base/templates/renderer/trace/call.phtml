@@ -1,0 +1,20 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<div class="trace-function">
+    <?php if ($block->hasClass()): ?>
+        <span><?= /* @noEscape */ $block->getClass() ?></span>
+    <?php endif; ?>
+    <?php if ($block->hasClass() && $block->hasFunction()): ?>
+        <span>::</span>
+    <?php endif; ?>
+    <?php if ($block->hasFunction()): ?>
+        <strong><?= /* @noEscape */ $block->getFunction() ?></strong>
+    <?php endif; ?>
+</div>
+<div class="trace-file text-small">
+    <?php if ($block->hasLine()): ?>
+        <strong>#<?= /* @noEscape */ $block->getLine() ?></strong>
+    <?php endif; ?>
+    <?php if ($block->hasFile()): ?>
+        <span><?= /* @noEscape */ $block->getFile() ?></span>
+    <?php endif; ?>
+</div>

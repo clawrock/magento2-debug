@@ -266,11 +266,11 @@ $block->setData('excluded_ajax_paths', '^/_debug');
                 path = url.substr({{ request.basePath|length }});
                 }
                 } else */
-                if (0 === url.indexOf('<?php echo $block->getBaseUrl(); ?>')) {
-                    path = url.substr(<?php echo strlen(rtrim($block->getBaseUrl(), '/')); ?>);
+                if (0 === url.indexOf('<?= /* @noEscape */ $block->getBaseUrl(); ?>')) {
+                    path = url.substr(<?= /* @noEscape */ strlen(rtrim($block->getBaseUrl(), '/')); ?>);
                 }
 
-                if (!path.match(new RegExp(<?php echo json_encode($block->getData('excluded_ajax_paths'));?>))) {
+                if (!path.match(new RegExp(<?= /* @noEscape */ json_encode($block->getData('excluded_ajax_paths'));?>))) {
                     var stackElement = {
                         loading: true,
                         error: false,

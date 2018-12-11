@@ -8,6 +8,6 @@ class PHPInfo extends Action
 {
     public function execute()
     {
-        phpinfo();
+        return phpinfo();
     }
 }

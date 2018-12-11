@@ -1,0 +1,30 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Zend_Db_Profiler_Query $query */
+$query = $block->getQuery();
+?>
+<?= /* @noEscape */ $block->getHighlightedQuery(); ?>
+<?php if (!empty($query->getQueryParams())) : ?>
+    <div>
+        <strong class="font-normal text-small"><?= $block->escapeHtml(__('Parameters')) ?></strong>:
+        <?= /* @noEscape */ $block->getVarRenderer()->create(['variable' => $query->getQueryParams()])->render(); ?>
+    </div>
+<?php endif; ?>
+<div class="text-small font-normal">
+    <a href="#" class="sf-toggle link-inverse"
+       data-toggle-selector="#formatted-query-<?= /* @noEscape */ $block->getUniqId() ?>"
+       data-toggle-alt-content="<?= $block->escapeHtml(__('Hide formatted query')) ?>">
+        <?= $block->escapeHtml(__('View formatted query')) ?>
+    </a>
+    <a href="#" class="sf-toggle link-inverse"
+       data-toggle-selector="#original-query-<?= /* @noEscape */ $block->getUniqId() ?>"
+       data-toggle-alt-content="<?= $block->escapeHtml(__('Hide runnable query')) ?>">
+        <?= $block->escapeHtml(__('View runnable query')) ?>
+    </a>
+</div>
+<div id="formatted-query-<?= /* @noEscape */ $block->getUniqId() ?>" class="sql-runnable hidden">
+    <?= /* @noEscape */ $block->getFormattedQuery(); ?>
+</div>
+<div id="original-query-<?= /* @noEscape */ $block->getUniqId() ?>" class="sql-runnable hidden">
+    <?= /* @noEscape */ $block->getRunnableQuery(); ?>
+</div>

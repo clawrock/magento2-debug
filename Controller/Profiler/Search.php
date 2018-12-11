@@ -2,28 +2,38 @@
 
 namespace ClawRock\Debug\Controller\Profiler;
 
-use ClawRock\Debug\Controller\Debug;
+use ClawRock\Debug\Model\Profile\Criteria;
 use ClawRock\Debug\Model\Profiler;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\Controller\ResultFactory;
 
-class Search extends Debug
+class Search extends Action
 {
     /**
      * @var \Magento\Framework\View\LayoutInterface
      */
-    protected $layout;
+    private $layout;
+
+    /**
+     * @var \ClawRock\Debug\Api\ProfileRepositoryInterface
+     */
+    private $profileRepository;
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\Registry $registry,
-        \ClawRock\Debug\Model\Profiler $profiler,
-        \Magento\Framework\View\LayoutInterface $layout
+        \Magento\Framework\View\LayoutInterface $layout,
+        \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository
     ) {
-        parent::__construct($context, $registry, $profiler);
+        parent::__construct($context);
 
         $this->layout = $layout;
+        $this->profileRepository = $profileRepository;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $request  = $this->getRequest();
@@ -32,31 +42,6 @@ class Search extends Debug
             return $this->_redirect('_debug/profiler/info', [Profiler::URL_TOKEN_PARAMETER => $token]);
         }
 
-        if ($request->getParam('purge')) {
-            $this->profiler->flush();
-        }
-
-        $ip = preg_replace('/[^:\d\.]/', '', $request->getParam('ip'));
-        $method = $request->getParam('method');
-        $statusCode = $request->getParam('status_code');
-        $url = $request->getParam('url');
-        $start = $request->getParam('start');
-        $end = $request->getParam('end');
-        $limit = $request->getParam('limit');
-
-        $data = [
-            'request' => $request,
-            'tokens' => $this->profiler->find($ip, $url, $limit, $method, $start, $end),
-            'ip' => $ip,
-            'method' => $method,
-            'status_code' => $statusCode,
-            'url' => $url,
-            'start' => $start,
-            'end' => $end,
-            'limit' => $limit,
-            'panel' => null,
-        ];
-
         /** @var \Magento\Framework\View\Result\Page $page */
         $page = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
 
@@ -64,7 +49,12 @@ class Search extends Debug
             'profiler' => 'info',
         ], 'debug');
 
-        $this->layout->getBlock('debug.profiler.panel.content')->setData($data);
+        $criteria = Criteria::createFromRequest($request);
+
+        $this->layout->getBlock('debug.profiler.panel.content')->addData([
+            'results' => $this->profileRepository->find($criteria),
+            'criteria' => $criteria,
+        ]);
 
         return $page;
     }

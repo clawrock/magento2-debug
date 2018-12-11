@@ -3,9 +3,13 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="debug.profiler.panel">
-            <block class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="ClawRock_Debug::collector/panel/translation.phtml"
-                   name="debug.profiler.panel.content" cacheable="false"/>
+            <block class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::panel/translation.phtml"
+                   name="debug.profiler.panel.content">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Profiler</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

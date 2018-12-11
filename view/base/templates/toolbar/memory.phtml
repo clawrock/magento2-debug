@@ -1,0 +1,23 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\MemoryCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
+    <div class="sf-toolbar-icon">
+        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/memory.svg'); ?>"
+             alt="<?= $block->escapeHtmlAttr(__('Memory')) ?>"/>
+        <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getMemoryUsage() ?></span>
+        <span class="sf-toolbar-label">MB</span>
+    </div>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Peak memory usage')); ?></b>
+            <span><?= /* @noEscape */ $collector->getMemoryUsage(); ?> MB</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('PHP memory limit')); ?></b>
+            <span><?= /* @noEscape */ $collector->hasMemoryLimit() ? $block->escapeHtml(__('Unlimited')) : $collector->getMemoryLimit(); ?></span>
+        </div>
+    </div>
+</div>

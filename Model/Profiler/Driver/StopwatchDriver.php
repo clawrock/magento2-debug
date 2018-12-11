@@ -34,6 +34,8 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
     /**
      * Start timer
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @param string $timerId
      * @param array|null $tags
      * @return void
@@ -62,6 +64,8 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
     /**
      * Clear collected statistics for specified timer or for whole profiler if timer name is omitted.
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @param string|null $timerId
      * @return void
      */
@@ -76,14 +80,20 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
         return $this->stopwatch->getSectionEvents('magento');
     }
 
-    protected function stripNesting($timerId)
+    private function stripNesting($timerId)
     {
         $timerName = strrchr($timerId, Profiler::NESTING_SEPARATOR);
 
         return $timerName ? substr($timerName, strlen(Profiler::NESTING_SEPARATOR)) : $timerId;
     }
 
-    protected function getCategory($timerId)
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @param $timerId
+     * @return string
+     */
+    private function getCategory($timerId)
     {
         if ($this->isCoreTimer($timerId)) {
             return self::CATEGORY_CORE;
@@ -124,52 +134,52 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
         return self::CATEGORY_UNKNOWN;
     }
 
-    protected function isCoreTimer($timerId)
+    private function isCoreTimer($timerId)
     {
         list($namespace) = explode(':', $timerId);
         return strtolower($namespace) === 'magento' || strtolower($namespace) === 'core';
     }
 
-    protected function isEventTimer($timerId)
+    private function isEventTimer($timerId)
     {
         list($namespace) = explode(':', $timerId);
         return strtolower($namespace) === 'event' || strtolower($namespace) === 'observer';
     }
 
-    protected function isConfigTimer($timerId)
+    private function isConfigTimer($timerId)
     {
         list($namespace) = explode(':', $timerId);
         return strtolower($namespace) === 'load_area';
     }
 
-    protected function isControllerTimer($timerId)
+    private function isControllerTimer($timerId)
     {
         list($namespace) = explode(':', $timerId);
         return strtolower($namespace) === 'controller_action';
     }
 
-    protected function isEavTimer($timerId)
+    private function isEavTimer($timerId)
     {
         list($namespace) = explode(':', $timerId);
         return strtolower($namespace) === 'eav';
     }
 
-    protected function isTemplateTimer($timerId)
+    private function isTemplateTimer($timerId)
     {
         return substr($timerId, -6) === '.phtml' || strpos(strtolower($timerId), 'template') === 0;
     }
 
-    protected function isRoutingTimer($timerId)
+    private function isRoutingTimer($timerId)
     {
         return $timerId === 'routers_match' || $timerId === 'store.resolve';
     }
 
-    protected function isLayoutTimer($timerId)
+    private function isLayoutTimer($timerId)
     {
         return strpos(strtolower($timerId), 'layout') === 0;
     }
 
-    protected function isDebugTimer($timerId)
+    private function isDebugTimer($timerId)
     {
         return strpos(strtolower($timerId), 'debug::profiler') === 0;
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit bootstrap="./vendor/autoload.php">
+    <testsuites>
+        <testsuite name="ClawRock_Debug module">
+            <directory>Test/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">Controller</directory>
+            <directory suffix=".php">Helper</directory>
+            <directory suffix=".php">Logger</directory>
+            <directory suffix=".php">Model</directory>
+            <directory suffix=".php">Observer</directory>
+            <directory suffix=".php">Plugin</directory>
+            <directory suffix=".php">Serializer</directory>
+            <exclude>
+                <directory>Test</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
