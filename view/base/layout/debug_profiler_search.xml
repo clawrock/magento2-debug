@@ -7,10 +7,16 @@
                 <argument name="expanded" xsi:type="boolean">true</argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="debug.profiler.summary" remove="true"/>
+        <referenceContainer name="debug.profiler.sidebar.menu.collectors" remove="true"/>
         <referenceContainer name="debug.profiler.panel">
-            <block class="ClawRock\Debug\Block\Profiler"
-                   template="ClawRock_Debug::profiler/search/results.phtml"
-                   name="debug.profiler.panel.content" cacheable="false"/>
+            <block class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::search/results.phtml"
+                   name="debug.profiler.panel.content" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Search</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

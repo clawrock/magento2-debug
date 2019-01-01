@@ -2,38 +2,92 @@
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
     <container name="root">
-        <block class="Magento\Framework\View\Element\Template" name="debug.profiler"
-               template="ClawRock_Debug::profiler.phtml">
-            <block class="ClawRock\Debug\Block\Profiler" name="debug.profiler.summary"
-                   template="ClawRock_Debug::profiler/summary.phtml" as="debug_profiler_summary"/>
-            <block class="ClawRock\Debug\Block\Profiler\Menu" name="debug.profiler.sidebar"
-                   template="ClawRock_Debug::profiler/sidebar.phtml" as="debug_profiler_sidebar">
-                <block class="ClawRock\Debug\Block\Profiler\Search" name="debug.profiler.sidebar.search"
-                       template="ClawRock_Debug::profiler/sidebar/search.phtml" as="debug_profiler_search"/>
-                <block class="ClawRock\Debug\Block\Profiler\Menu" name="debug.profiler.sidebar.menu"
-                       template="ClawRock_Debug::profiler/sidebar/menu.phtml" as="debug_profiler_menu">
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="request"
-                           template="ClawRock_Debug::profiler/sidebar/menu/request.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="time"
-                           template="ClawRock_Debug::profiler/sidebar/menu/time.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="database"
-                           template="ClawRock_Debug::profiler/sidebar/menu/database.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="event"
-                           template="ClawRock_Debug::profiler/sidebar/menu/event.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="plugin"
-                           template="ClawRock_Debug::profiler/sidebar/menu/plugin.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="layout"
-                           template="ClawRock_Debug::profiler/sidebar/menu/layout.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="translation"
-                           template="ClawRock_Debug::profiler/sidebar/menu/translation.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="model"
-                           template="ClawRock_Debug::profiler/sidebar/menu/model.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="cache"
-                           template="ClawRock_Debug::profiler/sidebar/menu/cache.phtml"/>
-                    <block class="ClawRock\Debug\Block\Profiler\Menu" name="config"
-                           template="ClawRock_Debug::profiler/sidebar/menu/config.phtml"/>
-                </block>
+        <block class="Magento\Framework\View\Element\Template" name="debug.profiler" template="ClawRock_Debug::profiler.phtml">
+            <block class="Magento\Framework\View\Element\Template" name="debug.profiler.summary"
+                   template="ClawRock_Debug::profiler/summary.phtml" as="debug_profiler_summary">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Summary</argument>
+                </arguments>
             </block>
+
+            <container name="debug.profiler.sidebar" htmlTag="div" htmlId="sidebar" as="debug_profiler_sidebar">
+                <block class="Magento\Framework\View\Element\Template" name="debug.profiler.sidebar.search"
+                       template="ClawRock_Debug::search/input.phtml" as="debug_profiler_search">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Search</argument>
+                    </arguments>
+                </block>
+
+                <container name="debug.profiler.sidebar.menu" htmlTag="ul" htmlId="menu-profiler" as="debug_profiler_menu">
+                    <container name="debug.profiler.sidebar.menu.collectors">
+                        <block class="Magento\Framework\View\Element\Template" name="request" template="ClawRock_Debug::menu/request.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">request</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="time" template="ClawRock_Debug::menu/time.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">time</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="database" template="ClawRock_Debug::menu/database.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">database</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="event" template="ClawRock_Debug::menu/event.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">event</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="plugin" template="ClawRock_Debug::menu/plugin.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">plugin</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="layout" template="ClawRock_Debug::menu/layout.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">layout</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="translation" template="ClawRock_Debug::menu/translation.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">translation</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="model" template="ClawRock_Debug::menu/model.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">model</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="cache" template="ClawRock_Debug::menu/cache.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">cache</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="config" template="ClawRock_Debug::menu/config.phtml">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                                <argument name="collector_name" xsi:type="string">config</argument>
+                            </arguments>
+                        </block>
+                    </container>
+                    <block class="Magento\Framework\View\Element\Template" name="settings" template="ClawRock_Debug::menu/settings.phtml">
+                        <arguments>
+                            <argument name="view_model" xsi:type="object">ClawRock\Debug\Model\View\Menu</argument>
+                        </arguments>
+                    </block>
+                </container>
+            </container>
             <container name="debug.profiler.panel" as="debug_profiler_panel"/>
         </block>
     </container>

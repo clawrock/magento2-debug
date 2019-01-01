@@ -2,28 +2,29 @@
 <div id="header">
     <div class="container">
         <h1>
-            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/magento.svg'); ?>" alt="Magento"/>
-            Magento 2 <span>Profiler</span>
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/magento.svg'); ?>" alt="Magento"/>
+            Magento 2
+            <span><?= $block->escapeHtml(__('Profiler')) ?></span>
         </h1>
     </div>
     <div class="clawrock">
         <a href="http://clawrock.com" target="_blank">
-            <img src="<?php echo $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>" alt="ClawRock">
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>" alt="ClawRock">
             <h4>ClawRock.com</h4>
         </a>
     </div>
 </div>
 <div id="summary">
-    <?php echo $block->getChildHtml('debug_profiler_summary'); ?>
+    <?= $block->getChildHtml('debug_profiler_summary'); ?>
 </div>
 <div id="content" class="container">
     <div id="main">
         <div id="collector-wrapper">
             <div id="collector-content">
-                <?php echo $block->getChildHtml('debug_profiler_panel'); ?>
+                <?= $block->getChildHtml('debug_profiler_panel'); ?>
             </div>
         </div>
-        <?php echo $block->getChildHtml('debug_profiler_sidebar'); ?>
+        <?= $block->getChildHtml('debug_profiler_sidebar'); ?>
     </div>
 </div>
 <iframe name="profiler_link_target" style="display: none;"></iframe>

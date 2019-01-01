@@ -1,0 +1,35 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\DatabaseCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-normal">
+    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/database.svg'); ?>"
+                 alt="<?= $block->escapeHtmlAttr(__('Database')) ?>"/>
+            <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getQueriesCount() ?></span>
+            <span class="sf-toolbar-info-piece-additional-detail">
+                <span class="sf-toolbar-label"><?= $block->escapeHtml(__('in')); ?></span>
+                <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getTotalTime() ?></span>
+                <span class="sf-toolbar-label">ms</span>
+            </span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Database Queries')); ?></b>
+            <span class="sf-toolbar-status "><?= /* @noEscape */ $collector->getQueriesCount() ?></span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Duplicated Queries')); ?></b>
+            <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
+                <?= count($collector->getDuplicatedQueries()) ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Query time')); ?></b>
+            <span><?= /* @noEscape */ $collector->getTotalTime() ?> ms</span>
+        </div>
+    </div>
+</div>

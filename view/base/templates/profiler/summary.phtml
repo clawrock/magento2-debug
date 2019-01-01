@@ -1,47 +1,31 @@
-<?php /** @var \ClawRock\Debug\Block\Profiler $block */ ?>
-<?php if ($profile = $block->getProfile()): ?>
-    <?php
-    /** @var \ClawRock\Debug\Model\DataCollector\RequestDataCollector $requestCollector */
-    $requestCollector = $profile->getCollector(\ClawRock\Debug\Model\DataCollector\RequestDataCollector::NAME);
-    $statusCode = $requestCollector->getStatusCode();
-    $cssClass = ($statusCode > 399) ? 'status-error' : $statusCode > 299 ? 'status-warning' : 'status-success';
-    ?>
-    <div class="status <?php echo $cssClass ?>">
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \ClawRock\Debug\Model\View\Summary $viewModel */ ?>
+<?php $viewModel = $block->getViewModel(); ?>
+
+<?php if ($profile = $viewModel->getProfile()): ?>
+    <div class="status status-<?= /* @noEscape */ $profile->getStatus() ?>">
         <div class="container">
             <h2 class="break-long-words">
-                <?php if (in_array(strtoupper($profile->getMethod()), ['GET', 'HEAD'])): ?>
-                    <a href="<?php echo $profile->getUrl() ?>"><?php echo $profile->getUrl() ?></a>
-                <?php else: ?>
-                    <?php echo $profile->getUrl() ?>
-                <?php endif; ?>
+                <a href="<?= $block->escapeUrl($profile->getUrl()) ?>"><?= /* @noEscape */ $profile->getUrl() ?></a>
             </h2>
-            <?php if ($redirect = $requestCollector->getRedirect()): ?>
-                <dl class="metadata">
-                    <dt>
-                        <span class="label"><?php echo $redirect['status_code'] ?></span>
-                        Redirect from
-                    </dt>
-                    <dd>
-                        <?php echo $redirect['request_method'] == 'GET' ? '' : $redirect['request_method'] ?>
-                        <a href="<?php echo $block->getProfilerUrl($redirect['token']) ?>"><?php echo $redirect['token']; ?></a>
-                    </dd>
-                </dl>
+            <?php if ($profile->hasRedirect()): ?>
+                <?= /* @noEscape */  $viewModel->renderRedirect($profile->getRedirect()); ?>
             <?php endif; ?>
             <dl class="metadata">
-                <dt>Method</dt>
-                <dd><?php echo strtoupper($profile->getMethod()) ?></dd>
-                <?php if ($profile->hasCollector('request') && !$requestCollector->isFPCHit()): ?>
-                    <dt>Route</dt>
-                    <dd>@<?php echo $requestCollector->getFullActionName(); ?></dd>
+                <dt><?= $block->escapeHtml(__('Method')) ?></dt>
+                <dd><?= /* @noEscape */ $profile->getMethod() ?></dd>
+                <?php if ($profile->getRoute()): ?>
+                    <dt><?= $block->escapeHtml(__('Route')) ?></dt>
+                    <dd>@<?= /* @noEscape */  $profile->getRoute(); ?></dd>
                 <?php endif; ?>
-                <dt>HTTP Status</dt>
-                <dd><?php echo $statusCode ?></dd>
-                <dt>IP</dt>
-                <dd><?php echo $profile->getIp() ?></dd>
-                <dt>Profiled on</dt>
-                <dd><?php echo date('r', $profile->getTime()) ?></dd>
-                <dt>Token</dt>
-                <dd><?php echo $profile->getToken(); ?></dd>
+                <dt><?= $block->escapeHtml(__('HTTP Status')) ?></dt>
+                <dd><?= /* @noEscape */ $profile->getStatusCode() ?></dd>
+                <dt><?= $block->escapeHtml(__('IP')) ?></dt>
+                <dd><?= /* @noEscape */ $profile->getIp() ?></dd>
+                <dt><?= $block->escapeHtml(__('Profiled on')) ?></dt>
+                <dd><?= /* @noEscape */ $profile->getTime() ?></dd>
+                <dt><?= $block->escapeHtml(__('Token')) ?></dt>
+                <dd><?= /* @noEscape */ $profile->getToken(); ?></dd>
             </dl>
         </div>
     </div>

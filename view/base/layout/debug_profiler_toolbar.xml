@@ -6,32 +6,32 @@
     </head>
     <body>
         <referenceContainer name="debug.toolbar.collectors">
-            <block name="debug.toolbar.collectors.request" class="ClawRock\Debug\Block\Profiler\Collector\Request"
-                   template="collector/toolbar/request.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.memory" class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="collector/toolbar/memory.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.time" class="ClawRock\Debug\Block\Profiler\Collector\Time"
-                   template="collector/toolbar/time.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.database" class="ClawRock\Debug\Block\Profiler\Collector\Database"
-                   template="collector/toolbar/database.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.translation" class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="collector/toolbar/translation.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.ajax" class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="collector/toolbar/ajax.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.model" class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="collector/toolbar/model.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.customer" class="ClawRock\Debug\Block\Profiler\Collector\Customer"
-                   template="collector/toolbar/customer.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.layout" class="ClawRock\Debug\Block\Profiler\Collector\Layout"
-                   template="collector/toolbar/layout.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.cache" class="ClawRock\Debug\Block\Profiler\Collector\Cache"
-                   template="collector/toolbar/cache.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.config" class="ClawRock\Debug\Block\Profiler\Collector\Config"
-                   template="collector/toolbar/config.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.event" class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="collector/toolbar/event.phtml" cacheable="false"/>
-            <block name="debug.toolbar.collectors.plugin" class="ClawRock\Debug\Block\Profiler\Collector"
-                   template="collector/toolbar/plugin.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.config" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/config.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.request" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/request.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.memory" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/memory.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.time" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/time.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.database" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/database.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.translation" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/translation.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.ajax" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/ajax.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.model" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/model.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.customer" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/customer.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.layout" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/layout.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.cache" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/cache.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.event" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/event.phtml" cacheable="false"/>
+            <block name="debug.toolbar.collectors.plugin" class="Magento\Framework\View\Element\Template"
+                   template="ClawRock_Debug::toolbar/plugin.phtml" cacheable="false"/>
         </referenceContainer>
     </body>
 </page>

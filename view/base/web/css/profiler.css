@@ -292,6 +292,10 @@ button {
     color: #f5f5f5;
 }
 
+.btn:visited {
+    color: #F5F5F5;
+}
+
 .btn-sm {
     font-size: 12px;
 }
@@ -760,24 +764,24 @@ tr.status-warning td {
     text-decoration: underline;
 }
 
-#summary .status-success {
+#summary .status-green {
     background: #4F805D;
 }
 
-#summary .status-warning {
+#summary .status-yellow {
     background: #A46A1F;
 }
 
-#summary .status-error {
+#summary .status-red {
     background: #B0413E;
 }
 
-#summary .status-success h2,
-#summary .status-success a,
-#summary .status-warning h2,
-#summary .status-warning a,
-#summary .status-error h2,
-#summary .status-error a {
+#summary .status-green h2,
+#summary .status-green a,
+#summary .status-yellow h2,
+#summary .status-yellow a,
+#summary .status-red h2,
+#summary .status-red a {
     color: #FFF;
 }
 
@@ -1002,11 +1006,15 @@ tr.status-warning td {
     color: #AAA;
 }
 
-#menu-profiler .label-status-warning .count {
+#menu-profiler .label-status-green .count {
+    background: #4F805D;
+}
+
+#menu-profiler .label-status-yellow .count {
     background: #A46A1F;
 }
 
-#menu-profiler .label-status-error .count {
+#menu-profiler .label-status-red .count {
     background: #B0413E;
 }
 
@@ -1134,6 +1142,7 @@ tr.status-warning td {
 #twig-dump pre {
     font-size: 12px;
     line-height: 1.7;
+    white-space: normal;
 }
 
 #twig-dump span {
@@ -1385,13 +1394,20 @@ table.logs .sf-call-stack abbr {
     margin: 0;
 }
 
+.debug-profiler-search #collector-content h2 .btn {
+    float: right;
+}
+
 /* Hide template hints */
 .debug-profiler-info .debugging-hint-template-file,
-.debug-profiler-info .debugging-hint-block-class {
+.debug-profiler-info .debugging-hint-block-class,
+.debug-profiler-search .debugging-hint-template-file,
+.debug-profiler-search .debugging-hint-block-class {
     display: none;
 }
 
-.debug-profiler-info .debugging-hints {
+.debug-profiler-info .debugging-hints,
+.debug-profiler-search .debugging-hints {
     padding: 0 !important;
     margin: 0 !important;
     border: 0 !important;

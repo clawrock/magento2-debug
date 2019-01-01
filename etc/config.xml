@@ -4,9 +4,13 @@
         <clawrock_debug>
             <general>
                 <active>0</active>
+                <active_adminhtml>0</active_adminhtml>
                 <allowed_ips>127.0.0.1</allowed_ips>
                 <error_handler>whoops</error_handler>
             </general>
+            <time>
+                <precision>2</precision>
+            </time>
             <collector>
                 <ajax>1</ajax>
                 <cache>1</cache>
@@ -18,7 +22,6 @@
                 <layout>1</layout>
                 <memory>1</memory>
                 <model>1</model>
-                <request>1</request>
                 <time>1</time>
                 <translation>1</translation>
             </collector>
@@ -36,19 +39,19 @@
             </performance>
             <profiler>
                 <collectors>
-                    <request>ClawRock\Debug\Model\DataCollector\RequestDataCollector</request>
-                    <memory>ClawRock\Debug\Model\DataCollector\MemoryDataCollector</memory>
-                    <time>ClawRock\Debug\Model\DataCollector\TimeDataCollector</time>
-                    <ajax>ClawRock\Debug\Model\DataCollector\AjaxDataCollector</ajax>
-                    <database>ClawRock\Debug\Model\DataCollector\DatabaseDataCollector</database>
-                    <translation>ClawRock\Debug\Model\DataCollector\TranslationDataCollector</translation>
-                    <customer>ClawRock\Debug\Model\DataCollector\CustomerDataCollector</customer>
-                    <layout>ClawRock\Debug\Model\DataCollector\LayoutDataCollector</layout>
-                    <cache>ClawRock\Debug\Model\DataCollector\CacheDataCollector</cache>
-                    <config>ClawRock\Debug\Model\DataCollector\ConfigDataCollector</config>
-                    <model>ClawRock\Debug\Model\DataCollector\ModelDataCollector</model>
-                    <event>ClawRock\Debug\Model\DataCollector\EventDataCollector</event>
-                    <plugin>ClawRock\Debug\Model\DataCollector\PluginDataCollector</plugin>
+                    <config>ClawRock\Debug\Model\Collector\ConfigCollector</config>
+                    <request>ClawRock\Debug\Model\Collector\RequestCollector</request>
+                    <memory>ClawRock\Debug\Model\Collector\MemoryCollector</memory>
+                    <time>ClawRock\Debug\Model\Collector\TimeCollector</time>
+                    <ajax>ClawRock\Debug\Model\Collector\AjaxCollector</ajax>
+                    <database>ClawRock\Debug\Model\Collector\DatabaseCollector</database>
+                    <translation>ClawRock\Debug\Model\Collector\TranslationCollector</translation>
+                    <customer>ClawRock\Debug\Model\Collector\CustomerCollector</customer>
+                    <layout>ClawRock\Debug\Model\Collector\LayoutCollector</layout>
+                    <cache>ClawRock\Debug\Model\Collector\CacheCollector</cache>
+                    <model>ClawRock\Debug\Model\Collector\ModelCollector</model>
+                    <event>ClawRock\Debug\Model\Collector\EventCollector</event>
+                    <plugin>ClawRock\Debug\Model\Collector\PluginCollector</plugin>
                 </collectors>
             </profiler>
         </clawrock_debug>

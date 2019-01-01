@@ -15,10 +15,10 @@
     </event>
     <event name="view_block_abstract_to_html_before">
         <observer name="ClawRock_Debug::block_render_before"
-                  instance="ClawRock\Debug\Observer\Collector\LayoutDataCollector\BeforeToHtml"/>
+                  instance="ClawRock\Debug\Observer\Collector\LayoutCollectorBeforeToHtml"/>
     </event>
     <event name="view_block_abstract_to_html_after">
         <observer name="ClawRock_Debug::block_render_after"
-                  instance="ClawRock\Debug\Observer\Collector\LayoutDataCollector\AfterToHtml"/>
+                  instance="ClawRock\Debug\Observer\Collector\LayoutCollectorAfterToHtml"/>
     </event>
 </config>

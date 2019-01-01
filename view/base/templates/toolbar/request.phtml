@@ -1,0 +1,80 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\RequestCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-normal ">
+    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+        <div class="sf-toolbar-icon">
+            <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus(); ?>">
+                <?= /* @noEscape */ $collector->getStatusCode() ?>
+            </span>
+            <?php if ($collector->getFullActionName()): ?>
+                <?php if ($collector->getRedirect()): ?>
+                    <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/redirect.svg'); ?>"
+                         class="redirect-img" alt="<?= $block->escapeHtmlAttr(__('Redirect')) ?>"/>
+                <?php endif; ?>
+                <span class="sf-toolbar-label">
+                    <?= /* @noEscape */ $collector->getMethod() !== 'GET' ? $collector->getMethod() : '' ?>@
+                </span>
+                <span class="sf-toolbar-value sf-toolbar-info-piece-additional">
+                    <?= /* @noEscape */ $collector->getFullActionName() ?>
+                </span>
+            <?php else: ?>
+                <span class="sf-toolbar-label">@</span>
+                <span class="sf-toolbar-value sf-toolbar-info-piece-additional">n/a</span>
+            <?php endif; ?>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('HTTP status')); ?></b>
+                <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus(); ?>">
+                    <?= /* @noEscape */ $collector->getStatusCode() ?>
+                </span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('FPC Hit')); ?></b>
+                <?php if ($collector->isFPCHit()): ?>
+                    <span class="sf-toolbar-status sf-toolbar-status-green"><?= $block->escapeHtml(__('Yes')); ?></span>
+                <?php else:?>
+                    <span class="sf-toolbar-status"><?= $block->escapeHtml(__('No')); ?></span>
+                <?php endif;?>
+            </div>
+
+            <?php if (!$collector->isFPCHit()) : ?>
+                <div class="sf-toolbar-info-piece">
+                    <b><?= $block->escapeHtml(__('Module')); ?></b><span><?= /* @noEscape */ $collector->getControllerModule() ?></span>
+                </div>
+                <div class="sf-toolbar-info-piece">
+                    <b><?= $block->escapeHtml(__('Controller')); ?></b>
+                    <span><?= /* @noEscape */ $collector->getControllerName() ?>\<?= /* @noEscape */ $collector->getActionName() ?> </span>
+                </div>
+                <div class="sf-toolbar-info-piece">
+                    <b><?= $block->escapeHtml(__('Full action name')); ?></b>
+                    <span><?= /* @noEscape */ $collector->getFullActionName(); ?></span>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <?php $redirect = $collector->getRedirect() ?>
+        <?php if (!$redirect->isEmpty()): ?>
+            <div class="sf-toolbar-info-group">
+                <div class="sf-toolbar-info-piece">
+                    <b>
+                        <span class="sf-toolbar-redirection-status sf-toolbar-status-yellow">
+                            <?= /* @noEscape */ $redirect->getStatusCode() ?>
+                        </span>
+                        <?= $block->escapeHtml(__('Redirect from')); ?>
+                    </b>
+                    <span>
+                        (<a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl($redirect->getToken())) ?>">
+                            <?= /* @noEscape */ $redirect->getToken() ?>
+                        </a>)
+                    </span>
+                </div>
+            </div>
+        <?php endif ?>
+    </div>
+</div>

@@ -2,34 +2,34 @@
 
 namespace ClawRock\Debug\Controller\Cache;
 
-use ClawRock\Debug\Controller\Cache;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\Controller\ResultFactory;
 
-class Clean extends Cache
+class Clean extends Action
 {
-    const CLEAN_ALL_PARAM = 'all';
+    /**
+     * @var \Magento\Framework\App\Cache\Manager
+     */
+    private $cacheManager;
+
+    public function __construct(
+        \Magento\Framework\App\Action\Context $context,
+        \Magento\Framework\App\Cache\Manager $cacheManager
+    ) {
+        parent::__construct($context);
+        $this->cacheManager = $cacheManager;
+    }
 
     public function execute()
     {
         $result = $this->resultFactory->create(ResultFactory::TYPE_JSON);
-        $cacheType = $this->getRequest()->getParam('type');
+        $types = $this->getRequest()->getParam('type');
 
-        if ($cacheType === self::CLEAN_ALL_PARAM) {
-            $types = array_keys($this->cacheTypeList->getTypes());
-            foreach ($types as $type) {
-                $this->cacheTypeList->cleanType($type);
-            }
-
-            return $result;
+        if (!$types) {
+            $types = $this->cacheManager->getAvailableTypes();
         }
 
-        if (!$this->isValidCacheType($cacheType)) {
-            $result->setHttpResponseCode(422);
-
-            return $result;
-        }
-
-        $this->cacheTypeList->cleanType($cacheType);
+        $this->cacheManager->clean((array) $types);
 
         return $result;
     }

@@ -1,0 +1,64 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\LayoutCollector $collector */
+$collector = $block->getCollector();
+/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<h2><?= $block->escapeHtml(__('Render Metrics')) ?></h2>
+<div class="metrics">
+    <div class="metric">
+        <span class="value"><?= /* @noEscape */ $collector->getRenderTime() ?> <span class="unit">ms</span></span>
+        <span class="label"><?= $block->escapeHtml(__('Render time')) ?></span>
+    </div>
+    <div class="metric">
+        <span class="value"><?= count($collector->getCreatedBlocks()) ?></span>
+        <span class="label"><?= $block->escapeHtml(__('Blocks created')) ?></span>
+    </div>
+    <div class="metric">
+        <span class="value"><?= count($collector->getRenderedBlocks()) ?></span>
+        <span class="label"><?= $block->escapeHtml(__('Blocks rendered')) ?></span>
+    </div>
+</div>
+
+<h2><?= $block->escapeHtml(__('Layout Handles')) ?></h2>
+<table>
+    <thead>
+        <tr>
+            <th scope="col"><?= $block->escapeHtml(__('Handle')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getHandles() as $handle): ?>
+            <tr>
+                <td><?= /* @noEscape */$handle; ?></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+
+<h2><?= $block->escapeHtml(__('Not rendered blocks')) ?></h2>
+<table>
+    <thead>
+        <tr>
+            <th scope="col"><?= $block->escapeHtml(__('Name')) ?></th>
+            <th scope="col"><?= $block->escapeHtml(__('Module')) ?></th>
+            <th scope="col"><?= $block->escapeHtml(__('Type')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php /** @var \ClawRock\Debug\Model\ValueObject\Block $layoutBlock */ ?>
+        <?php foreach ($collector->getNotRenderedBlocks() as $layoutBlock): ?>
+            <tr>
+                <td><?= /* @noEscape */ $layoutBlock->getName() ?></td>
+                <td><?= /* @noEscape */ $layoutBlock->getModule() ?></td>
+                <td><?= /* @noEscape */ $layoutBlock->getClass() ?></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+
+<h2><?= $block->escapeHtml(__('Layout rendering analysis')) ?></h2>
+<div id="twig-dump">
+    <?= /* @noEscape */ $viewModel->renderLayoutGraph($collector->getRenderedBlocks(), $collector->getRenderTime()); ?>
+</div>

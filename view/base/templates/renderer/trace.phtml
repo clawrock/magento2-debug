@@ -1,0 +1,17 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php $trace = $block->getTrace(); ?>
+
+<?php if ($trace): ?>
+    <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#stack-<?= /* @noEscape */ $block->getTraceId() ?>"
+       data-toggle-alt-content="<?= $block->escapeHtml(__('Hide trace')) ?>">
+        <?= $block->escapeHtml(__('Show trace')) ?>
+    </a>
+    <div id="stack-<?= /* @noEscape */ $block->getTraceId() ?>" class="hidden">
+        <strong class="font-normal text-small"><?= $block->escapeHtml(__('Trace')) ?>:</strong>
+        <ol class="sf-call-stack">
+            <?php foreach ($trace as $call): ?>
+                <li><?= /* @noEscape */ $block->getTraceCallRenderer()->create(['call' => $call])->render(); ?></li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+<?php endif; ?>

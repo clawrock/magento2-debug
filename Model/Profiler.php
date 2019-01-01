@@ -2,8 +2,8 @@
 
 namespace ClawRock\Debug\Model;
 
-use ClawRock\Debug\Model\DataCollector\DataCollectorInterface;
-use ClawRock\Debug\Model\DataCollector\LateDataCollectorInterface;
+use ClawRock\Debug\Model\Collector\CollectorInterface;
+use ClawRock\Debug\Model\Collector\LateCollectorInterface;
 use Magento\Framework\HTTP\PhpEnvironment\Request;
 use Magento\Framework\HTTP\PhpEnvironment\Response;
 use Magento\Framework\Profiler as MagentoProfiler;
@@ -11,10 +11,11 @@ use Magento\Framework\Profiler as MagentoProfiler;
 class Profiler
 {
     const URL_TOKEN_PARAMETER      = 'token';
+    const URL_PANEL_PARAMETER      = 'panel';
     const TOOLBAR_FULL_ACTION_NAME = 'debug_profiler_toolbar';
 
     /**
-     * @var null|DataCollectorInterface[]
+     * @var null|CollectorInterface[]
      */
     private $dataCollectors = null;
 
@@ -24,64 +25,76 @@ class Profiler
     private $objectManager;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var \ClawRock\Debug\Helper\Config
      */
-    private $registry;
+    private $config;
 
     /**
-     * @var \ClawRock\Debug\Helper\Profiler
+     * @var \ClawRock\Debug\Model\ProfileFactory
      */
-    private $helper;
+    private $profileFactory;
 
     /**
-     * @var \ClawRock\Debug\Model\Profiler\StorageInterface
+     * @var \ClawRock\Debug\Helper\Url
      */
-    private $storage;
+    private $urlHelper;
 
     /**
-     * @var \ClawRock\Debug\Model\Profile\Storage
+     * @var \ClawRock\Debug\Helper\Injector
      */
-    private $profileStorage;
+    private $injector;
 
     /**
-     * @var \ClawRock\Debug\Helper\Toolbar
+     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
      */
-    private $toolbar;
+    private $profileMemoryStorage;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \ClawRock\Debug\Api\ProfileRepositoryInterface
+     */
+    private $profileRepository;
+
+    /**
+     * @var \ClawRock\Debug\Model\Storage\HttpStorage
+     */
+    private $httpStorage;
+
+    /**
+     * @var \ClawRock\Debug\Logger\Logger
      */
     private $logger;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Framework\Registry $registry,
-        \ClawRock\Debug\Helper\Profiler $helper,
-        \ClawRock\Debug\Model\Profiler\StorageInterface $storage,
-        \ClawRock\Debug\Model\Profile\Storage $profileStorage,
-        \ClawRock\Debug\Helper\Toolbar $toolbar,
-        \Psr\Log\LoggerInterface $logger
+        \ClawRock\Debug\Helper\Config $config,
+        \ClawRock\Debug\Model\ProfileFactory $profileFactory,
+        \ClawRock\Debug\Helper\Url $urlHelper,
+        \ClawRock\Debug\Helper\Injector $injector,
+        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
+        \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository,
+        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
+        \ClawRock\Debug\Logger\Logger $logger
     ) {
         $this->objectManager = $objectManager;
-        $this->registry = $registry;
-        $this->helper = $helper;
-        $this->storage = $storage;
-        $this->profileStorage = $profileStorage;
-        $this->toolbar = $toolbar;
+        $this->config = $config;
+        $this->profileFactory = $profileFactory;
+        $this->urlHelper = $urlHelper;
+        $this->injector = $injector;
+        $this->profileMemoryStorage = $profileMemoryStorage;
+        $this->profileRepository = $profileRepository;
+        $this->httpStorage = $httpStorage;
         $this->logger = $logger;
     }
 
     public function run(Request $request, Response $response)
     {
-        if (!$this->isAvailable() || !$this->helper->isAllowedIP()) {
+        if (!$this->config->isAllowedIP()) {
             return;
         }
 
         try {
             $profile  = $this->collect($request, $response);
-            if ($profile) {
-                $this->profileStorage->addItem($profile);
-            }
+            $this->profileMemoryStorage->write($profile);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
 
@@ -98,11 +111,10 @@ class Profiler
         }
 
         if ($token) {
-            $url = $this->helper->getUrl($token);
-            $response->setHeader('X-Debug-Token-Link', $url);
+            $response->setHeader('X-Debug-Token-Link', $profile->getDebugUrl($token));
         }
 
-        $this->toolbar->inject($request, $response, $token);
+        $this->injector->inject($request, $response, $token);
 
         register_shutdown_function([$this, 'onTerminate']);
     }
@@ -119,15 +131,15 @@ class Profiler
         if ($this->dataCollectors === null) {
             $this->dataCollectors = [];
 
-            $collectors = $this->helper->getDataCollectors();
+            $collectors = $this->config->getCollectors();
             foreach ($collectors as $class) {
                 $collector = $this->objectManager->get($class);
-                if (!$collector instanceof DataCollectorInterface) {
-                    throw new \InvalidArgumentException('Collector must implement "DataCollectorInterface"');
+                if (!$collector instanceof CollectorInterface) {
+                    throw new \InvalidArgumentException('Collector must implement "CollectorInterface"');
                 }
 
                 if ($collector->isEnabled()) {
-                    $this->dataCollectors[$collector->getCollectorName()] = $collector;
+                    $this->dataCollectors[$collector->getName()] = $collector;
                 }
             }
         }
@@ -135,98 +147,59 @@ class Profiler
         return $this->dataCollectors;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Request  $request
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
+     * @return \ClawRock\Debug\Model\Profile
+     */
     public function collect(Request $request, Response $response)
     {
         $start = microtime(true);
-        $profile = new Profile(substr(hash('sha256', uniqid(mt_rand(), true)), 0, 6));
-        $profile->setTime(time());
+        /** @var \ClawRock\Debug\Model\Profile $profile */
+        $profile = $this->profileFactory->create(['token' => substr(hash('sha256', uniqid(mt_rand(), true)), 0, 6)]);
         $profile->setUrl($request->getRequestString() ? $request->getRequestString() : '/');
         $profile->setMethod($request->getMethod());
+        $profile->setRoute($this->urlHelper->getRequestFullActionName($request));
         $profile->setStatusCode($response->getHttpResponseCode());
         $profile->setIp($request->getClientIp());
 
         $response->setHeader('X-Debug-Token', $profile->getToken());
 
+        $this->httpStorage->setRequest($request);
+        $this->httpStorage->setResponse($response);
+
         $profileKey = 'DEBUG::profiler::collect';
         MagentoProfiler::start($profileKey);
         foreach ($this->getDataCollectors() as $collector) {
-            $profileCollectorKey = $profileKey . '::' . $collector->getCollectorName();
-            /** @var DataCollectorInterface $collector */
+            $profileCollectorKey = $profileKey . '::' . $collector->getName();
+            /** @var CollectorInterface $collector */
             MagentoProfiler::start($profileCollectorKey);
-            $collector->collect($request, $response);
+            $collector->collect();
             MagentoProfiler::stop($profileCollectorKey);
             $profile->addCollector($collector);
         }
         MagentoProfiler::stop($profileKey);
+        $profile->setTime(time());
         $collectTime = microtime(true) - $start;
         $profile->setCollectTime($collectTime);
 
         return $profile;
     }
 
-    public function loadProfile($token)
-    {
-        return $this->storage->read($token);
-    }
-
-    public function find($ip, $url, $limit, $method, $start, $end)
-    {
-        return $this->storage->find($ip, $url, $limit, $method, $this->getTimestamp($start), $this->getTimestamp($end));
-    }
-
-    private function getTimestamp($value)
-    {
-        if (null === $value || '' == $value) {
-            return null;
-        }
-
-        try {
-            $value = new \DateTime(is_numeric($value) ? '@' . $value : $value);
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        return $value->getTimestamp();
-    }
-
-    /**
-     * @param Profile $profile
-     * @throws \Exception
-     */
-    public function saveProfile(Profile $profile)
-    {
-        foreach ($profile->getCollectors() as $collector) {
-            if ($collector instanceof LateDataCollectorInterface) {
-                $collector->lateCollect();
-            }
-        }
-
-        if (!$this->storage->write($profile)) {
-            throw new \Exception('Unable to store the profiler information.', [
-                'configured_storage' => get_class($this->storage),
-            ]);
-        }
-    }
-
-    public function isAvailable(): bool
-    {
-        return !$this->registry->registry('current_profile');
-    }
-
-    public function flush()
-    {
-        return $this->storage->purge();
-    }
-
     public function onTerminate()
     {
         try {
-            /** @var \ClawRock\Debug\Model\Profile $profile */
-            foreach ($this->profileStorage as $profile) {
-                $this->saveProfile($profile);
+            $profile = $this->profileMemoryStorage->read();
+            foreach ($profile->getCollectors() as $collector) {
+                if ($collector instanceof LateCollectorInterface) {
+                    $collector->lateCollect();
+                }
             }
+
+            $this->profileRepository->save($profile);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->critical($e);
         }
     }
 }
