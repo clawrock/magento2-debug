@@ -33,7 +33,7 @@ class Url
     private $defaultPath;
 
     public function __construct(
-        \Magento\Framework\UrlInterface $url,
+        \Magento\Framework\Url $url,
         \Magento\Backend\Model\UrlInterface $backendUrl,
         \Magento\Framework\App\Route\ConfigInterface\Proxy $routeConfigProxy,
         \Magento\Framework\App\DefaultPathInterface $defaultPath

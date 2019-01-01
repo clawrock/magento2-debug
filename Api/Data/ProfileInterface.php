@@ -31,8 +31,6 @@ interface ProfileInterface
 
     public function hasCollector(string $name): bool;
 
-    public function getDebugUrl($token = null, $panel = null): string;
-
     public function getIndex(): array;
 
     public function getData(): array;

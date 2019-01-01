@@ -261,19 +261,6 @@ class Profile implements ProfileInterface
         return isset($this->collectors[$name]);
     }
 
-    public function getDebugUrl($token = null, $panel = null): string
-    {
-        $params = [];
-        if ($token) {
-            $params[Profiler::URL_TOKEN_PARAMETER] = $token;
-        }
-        if ($panel) {
-            $params['panel'] = $panel;
-        }
-
-        return $this->urlBuilder->getUrl('_debug/profiler/info', $params);
-    }
-
     public function getIndex(): array
     {
         $data = [];

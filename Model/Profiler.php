@@ -111,7 +111,7 @@ class Profiler
         }
 
         if ($token) {
-            $response->setHeader('X-Debug-Token-Link', $profile->getDebugUrl($token));
+            $response->setHeader('X-Debug-Token-Link', $this->urlHelper->getProfilerUrl($token));
         }
 
         $this->injector->inject($request, $response, $token);
