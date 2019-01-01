@@ -52,7 +52,9 @@ class ProfileFileStorageTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->readMock = $this->getMockForAbstractClass(\Magento\Framework\Filesystem\File\ReadInterface::class);
+        $this->readMock = $this->getMockBuilder(\Magento\Framework\Filesystem\File\Read::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->fileWriteFactoryMock = $this->getMockBuilder(\Magento\Framework\Filesystem\File\WriteFactory::class)
             ->disableOriginalConstructor()
