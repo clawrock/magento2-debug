@@ -1,3 +1,8 @@
+[![Packagist](https://img.shields.io/packagist/v/clawrock/m2-debug.svg)](https://packagist.org/packages/clawrock/m2-debug)
+[![Packagist](https://img.shields.io/packagist/dt/clawrock/m2-debug.svg)](https://packagist.org/packages/clawrock/m2-debug)
+[![Build Status](https://travis-ci.org/clawrock/m2-debug.svg?branch=master)](https://travis-ci.org/clawrock/m2-debug)
+[![Coverage Status](https://coveralls.io/repos/github/clawrock/m2-debug/badge.svg)](https://coveralls.io/github/clawrock/m2-debug)
+
 # Magento 2 - Debug module
 Module for debugging Magento 2 performance. It works without overwriting any core files and it can be installed with composer.
 
