@@ -1,0 +1,131 @@
+<?php
+/** @var \ClawRock\Debug\Block\Profiler\Collector\Config $block */
+/** @var \ClawRock\Debug\Model\DataCollector\ConfigDataCollector $collector */
+$collector = $block->getCollector();
+?>
+<h2><?= $block->escapeHtml(__('PHP Configuration')) ?></h2>
+<div class="metrics">
+    <div class="metric">
+        <span class="value"><?= /* @noEscape */ $collector->getPhpVersion() ?></span>
+        <span class="label"><?= $block->escapeHtml(__('PHP version')) ?></span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasAccelerator()): ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+            <?php else: ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+            <?php endif; ?>
+        </span>
+        <span class="label"><?= $block->escapeHtml(__('PHP acceleration')) ?></span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasXDebug()): ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+            <?php else: ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">Xdebug</span>
+    </div>
+</div>
+<div class="metrics metrics-horizontal">
+    <div class="metric">
+        <span
+        <span class="value">
+            <?php if ($collector->hasZendOpcache()): ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+            <?php else: ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">OPcache</span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasApc()): ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+            <?php else: ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">APC</span>
+    </div>
+    <div class="metric">
+        <span class="value">
+            <?php if ($collector->hasXCache()): ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+            <?php else: ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">XCache</span>
+    </div>
+    <div class="metric">
+        <span
+        <span class="value">
+            <?php if ($collector->hasEAccelerator()): ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+            <?php else: ?>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+            <?php endif; ?>
+        </span>
+        <span class="label">EAccelerator</span>
+    </div>
+</div>
+<p><a href="<?= $block->escapeUrl($block->getUrl('_debug/profiler/phpinfo')) ?>"><?= $block->escapeHtml(__('View full PHP configuration')) ?></a></p>
+<h2>Magento</h2>
+<table>
+    <thead>
+        <tr>
+            <th class="key"><?= $block->escapeHtml(__('Key')) ?></th>
+            <th><?= $block->escapeHtml(__('Value')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><?= $block->escapeHtml(__('Admin Url')) ?></td>
+            <td><a href="<?= /* @noEscape */ $collector->getAdminUrl(); ?>"><?= /* @noEscape */ $collector->getAdminUrl(); ?></a></td>
+        </tr>
+        <tr>
+            <td><?= $block->escapeHtml(__('Website')) ?></td>
+            <td><?= /* @noEscape */ $collector->getWebsiteName() ?> (<?= /* @noEscape */ $collector->getWebsiteCode() ?>)</td>
+        </tr>
+        <tr>
+            <td><?= $block->escapeHtml(__('Store')) ?></td>
+            <td><?= /* @noEscape */ $collector->getStoreName() ?> (<?= /* @noEscape */ $collector->getStoreCode() ?>)</td>
+        </tr>
+    </tbody>
+</table>
+<h2><?= $block->escapeHtml(__('Modules')) ?></h2>
+<table>
+    <thead>
+        <tr>
+            <th><?= $block->escapeHtml(__('Module')) ?></th>
+            <th><?= $block->escapeHtml(__('Version')) ?></th>
+            <th><?= $block->escapeHtml(__('Sequence')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getModules() as $name => $data): ?>
+            <tr>
+                <td style="white-space: nowrap;"><?= /* @noEscape */$name ?></td>
+                <td><?= /* @noEscape */$data['setup_version'] ?? 'n/a'; ?></td>
+                <td><?= /* @noEscape */implode(', ', $data['sequence']); ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

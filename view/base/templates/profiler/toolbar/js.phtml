@@ -1,48 +1,48 @@
-<?php
-/** @var \ClawRock\Debug\Block\Profiler\Toolbar $block */
-$token = $block->getToken();
-?>
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \ClawRock\Debug\Model\View\Toolbar $viewModel */ ?>
+<?php $viewModel = $block->getViewModel(); ?>
+<?php $token = $viewModel->getToken(); ?>
 
-<div id="sfwdt<?php echo $token?>" class="sf-toolbar" style="display: none"></div>
+<div id="sfwdt<?= /* @noEscape */ $token ?>" class="sf-toolbar" style="display: none"></div>
 <iframe name="profiler_link_target" style="display: none;"></iframe>
-<?php echo $block->getChildHtml('debug_profiler_js'); ?>
+<?= $block->getChildHtml('debug_profiler_js'); ?>
 <script>
     (function () {
         Sfjs.load(
-            'sfwdt<?php echo $token?>',
-            '<?php echo $block->getToolbarUrl(); ?>',
+            'sfwdt<?= /* @noEscape */ $token ?>',
+            '<?= /* @noEscape */ $viewModel->getToolbarUrl(); ?>',
             function(xhr, el) {
                 el.style.display = -1 !== xhr.responseText.indexOf('sf-toolbarreset') ? 'block' : 'none';
                 if (el.style.display == 'none') {
                     return;
                 }
                 if (Sfjs.getPreference('toolbar/displayState') == 'none') {
-                    document.getElementById('sfToolbarMainContent-<?php echo $token?>').style.display = 'none';
-                    document.getElementById('sfToolbarClearer-<?php echo $token?>').style.display = 'none';
-                    document.getElementById('sfMiniToolbar-<?php echo $token?>').style.display = 'block';
+                    document.getElementById('sfToolbarMainContent-<?= /* @noEscape */ $token ?>').style.display = 'none';
+                    document.getElementById('sfToolbarClearer-<?= /* @noEscape */ $token ?>').style.display = 'none';
+                    document.getElementById('sfMiniToolbar-<?= /* @noEscape */ $token ?>').style.display = 'block';
                 } else {
-                    document.getElementById('sfToolbarMainContent-<?php echo $token?>').style.display = 'block';
-                    document.getElementById('sfToolbarClearer-<?php echo $token?>').style.display = 'block';
-                    document.getElementById('sfMiniToolbar-<?php echo $token?>').style.display = 'none';
+                    document.getElementById('sfToolbarMainContent-<?= /* @noEscape */ $token ?>').style.display = 'block';
+                    document.getElementById('sfToolbarClearer-<?= /* @noEscape */ $token ?>').style.display = 'block';
+                    document.getElementById('sfMiniToolbar-<?= /* @noEscape */ $token ?>').style.display = 'none';
                 }
-                Sfjs.addEventListener(document.getElementById('sfToolbarHideButton-<?php echo $token; ?>'), 'click', function (event) {
+                Sfjs.addEventListener(document.getElementById('sfToolbarHideButton-<?= /* @noEscape */ $token ?>'), 'click', function (event) {
                     event.preventDefault();
                     var p = this.parentNode;
                     p.style.display = 'none';
                     (p.previousElementSibling || p.previousSibling).style.display = 'none';
-                    document.getElementById('sfMiniToolbar-<?php echo $token; ?>').style.display = 'block';
+                    document.getElementById('sfMiniToolbar-<?= /* @noEscape */ $token ?>').style.display = 'block';
                     Sfjs.setPreference('toolbar/displayState', 'none');
                 });
-                Sfjs.addEventListener(document.getElementById('sfToolbarMiniToggler-<?php echo $token; ?>'), 'click', function (event) {
+                Sfjs.addEventListener(document.getElementById('sfToolbarMiniToggler-<?= /* @noEscape */ $token ?>'), 'click', function (event) {
                     event.preventDefault();
                     var elem = this.parentNode;
                     if (elem.style.display == 'none') {
-                        document.getElementById('sfToolbarMainContent-<?php echo $token; ?>').style.display = 'none';
-                        document.getElementById('sfToolbarClearer-<?php echo $token; ?>').style.display = 'none';
+                        document.getElementById('sfToolbarMainContent-<?= /* @noEscape */ $token ?>').style.display = 'none';
+                        document.getElementById('sfToolbarClearer-<?= /* @noEscape */ $token ?>').style.display = 'none';
                         elem.style.display = 'block';
                     } else {
-                        document.getElementById('sfToolbarMainContent-<?php echo $token; ?>').style.display = 'block';
-                        document.getElementById('sfToolbarClearer-<?php echo $token; ?>').style.display = 'block';
+                        document.getElementById('sfToolbarMainContent-<?= /* @noEscape */ $token ?>').style.display = 'block';
+                        document.getElementById('sfToolbarClearer-<?= /* @noEscape */ $token ?>').style.display = 'block';
                         elem.style.display = 'none'
                     }
                     Sfjs.setPreference('toolbar/displayState', 'block');
@@ -88,7 +88,7 @@ $token = $block->getToken();
             },
             function(xhr) {
                 if (xhr.status !== 0) {
-                    confirm('An error occurred while loading the web debug toolbar (' + xhr.status + ': ' + xhr.statusText + ').\n\nDo you want to open the profiler?') && (window.location = '<?php echo $block->getTokenUrl($token); ?>');
+                    alert('An error occurred while loading the web debug toolbar (' + xhr.status + ': ' + xhr.statusText + ').');
                 }
             },
             {'maxTries': 5}

@@ -9,19 +9,19 @@ use Magento\Framework\Event\ObserverInterface;
 class DebugHandle implements ObserverInterface
 {
     /**
-     * @var \ClawRock\Debug\Helper\Profiler
+     * @var \ClawRock\Debug\Helper\Config
      */
-    protected $helper;
+    private $config;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Profiler $helper
+        \ClawRock\Debug\Helper\Config $config
     ) {
-        $this->helper = $helper;
+        $this->config = $config;
     }
 
     public function execute(Observer $observer)
     {
-        if ($this->helper->isEnabled()) {
+        if ($this->config->isEnabled()) {
             $observer->getLayout()->getUpdate()->addHandle('clawrock_debug');
         }
 

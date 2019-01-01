@@ -1,0 +1,24 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+install:
+  - echo "{\"http-basic\":{\"repo.magento.com\":{\"username\":\"${MAGENTO_USERNAME}\",\"password\":\"${MAGENTO_PASSWORD}\"}}}" > auth.json
+  - composer install --prefer-dist
+
+script:
+  - php vendor/bin/phpcs --standard=PSR2 Api Controller Exception Helper Logger Model Observer Plugin Serializer Test
+  - php vendor/bin/phpmd Api,Controller,Exception,Helper,Logger,Model,Observer,Plugin,Serializer text phpmd.xml
+  - php vendor/bin/phpcpd Api Controller Exception Helper Logger Model Observer Plugin Serializer
+  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+  - php vendor/bin/php-coveralls
+
+env:
+  global:
+    - secure: VSM4hmQPJNRN6TcD4k1dbUJblG3gtEOGR08MuQA8AzKejHVcMLbz5auUJkHcSR+zKUimsINUFPRPn1A2lFTSfYttmiYZfpIIf0oQcs+wqp/v0UaO56G9nEzTmzRbxr9gz65eNzFJakfsg95CS1RGN6wVQK4LNOUYyHeT/saJ+69D9WdMH3qkWksWAyCYJoMd9zJFf5ojg7DtcwMzA+FC2AZcXMcwWBTY1yXInGaO87hz3VhodrJT2MapvEoB3PHul/2zAnHSfSJyQmioRa3QGdK6oXsckuZMafSpcVhWNN9bzMS7Z+nYTPJEeM085pAK6XUHKadCYdHDXEQEiG7OmJP5wMNEmw9aXRKS4wOc9IsuXHoGiO5jzeGFuXcj66yqPYBkotQ/uEUrCzZ758G9XvxqR4dI01uUcme35eSZg44PofXOtD34sxkW8Zkat/3RKJUHyqxeyms+0aPRtbeRXo3agw75Sr89n4AqapCPMnhVrKKDXOXbAV16+OCHIEalX8WrXnzDoBg/CK4EBI7AtRWV1PAdGXEVdXRrfVG4fEilwyIMHpCEXTZN3KPjnZsNKBwG4KGVAffIgm+jmR+hQQWCHo0c5roDUNY5ekG+FL54jwFB3e7Jq2x37iXBUDW/jLaRVab53T/ugAC3IZmJWILHPQ4VCzs1Jjt+6ojoLGM=
+    - secure: aYHyyZwkkwcIgT0Drf4rncibv7DWUH74tpe6LNEyYnu11nPKv9sQD7xj3G9c2Z+rp3QSbN+QPyYtY0BY8KzGoLLoTHrmECOBi5O/kDyzFumo/p2Vt6YrFpOSn9GByuys8eL5o8LCtpKVWlvi0B5X3k693eLaHEy12VqpK2igB1HOUZC+2FNzO8U7gGH9aomOLxr08pW0uCk14KNj3KPCi/PixX1JP6KBt0OGyM7+nFBJzet9nDDdy16PDBTdcIYGnIAcE/JKtYdQek4OpvacKaCkfZ++wZ6u1c8oyO5SEPHZW8yiN1rjosXw8gE/dOJarrNeYo8gidAJHX6Tia7F+t23c2JcvIkSS5xInalWyvvrUntJ6eiAy8RZfxWTJzXrJ0aFhtbcmKhG8fR4QH83bfoF3nBHOT8551eadh7pjTz5CZ3NMzV5mQ3/+kXWctXOTgsTTlBG/9JZDszRIkPm8i3aTLt0JGVtQRnxuwBO8F5LZhGWVii4wwQBZj9vshlQ3lDcU9FF285aBwhQBfid7PjlyCKme0DK9/d4TjFWcTE7QQ4yVmbw9Q5pNigPNalNFI3N+xo4XOkyWWUk0E02C2i5oWdIHkrqyBm3lxYQyldYcwMnJk+DzPQB7UeHiuXknjZNyJjW7E4lkriRu/6aTisIvuC5G6QY2KCYMBNVH90=

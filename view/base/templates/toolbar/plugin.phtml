@@ -1,0 +1,34 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\PluginCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>">
+    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/plugin.svg'); ?>"
+                 alt="<?= $block->escapeHtmlAttr(__('Plugin')) ?>"/>
+            <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getPluginsCount() ?></span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Before plugins')); ?></b>
+            <span class="sf-toolbar-status">
+                 <?= /* @noEscape */ $collector->getBeforePluginsCount() ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('Around plugins')); ?></b>
+            <span class="sf-toolbar-status">
+                 <?= /* @noEscape */ $collector->getAroundPluginsCount() ?>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b><?= $block->escapeHtml(__('After plugins')); ?>'</b>
+            <span class="sf-toolbar-status">
+                 <?= /* @noEscape */ $collector->getAfterPluginsCount() ?>
+            </span>
+        </div>
+    </div>
+</div>

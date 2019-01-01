@@ -1,0 +1,171 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\CacheCollector $collector */
+$collector = $block->getCollector();
+/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<h2><?= $block->escapeHtml(__('Cache metrics')) ?></h2>
+<div class="metrics">
+    <?php foreach ($collector->getStats() as $key => $value): ?>
+        <div class="metric">
+            <span class="value"><?= /* @noEscape */ $value ?></span>
+            <span class="label"><?= /* @noEscape */ ucwords(str_replace('stats_', '', $key)) ?></span>
+        </div>
+    <?php endforeach; ?>
+    <div class="metric">
+        <span class="value"><?= /* @noEscape */ $collector->getTotalTime() ?> ms</span>
+        <span class="label"><?= $block->escapeHtml(__('Time')) ?></span>
+    </div>
+</div>
+<h2><?= $block->escapeHtml(__('Cache configuration')) ?></h2>
+<table class="cache-table">
+    <thead>
+        <tr>
+            <th class="key"><?= $block->escapeHtml(__('Id')) ?></th>
+            <th><?= $block->escapeHtml(__('Type')) ?></th>
+            <th class="text-center"><?= $block->escapeHtml(__('Profiled Status')) ?></th>
+            <th class="text-center"><?= $block->escapeHtml(__('Current Status')) ?></th>
+            <th class="text-center"><?= $block->escapeHtml(__('Valid')) ?></th>
+            <th class="text-right">
+                <a data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/clean', ['type' => 'all'])) ?>"
+                   class="btn btn-sm ajax-action">Clean all</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getCacheList() as $cache): ?>
+            <tr>
+                <td><?= /* @noEscape */ $cache->getId() ?></td>
+                <td><?= /* @noEscape */ $cache->getCacheType() ?></td>
+                <td class="text-center">
+                    <?php if ($cache->getStatus()): ?>
+                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                             alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                    <?php else: ?>
+                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                             alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                    <?php endif; ?>
+                </td>
+                <td class="text-center">
+                    <?php if ($collector->getCacheCurrentStatus($cache->getId())): ?>
+                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                             alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                    <?php else: ?>
+                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                             alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                    <?php endif; ?>
+                </td>
+                <td class="text-center">
+                    <?php if (!$collector->getCacheCurrentStatus($cache->getId())): ?>
+                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                             alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                    <?php else: ?>
+                        <?php if ($collector->isInvalidated($cache->getId())): ?>
+                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                                 alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                        <?php else: ?>
+                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                                 alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </td>
+                <td class="text-right">
+                    <?php if ($collector->getCacheCurrentStatus($cache->getId())): ?>
+                        <a href="#"
+                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/clean', ['type' => $cache->getId()])) ?>"
+                           class="btn btn-sm ajax-action"><?= $block->escapeHtml(__('Clean')) ?></a>
+                        <a href="#"
+                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/disable', ['type' => $cache->getId()])) ?>"
+                           class="btn btn-sm ajax-action"><?= $block->escapeHtml(__('Disable')) ?></a>
+                    <?php else: ?>
+                        <a href="#"
+                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/enable', ['type' => $cache->getId()])) ?>"
+                           class="btn btn-sm ajax-action"><?= $block->escapeHtml(__('Enable')) ?></a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<h2><?= $block->escapeHtml(__('Cache Backend')) ?><br><small><?= /* @noEscape */ $collector->getBackendName() ?></small></h2>
+<table>
+    <thead>
+        <tr>
+            <th><?= $block->escapeHtml(__('Key')) ?></th>
+            <th><?= $block->escapeHtml(__('Value')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($collector->getBackendOptions() as $key => $value): ?>
+            <tr>
+                <td class="nowrap"><?= /* @noEscape */ $key ?> </td>
+                <td class="nowrap"><?= /* @noEscape */ $value ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<h2><?= $block->escapeHtml(__('Cache Calls')) ?></h2>
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th><?= $block->escapeHtml(__('Action')) ?></th>
+            <th style="width: 100%;">Id</th>
+            <th><?= $block->escapeHtml(__('Hit')) ?></th>
+            <th><?= $block->escapeHtml(__('Time')) ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php /** @var \ClawRock\Debug\Model\ValueObject\CacheAction $action */ ?>
+        <?php foreach ($collector->getCacheLog() as $i => $action): ?>
+            <tr>
+                <td class="nowrap"><?= /* @noEscape */ ++$i ?> </td>
+                <td><?= /* @noEscape */ $action->getName() ?></td>
+                <td>
+                    <?= /* @noEscape */ $action->getId() ?: '-' ?>
+                    <?php if ($action->hasTags()): ?>
+                        <br>
+                        <small>
+                            <strong><?= $block->escapeHtml(__('Tags')) ?>:</strong>
+                            <?= /* @noEscape */ implode(', ', $action->getTags()) ?>
+                        </small>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if (!$action->isLoad()): ?>
+                        -
+                    <?php else: ?>
+                        <?php if ($action->isHit()) : ?>
+                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
+                                 alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                        <?php else: ?>
+                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
+                                 alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                        <?php endif; ?>
+                    <?php endif ?>
+                </td>
+                <td class="nowrap"><?= /* @noEscape */ $viewModel->getFormatter()->microtime($action->getTime()) ?> ms</td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script>
+    (function () {
+        var actions = document.querySelectorAll('.cache-table .ajax-action');
+        for (var i = 0; i < actions.length; i++) {
+            (function () {
+                var button = actions[i],
+                    url    = button.getAttribute('data-url');
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Sfjs.request(url, function () {
+                        window.location.reload();
+                    });
+                });
+            })();
+        }
+    })();
+</script>

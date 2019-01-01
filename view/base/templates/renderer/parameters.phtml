@@ -1,0 +1,24 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<table>
+    <thead>
+        <tr>
+            <th scope="col" class="key"><?= $block->escapeHtml(__('Key')); ?></th>
+            <th scope="col"><?= $block->escapeHtml(__('Value')); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php /** @var \Zend\Stdlib\Parameters $parameters */ ?>
+        <?php if ($parameters = $block->getParameters()): ?>
+            <?php foreach ($parameters as $key => $value): ?>
+                <tr>
+                    <th><?= /* @noEscape */ $key ?></th>
+                    <td><?= /* @noEscape */ $block->getVarRenderer()->create(['variable' => $value])->render(); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="2"><?= $block->escapeHtml(__('No data')); ?></td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>

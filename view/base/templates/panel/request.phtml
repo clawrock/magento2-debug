@@ -1,0 +1,96 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\RequestCollector $collector */
+$collector = $block->getCollector();
+/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<div class="sf-tabs">
+    <div class="tab">
+        <h3 class="tab-title"><?= $block->escapeHtml(__('Request')) ?></h3>
+        <div class="tab-content">
+            <h3><?= $block->escapeHtml(__('GET Parameters')) ?></h3>
+            <?php if (!count($collector->getRequestGet())): ?>
+                <div class="empty">
+                    <p><?= $block->escapeHtml(__('No GET parameters')) ?></p>
+                </div>
+            <?php else: ?>
+                <?= /* @noEscape */ $viewModel->renderParameters($collector->getRequestGet()) ?>
+            <?php endif ?>
+
+            <h3><?= $block->escapeHtml(__('POST Parameters')) ?></h3>
+            <?php if (!count($collector->getRequestPost())): ?>
+                <div class="empty">
+                    <p><?= $block->escapeHtml(__('No POST parameters')) ?></p>
+                </div>
+            <?php else: ?>
+                <?= /* @noEscape */ $viewModel->renderParameters($collector->getRequestPost()) ?>
+            <?php endif ?>
+
+            <h3><?= $block->escapeHtml(__('Request Attributes')) ?></h3>
+            <?php if (!count($collector->getRequestAttributes())): ?>
+                <div class="empty">
+                    <?php if ($collector->isFPCHit()): ?>
+                        <p><?= $block->escapeHtml(__('Not available during FPC hit')) ?></p>
+                    <?php else: ?>
+                        <p><?= $block->escapeHtml(__('No attributes')) ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php else: ?>
+                <?= /* @noEscape */ $viewModel->renderParameters($collector->getRequestAttributes()) ?>
+            <?php endif ?>
+
+            <h3><?= $block->escapeHtml(__('Cookies')) ?></h3>
+            <?php if (!count($collector->getRequestCookies())): ?>
+                <div class="empty">
+                    <p><?= $block->escapeHtml(__('No cookies')) ?></p>
+                </div>
+            <?php else: ?>
+                <?= /* @noEscape */ $viewModel->renderParameters($collector->getRequestCookies()) ?>
+            <?php endif ?>
+
+            <h3><?= $block->escapeHtml(__('Request Headers')) ?></h3>
+            <?= /* @noEscape */ $viewModel->renderParameters($collector->getRequestHeaders()) ?>
+
+            <h3><?= $block->escapeHtml(__('Request Content')) ?></h3>
+            <?php if ($collector->getContent() === false): ?>
+                <div class="empty">
+                    <p><?= $block->escapeHtml(__('Request content not available (it was retrieved as a resource).')) ?></p>
+                </div>
+            <?php elseif ($collector->getContent()): ?>
+                <div class="card">
+                    <?= /* @noEscape */ $viewModel->dump($collector->getContent()) ?>
+                </div>
+            <?php else: ?>
+                <div class="empty">
+                    <p><?= $block->escapeHtml(__('No content')) ?></p>
+                </div>
+            <?php endif ?>
+
+            <h3><?= $block->escapeHtml(__('Server Parameters')) ?></h3>
+            <?= /* @noEscape */ $viewModel->renderParameters($collector->getRequestServer()) ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?= $block->escapeHtml(__('Response')) ?></h3>
+        <div class="tab-content">
+            <h3><?= $block->escapeHtml(__('Response Headers')) ?></h3>
+            <?= /* @noEscape */ $viewModel->renderParameters($collector->getResponseHeaders()) ?>
+        </div>
+    </div>
+
+    <div class="tab <?= /* @noEscape */ $collector->hasSessionData() ? '' : 'disabled' ?>">
+        <h3 class="tab-title"><?= $block->escapeHtml(__('Session')) ?></h3>
+        <div class="tab-content">
+            <h3><?= $block->escapeHtml(__('Session')) ?></h3>
+            <?php if (empty($collector->getSessionAttributes())): ?>
+                <div class="empty">
+                    <p><?= $block->escapeHtml(__('No session attributes')) ?></p>
+                </div>
+            <?php else: ?>
+                <?= /* @noEscape */ $viewModel->renderTable($collector->getSessionAttributes()); ?>
+            <?php endif ?>
+        </div>
+    </div>
+</div>

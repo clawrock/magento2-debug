@@ -1,0 +1,37 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \ClawRock\Debug\Model\ValueObject\LayoutNode $node */ ?>
+<?php $node = $block->getNode(); ?>
+<div class="node">
+    <?php if (!$node->getParentId()): ?>
+        <?php if (!$node->getName()) : ?>
+            <small><?= /* @noEscape */ $node->getClass() ?> | <?= /* @noEscape */ $node->getTemplate() ?></small>
+        <?php else: ?>
+            <strong title="<?= /* @noEscape */ $node->getClass() ?> | <?= /* @noEscape */ $node->getTemplate() ?>">
+                <?= /* @noEscape */ $node->getName(); ?>
+            </strong>
+        <?php endif; ?>
+    <?php else: ?>
+        <?= /* @noEscape */ $node->getPrefix() ?>└
+        <?php if ($node->getTemplate()): ?>
+            <span style="background-color: #ffd;">
+                <strong><?= /* @noEscape */ $node->getName() ?></strong>
+                <small><?= /* @noEscape */ $node->getClass() ?> | <?= /* @noEscape */ $node->getTemplate() ?></small>
+            </span>
+        <?php else: ?>
+            <span style="background-color: #dfd;">
+                <strong><?= /* @noEscape */ $node->getName() ?></strong>
+                <small><?= /* @noEscape */ $node->getClass() ?></small>
+            </span>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <span>
+        <?= /* @noEscape */ $block->getFormatter()->microtime($node->getRenderTime()) ?> ms
+        <?php if (!$node->getParentId()): ?>
+            (<?= /* @noEscape */ $block->getFormatter()->percentage($node->getRenderPercent()) ?>)
+        <?php endif; ?>
+    </span>
+</div>
+<?php foreach ($node->getChildren() as $child): ?>
+    <?= /* @noEscape */ $block->getLayoutNodeRenderer()->create(['node' => $child])->render(); ?>
+<?php endforeach; ?>

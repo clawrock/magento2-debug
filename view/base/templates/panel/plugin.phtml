@@ -1,0 +1,102 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\PluginCollector $collector */
+$collector = $block->getCollector();
+?>
+<div>
+    <h2><?= $block->escapeHtml(__('Plugins')) ?></h2>
+</div>
+
+<?php if (!$collector->hasPlugins()): ?>
+    <div class="empty">
+        <p><?= $block->escapeHtml(__('No plugins have been processed.')) ?></p>
+    </div>
+<?php else: ?>
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">
+                <?= $block->escapeHtml(__('BEFORE')) ?>
+                <span class="badge"><?= /* @noEscape */ $collector->getBeforePluginsCount(); ?></span>
+            </h3>
+            <div class="tab-content">
+                <table class="auto">
+                    <?php foreach ($collector->getBeforePlugins() as $type => $plugins): ?>
+                        <thead>
+                            <tr>
+                                <th><?= /* @noEscape */$type; ?></th>
+                                <th><?= $block->escapeHtml(__('Name')) ?></th>
+                                <th><?= $block->escapeHtml(__('Sort order')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php /** @var \ClawRock\Debug\Model\ValueObject\Plugin $plugin */ ?>
+                            <?php foreach ($plugins as $plugin): ?>
+                                <tr>
+                                    <td><?= /* @noEscape */ $plugin->getClass(); ?>::<?= /* @noEscape */ $plugin->getMethod(); ?></td>
+                                    <td><?= /* @noEscape */ $plugin->getName(); ?></td>
+                                    <td class="text-center"><?= /* @noEscape */ $plugin->getSortOrder(); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">
+                <?= $block->escapeHtml(__('AROUND')) ?> <span class="badge"><?= /* @noEscape */ $collector->getAroundPluginsCount() ?></span>
+            </h3>
+            <div class="tab-content">
+                <table class="auto">
+                    <?php foreach ($collector->getAroundPlugins() as $type => $plugins): ?>
+                        <thead>
+                            <tr>
+                                <th><?= /* @noEscape */ $type; ?></th>
+                                <th><?= $block->escapeHtml(__('Name')) ?></th>
+                                <th><?= $block->escapeHtml(__('Sort order')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php /** @var \ClawRock\Debug\Model\ValueObject\Plugin $plugin */ ?>
+                            <?php foreach ($plugins as $plugin): ?>
+                                <tr>
+                                    <td><?= /* @noEscape */ $plugin->getClass(); ?>::<?= /* @noEscape */ $plugin->getMethod(); ?></td>
+                                    <td><?= /* @noEscape */ $plugin->getName(); ?></td>
+                                    <td class="text-center"><?= /* @noEscape */ $plugin->getSortOrder(); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">
+                <?= $block->escapeHtml(__('AFTER')) ?> <span class="badge"><?= /* @noEscape */ $collector->getAfterPluginsCount() ?></span>
+            </h3>
+            <div class="tab-content">
+                <table class="auto">
+                    <?php foreach ($collector->getAfterPlugins() as $type => $plugins): ?>
+                        <thead>
+                            <tr>
+                                <th><?= /* @noEscape */ $type; ?></th>
+                                <th><?= $block->escapeHtml(__('Name')) ?></th>
+                                <th><?= $block->escapeHtml(__('Sort order')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php /** @var \ClawRock\Debug\Model\ValueObject\Plugin $plugin */ ?>
+                            <?php foreach ($plugins as $plugin): ?>
+                                <tr>
+                                    <td><?= /* @noEscape */ $plugin->getClass(); ?>::<?= /* @noEscape */ $plugin->getMethod(); ?></td>
+                                    <td><?= /* @noEscape */ $plugin->getName(); ?></td>
+                                    <td class="text-center"><?= /* @noEscape */ $plugin->getSortOrder(); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

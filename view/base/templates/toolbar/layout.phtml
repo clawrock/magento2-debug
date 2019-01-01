@@ -1,0 +1,40 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \ClawRock\Debug\Model\Collector\LayoutCollector $collector */
+$collector = $block->getCollector();
+?>
+<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>">
+    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+        <div class="sf-toolbar-icon">
+            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/layout.svg'); ?>"
+                 alt="<?= $block->escapeHtmlAttr(__('Layout')) ?>"/>
+            <span class="sf-toolbar-value">
+                <?= /* @noEscape */ $collector->getRenderTime() ?> <span class="unit">ms</span>
+            </span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Layout handles')); ?></b>
+                <?php foreach ($collector->getHandles() as $handle): ?>
+                    <?= /* @noEscape */ $handle ?><br>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Render Time')); ?></b>
+                <span><?= /* @noEscape */ $collector->getRenderTime(); ?> ms</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Block created')); ?></b>
+                <span class="sf-toolbar-status"><?= count($collector->getCreatedBlocks()) ?></span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b><?= $block->escapeHtml(__('Block rendered')); ?></b>
+                <span class="sf-toolbar-status"><?= count($collector->getRenderedBlocks()) ?></span>
+            </div>
+        </div>
+    </div>
+</div>

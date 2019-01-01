@@ -1,0 +1,14 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \ClawRock\Debug\Model\View\Menu $viewModel */ ?>
+<?php $viewModel = $block->getViewModel(); ?>
+<li class="settings">
+    <a href="<?= $block->escapeUrl($viewModel->getConfigurationUrl()) ?>">
+        <span class="label">
+            <span class="icon">
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/settings.svg'); ?>"
+                     alt="<?= $block->escapeHtmlAttr(__('Settings')); ?>"/>
+            </span>
+            <strong><?= $block->escapeHtml(__('Settings')); ?></strong>
+        </span>
+    </a>
+</li>

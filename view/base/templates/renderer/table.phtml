@@ -1,0 +1,17 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<table>
+    <thead>
+        <tr>
+            <th scope="col" class="key"><?= $block->escapeHtml(__($block->getKeyLabel())); ?></th>
+            <th scope="col" class="key"><?= $block->escapeHtml(__($block->getValueLabel())); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($block->getItems() as $key => $value): ?>
+            <tr>
+                <th scope="row"><?= /* @noEscape */ $key ?></th>
+                <td><?= /* @noEscape */ $block->getVarRenderer()->create(['variable' => $value])->render(); ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -2,23 +2,31 @@
 
 namespace ClawRock\Debug\Plugin\PageCache;
 
+/**
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ */
 class KernelPlugin
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var \ClawRock\Debug\Model\Storage\HttpStorage
      */
-    private $registry;
+    private $httpStorage;
 
     public function __construct(
-        \Magento\Framework\Registry $registry
+        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
-        $this->registry = $registry;
+        $this->httpStorage = $httpStorage;
     }
 
+    /**
+     * @param \Magento\Framework\App\PageCache\Kernel    $subject
+     * @param \Magento\Framework\App\Response\Http|false $result
+     * @return \Magento\Framework\App\Response\Http|false
+     */
     public function afterLoad(\Magento\Framework\App\PageCache\Kernel $subject, $result)
     {
         if ($result !== false) {
-            $this->registry->register('debug_fpc_request', true);
+            $this->httpStorage->markAsFPCRequest();
         }
 
         return $result;
