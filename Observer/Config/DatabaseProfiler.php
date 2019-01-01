@@ -2,7 +2,7 @@
 
 namespace ClawRock\Debug\Observer\Config;
 
-use ClawRock\Debug\Helper\Profiler;
+use ClawRock\Debug\Helper\Config;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\FileSystemException;
@@ -55,6 +55,6 @@ class DatabaseProfiler implements ObserverInterface
 
     private function isDBProfilerDependentConfigChanged(array $paths): bool
     {
-        return in_array(Profiler::CONFIG_DATA_COLLECTOR_DATABASE, $paths) || in_array(Profiler::CONFIG_ENABLED, $paths);
+        return in_array(Config::CONFIG_COLLECTOR_DATABASE, $paths) || in_array(Config::CONFIG_ENABLED, $paths);
     }
 }
