@@ -1,6 +1,6 @@
 {
     "name": "clawrock/magento2-debug",
-    "description": "This module is based on Magento 1 Profiler with some extra features. The main goal was to create it as a module with simplified installation process.",
+    "description": "Magento 2 debug module based on Magento 1 Profiler with some extra features.",
     "type": "magento2-module",
     "license": [
         "OSL-3.0",
