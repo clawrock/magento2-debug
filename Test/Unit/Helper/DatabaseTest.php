@@ -62,31 +62,35 @@ class DatabaseTest extends TestCase
         $this->assertEquals(md5($query . implode(',', $params)), $this->database->getQueryId($profilerQueryMock));
     }
 
-    public function testReplaceQueryParameters()
+    /**
+     * @dataProvider queryParametersProvider
+     */
+    public function testReplaceQueryParameters($query, array $parameters, $result)
     {
-        $query = 'SELECT * FROM core_config_data WHERE path = :path';
-        $parameters = [':path' => 'web/secure/base_url'];
-        $result = 'SELECT * FROM core_config_data WHERE path = web/secure/base_url';
-        $this->resourceConnectionMock->expects($this->once())->method('getConnection')
+        $this->resourceConnectionMock->expects($this->exactly(count($parameters)))->method('getConnection')
             ->willReturn($this->connectionMock);
-        $this->connectionMock->expects($this->once())->method('quote')
-            ->with($parameters[':path'])
-            ->willReturn($parameters[':path']);
+
+        $this->connectionMock->expects($this->exactly(count($parameters)))->method('quote')
+            ->willReturnCallback(function () {
+                $args = func_get_args();
+                return $args[0];
+            });
 
         $this->assertEquals($result, $this->database->replaceQueryParameters($query, $parameters));
     }
 
-    public function testReplaceQueryParameters2()
+    public function queryParametersProvider()
     {
-        $query = 'SELECT * FROM core_config_data WHERE path = ?';
-        $parameters = ['web/secure/base_url'];
-        $result = 'SELECT * FROM core_config_data WHERE path = web/secure/base_url';
-        $this->resourceConnectionMock->expects($this->once())->method('getConnection')
-            ->willReturn($this->connectionMock);
-        $this->connectionMock->expects($this->once())->method('quote')
-            ->with($parameters[0])
-            ->willReturn($parameters[0]);
-
-        $this->assertEquals($result, $this->database->replaceQueryParameters($query, $parameters));
+        return [
+            ['SELECT * FROM core_config_data WHERE path = ?', [
+                'web/secure/base_url'
+            ], 'SELECT * FROM core_config_data WHERE path = web/secure/base_url'],
+            ['INSERT INTO `table` (`field1`, `field2`) VALUES (\'2000-01-01 10:00:00\', ?)', [
+                'value',
+            ], 'INSERT INTO `table` (`field1`, `field2`) VALUES (\'2000-01-01 10:00:00\', value)'],
+            ['SELECT * FROM core_config_data WHERE path = :path', [
+                ':path' => 'web/unsecure/base_url'
+            ], 'SELECT * FROM core_config_data WHERE path = web/unsecure/base_url'],
+        ];
     }
 }
