@@ -6,6 +6,7 @@ use ClawRock\Debug\Exception\CollectorNotFoundException;
 use ClawRock\Debug\Model\Config\Source\ErrorHandler;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -84,8 +85,12 @@ class Config
             return false;
         }
 
-        if ($this->appState->getAreaCode() === Area::AREA_ADMINHTML && !$this->isAdminhtmlActive()) {
-            return false;
+        try {
+            if ($this->appState->getAreaCode() === Area::AREA_ADMINHTML && !$this->isAdminhtmlActive()) {
+                return false;
+            }
+        } catch (LocalizedException $e) {
+            return true;
         }
 
         return true;
