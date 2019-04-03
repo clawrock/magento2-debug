@@ -26,6 +26,8 @@ class ConfigTest extends TestCase
      */
     private $scopeConfigMock;
 
+    private $deploymentConfigMock;
+
     private $httpStorageMock;
 
     /**
@@ -52,6 +54,10 @@ class ConfigTest extends TestCase
 
         $this->scopeConfigMock = $this->getMockForAbstractClass(ScopeConfigInterface::class);
 
+        $this->deploymentConfigMock = $this->getMockBuilder(\Magento\Framework\App\DeploymentConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->httpStorageMock = $this->getMockBuilder(HttpStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -60,6 +66,7 @@ class ConfigTest extends TestCase
             'phraseFactory' => $this->phraseFactoryMock,
             'appState' => $this->appStateMock,
             'scopeConfig' => $this->scopeConfigMock,
+            'deploymentConfig' => $this->deploymentConfigMock,
             'httpStorage' => $this->httpStorageMock,
         ]);
     }
@@ -91,6 +98,11 @@ class ConfigTest extends TestCase
         $this->scopeConfigMock->expects($this->once())->method('getValue')
             ->with(Config::CONFIG_COLLECTOR_DATABASE, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
             ->willReturn('1');
+
+        $this->deploymentConfigMock->expects($this->once())->method('get')
+            ->with('db/connection/default/profiler/enabled')
+            ->willReturn(true);
+
         $this->assertTrue($this->config->isDatabaseCollectorEnabled());
     }
 

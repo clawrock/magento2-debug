@@ -50,6 +50,11 @@ class Config
     private $scopeConfig;
 
     /**
+     * @var \Magento\Framework\App\DeploymentConfig
+     */
+    private $deploymentConfig;
+
+    /**
      * @var \ClawRock\Debug\Model\Storage\HttpStorage
      */
     private $httpStorage;
@@ -58,11 +63,13 @@ class Config
         \Magento\Framework\PhraseFactory $phraseFactory,
         \Magento\Framework\App\State $appState,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\App\DeploymentConfig $deploymentConfig,
         \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
         $this->phraseFactory = $phraseFactory;
         $this->appState = $appState;
         $this->scopeConfig = $scopeConfig;
+        $this->deploymentConfig = $deploymentConfig;
         $this->httpStorage = $httpStorage;
     }
 
@@ -196,10 +203,10 @@ class Config
 
     public function isDatabaseCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::CONFIG_COLLECTOR_DATABASE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
+        ) && $this->deploymentConfig->get('db/connection/default/profiler/enabled');
     }
 
     public function isEventCollectorEnabled(): bool
