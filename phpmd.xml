@@ -16,4 +16,8 @@
         <exclude name="LongVariable" />
     </rule>
     <rule ref="rulesets/unusedcode.xml" />
+    <exclude-pattern>etc</exclude-pattern>
+    <exclude-pattern>Test</exclude-pattern>
+    <exclude-pattern>view</exclude-pattern>
+    <exclude-pattern>vendor</exclude-pattern>
 </ruleset>
