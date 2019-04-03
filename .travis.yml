@@ -10,9 +10,9 @@ install:
   - composer install --prefer-dist
 
 script:
-  - php vendor/bin/phpcs --standard=PSR2 Api Controller Exception Helper Logger Model Observer Plugin Serializer Test
-  - php vendor/bin/phpmd Api,Controller,Exception,Helper,Logger,Model,Observer,Plugin,Serializer text phpmd.xml
-  - php vendor/bin/phpcpd Api Controller Exception Helper Logger Model Observer Plugin Serializer
+  - php vendor/bin/phpcs --standard=PSR2 --extensions=php --ignore=etc,view,vendor .
+  - php vendor/bin/phpmd . text phpmd.xml --suffixes=php
+  - php vendor/bin/phpcpd . --exclude=etc --exclude=Test --exclude=view --exclude=vendor
   - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:

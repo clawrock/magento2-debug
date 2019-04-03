@@ -84,4 +84,12 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ClawRock_Debug::enable_database_profiler" xsi:type="object">ClawRock\Debug\Console\Command\DatabaseProfilerEnableCommand</item>
+                <item name="ClawRock_Debug::disable_database_profiler" xsi:type="object">ClawRock\Debug\Console\Command\DatabaseProfilerDisableCommand</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

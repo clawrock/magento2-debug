@@ -6,6 +6,7 @@ use ClawRock\Debug\Exception\CollectorNotFoundException;
 use ClawRock\Debug\Model\Config\Source\ErrorHandler;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -49,6 +50,11 @@ class Config
     private $scopeConfig;
 
     /**
+     * @var \Magento\Framework\App\DeploymentConfig
+     */
+    private $deploymentConfig;
+
+    /**
      * @var \ClawRock\Debug\Model\Storage\HttpStorage
      */
     private $httpStorage;
@@ -57,11 +63,13 @@ class Config
         \Magento\Framework\PhraseFactory $phraseFactory,
         \Magento\Framework\App\State $appState,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\App\DeploymentConfig $deploymentConfig,
         \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
         $this->phraseFactory = $phraseFactory;
         $this->appState = $appState;
         $this->scopeConfig = $scopeConfig;
+        $this->deploymentConfig = $deploymentConfig;
         $this->httpStorage = $httpStorage;
     }
 
@@ -84,8 +92,12 @@ class Config
             return false;
         }
 
-        if ($this->appState->getAreaCode() === Area::AREA_ADMINHTML && !$this->isAdminhtmlActive()) {
-            return false;
+        try {
+            if ($this->appState->getAreaCode() === Area::AREA_ADMINHTML && !$this->isAdminhtmlActive()) {
+                return false;
+            }
+        } catch (LocalizedException $e) {
+            return true;
         }
 
         return true;
@@ -191,10 +203,10 @@ class Config
 
     public function isDatabaseCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::CONFIG_COLLECTOR_DATABASE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
+        ) && $this->deploymentConfig->get('db/connection/default/profiler/enabled');
     }
 
     public function isEventCollectorEnabled(): bool
