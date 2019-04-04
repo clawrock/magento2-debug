@@ -39,6 +39,8 @@ interface ProfileInterface
 
     public function setFileSize(int $fileSize): ProfileInterface;
 
+    public function setRequestTime(string $requestTime): ProfileInterface;
+
     public function getStatus(): string;
 
     public function hasRedirect(): bool;

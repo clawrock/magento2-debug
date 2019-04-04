@@ -82,6 +82,7 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
     {
         $this->dataCollector->setData([
             self::START_TIME => $_SERVER['REQUEST_TIME_FLOAT'],
+            self::DURATION   => 0,
             self::EVENTS     => [],
         ]);
 
@@ -131,7 +132,7 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
         return self::NAME;
     }
 
-    public function getDuration()
+    public function getDuration(): string
     {
         return $this->formatter->microtime($this->dataCollector->getData(self::DURATION) ?? 0, 0);
     }

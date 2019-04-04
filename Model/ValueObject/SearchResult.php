@@ -44,6 +44,11 @@ class SearchResult
     private $fileSize;
 
     /**
+     * @var int
+     */
+    private $requestTime;
+
+    /**
      * @var string
      */
     private $parentToken;
@@ -61,7 +66,8 @@ class SearchResult
         int $time,
         string $statusCode,
         string $fileSize,
-        string $parentToken = null
+        string $parentToken = null,
+        string $requestTime = '0'
     ) {
         $this->token = $token;
         $this->ip = $ip;
@@ -72,6 +78,7 @@ class SearchResult
         $this->parentToken = $parentToken;
         $this->datetime = (new \DateTime())->setTimestamp($time);
         $this->fileSize = $fileSize;
+        $this->requestTime = $requestTime;
     }
 
     public static function createFromCsv(array $csv)
@@ -133,6 +140,14 @@ class SearchResult
     public function getFileSize(): string
     {
         return $this->fileSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestTime(): string
+    {
+        return $this->requestTime;
     }
 
     /**

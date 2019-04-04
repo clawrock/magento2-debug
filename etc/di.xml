@@ -47,6 +47,9 @@
     <type name="Magento\Eav\Model\Entity\AbstractEntity">
         <plugin name="ClawRock_Debug::model_collector_plugin" type="ClawRock\Debug\Plugin\Collector\ModelCollectorPlugin"/>
     </type>
+    <type name="ClawRock\Debug\Model\ProfileRepository">
+        <plugin name="ClawRock_Debug::request_time_plugin" type="ClawRock\Debug\Plugin\ProfileRepository\RequestTimePlugin"/>
+    </type>
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
             <argument name="sensitive" xsi:type="array">

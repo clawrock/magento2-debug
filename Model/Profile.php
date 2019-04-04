@@ -31,6 +31,7 @@ class Profile implements ProfileInterface
         'statusCode',
         'fileSize',
         'parentToken',
+        'requestTime',
     ];
 
     /**
@@ -102,6 +103,11 @@ class Profile implements ProfileInterface
      * @var int
      */
     private $fileSize;
+
+    /**
+     * @var float
+     */
+    private $requestTime = 0;
 
     public function __construct(
         $token,
@@ -306,6 +312,17 @@ class Profile implements ProfileInterface
     public function setFileSize(int $fileSize): ProfileInterface
     {
         $this->fileSize = $fileSize;
+
+        return $this;
+    }
+
+    /**
+     * @param string $requestTime
+     * @return \ClawRock\Debug\Api\Data\ProfileInterface
+     */
+    public function setRequestTime(string $requestTime): ProfileInterface
+    {
+        $this->requestTime = $requestTime;
 
         return $this;
     }
