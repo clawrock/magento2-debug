@@ -83,10 +83,6 @@
                     <label>Performance</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                 </field>
-                <field id="request" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
-                    <label>Request</label>
-                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
-                </field>
                 <field id="translation" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Translation</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
