@@ -124,10 +124,10 @@ class Config
 
     public function getAllowedIPs(): array
     {
-        return array_map('trim', explode(',', $this->scopeConfig->getValue(
+        return array_filter(array_map('trim', explode(',', $this->scopeConfig->getValue(
             self::CONFIG_ALLOWED_IPS,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        )));
+        ))));
     }
 
     /**
@@ -136,6 +136,10 @@ class Config
      */
     public function isAllowedIP(): bool
     {
+        if (empty($this->getAllowedIPs())) {
+            return true;
+        }
+
         return in_array($_SERVER['REMOTE_ADDR'], $this->getAllowedIPs());
     }
 

@@ -210,7 +210,7 @@ class ConfigTest extends TestCase
     public function testIsAllowedIP()
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->atLeastOnce())->method('getValue')
             ->with(Config::CONFIG_ALLOWED_IPS, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
             ->willReturn('127.0.0.1, 192.168.1.1');
         $this->assertTrue($this->config->isAllowedIP());
