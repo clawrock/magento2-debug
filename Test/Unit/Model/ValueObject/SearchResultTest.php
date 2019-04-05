@@ -17,8 +17,20 @@ class SearchResultTest extends TestCase
         $statusCode = 200;
         $fileSize = 1234;
         $parentToken = 'parent_token';
+        $requestTime = '25';
 
-        $searchResult = new SearchResult($token, $ip, $method, $url, $time, $statusCode, $fileSize, $parentToken);
+        $searchResult = new SearchResult(
+            $token,
+            $ip,
+            $method,
+            $url,
+            $time,
+            $statusCode,
+            $fileSize,
+            $parentToken,
+            $requestTime
+        );
+
         $this->assertEquals($token, $searchResult->getToken());
         $this->assertEquals($ip, $searchResult->getIp());
         $this->assertEquals($method, $searchResult->getMethod());
@@ -27,6 +39,7 @@ class SearchResultTest extends TestCase
         $this->assertEquals($statusCode, $searchResult->getStatusCode());
         $this->assertEquals($fileSize, $searchResult->getFileSize());
         $this->assertEquals($parentToken, $searchResult->getParentToken());
+        $this->assertEquals($requestTime, $searchResult->getRequestTime());
         $this->assertEquals($time, $searchResult->getDatetime()->getTimestamp());
         $this->assertEquals(SearchResult::STATUS_SUCCESS, $searchResult->getStatus());
 
@@ -38,7 +51,8 @@ class SearchResultTest extends TestCase
             $time,
             $statusCode,
             $fileSize,
-            $parentToken
+            $parentToken,
+            $requestTime
         ]);
 
         $this->assertEquals($searchResult, $searchResultFromCsv);
