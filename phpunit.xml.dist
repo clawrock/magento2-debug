@@ -7,6 +7,7 @@
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">Console</directory>
             <directory suffix=".php">Controller</directory>
             <directory suffix=".php">Helper</directory>
             <directory suffix=".php">Logger</directory>
