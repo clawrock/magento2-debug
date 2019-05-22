@@ -105,12 +105,12 @@ class Config
 
     public function isActive(): bool
     {
-        return $this->scopeConfig->getValue(self::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        return $this->scopeConfig->isSetFlag(self::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 
     public function isAdminhtmlActive(): bool
     {
-        return $this->scopeConfig->getValue(self::CONFIG_ENABLED_ADMINHTML, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        return $this->scopeConfig->isSetFlag(self::CONFIG_ENABLED_ADMINHTML, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 
     /**
@@ -175,7 +175,7 @@ class Config
 
     public function isAjaxCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_AJAX,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -183,7 +183,7 @@ class Config
 
     public function isCacheCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_CACHE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -191,7 +191,7 @@ class Config
 
     public function isConfigCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_CONFIG,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -199,7 +199,7 @@ class Config
 
     public function isCustomerCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_CUSTOMER,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -207,7 +207,7 @@ class Config
 
     public function isDatabaseCollectorEnabled(): bool
     {
-        return $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_DATABASE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         ) && $this->deploymentConfig->get('db/connection/default/profiler/enabled');
@@ -215,7 +215,7 @@ class Config
 
     public function isEventCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_EVENT,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -223,7 +223,7 @@ class Config
 
     public function isPluginCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_PLUGIN,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -231,7 +231,7 @@ class Config
 
     public function isLayoutCollectorEnabled(): bool
     {
-        return $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_LAYOUT,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         ) && !$this->httpStorage->isFPCRequest();
@@ -239,7 +239,7 @@ class Config
 
     public function isMemoryCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_MEMORY,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -247,7 +247,7 @@ class Config
 
     public function isModelCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_MODEL,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -255,7 +255,7 @@ class Config
 
     public function isTimeCollectorEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_TIME,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
@@ -263,7 +263,7 @@ class Config
 
     public function isTranslationCollectorEnabled(): bool
     {
-        return $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_COLLECTOR_TRANSLATION,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         ) && !$this->httpStorage->isFPCRequest();

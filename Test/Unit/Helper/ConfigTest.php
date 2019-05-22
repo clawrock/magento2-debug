@@ -77,12 +77,13 @@ class ConfigTest extends TestCase
 
         $this->appStateMock->expects($this->once())->method('getAreaCode')->willReturn(Area::AREA_FRONTEND);
 
-        $this->scopeConfigMock->expects($this->exactly(2))->method('getValue')
-            ->withConsecutive(
-                [Config::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT],
-                [Config::CONFIG_ERROR_HANDLER, ScopeConfigInterface::SCOPE_TYPE_DEFAULT]
-            )
-            ->willReturnOnConsecutiveCalls(true, ErrorHandler::WHOOPS);
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
+            ->with(Config::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+            ->willReturn(true);
+
+        $this->scopeConfigMock->expects($this->once())->method('getValue')
+            ->with(Config::CONFIG_ERROR_HANDLER, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+            ->willReturn(ErrorHandler::WHOOPS);
 
         $this->assertEquals(ErrorHandler::WHOOPS, $this->config->getErrorHandler());
     }
@@ -95,9 +96,9 @@ class ConfigTest extends TestCase
 
     public function testIsDatabaseCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_DATABASE, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
 
         $this->deploymentConfigMock->expects($this->once())->method('get')
             ->with('db/connection/default/profiler/enabled')
@@ -108,49 +109,49 @@ class ConfigTest extends TestCase
 
     public function testIsAjaxCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_AJAX, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isAjaxCollectorEnabled());
     }
 
     public function testIsAdminhtmlActive()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_ENABLED_ADMINHTML, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isAdminhtmlActive());
     }
 
     public function testIsConfigCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_CONFIG, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isConfigCollectorEnabled());
     }
 
     public function testIsModelCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_MODEL, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isModelCollectorEnabled());
     }
 
     public function testIsPluginCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_PLUGIN, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isPluginCollectorEnabled());
     }
 
     public function testIsTranslationCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_TRANSLATION, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isTranslationCollectorEnabled());
     }
 
@@ -164,44 +165,44 @@ class ConfigTest extends TestCase
 
     public function testIsLayoutCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_LAYOUT, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isLayoutCollectorEnabled());
     }
 
     public function testIsMemoryCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_MEMORY, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isMemoryCollectorEnabled());
     }
 
     public function testIsCustomerCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_CUSTOMER, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isCustomerCollectorEnabled());
     }
 
     public function testIsEnabledNotActive()
     {
         $this->appStateMock->expects($this->once())->method('getMode')->willReturn(State::MODE_DEVELOPER);
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('0');
+            ->willReturn(false);
         $this->assertFalse($this->config->isEnabled());
     }
 
     public function testIsDisabledForAdminhtml()
     {
-        $this->scopeConfigMock->expects($this->exactly(2))->method('getValue')
+        $this->scopeConfigMock->expects($this->exactly(2))->method('isSetFlag')
             ->withConsecutive(
                 [Config::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT],
                 [Config::CONFIG_ENABLED_ADMINHTML, ScopeConfigInterface::SCOPE_TYPE_DEFAULT]
-            )->willReturnOnConsecutiveCalls('1', '0');
+            )->willReturnOnConsecutiveCalls(true, false);
         $this->appStateMock->expects($this->once())->method('getMode')->willReturn(State::MODE_DEVELOPER);
         $this->appStateMock->expects($this->once())->method('getAreaCode')->willReturn(Area::AREA_ADMINHTML);
         $this->assertFalse($this->config->isEnabled());
@@ -218,9 +219,9 @@ class ConfigTest extends TestCase
 
     public function testIsTimeCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_TIME, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isTimeCollectorEnabled());
     }
 
@@ -269,25 +270,25 @@ class ConfigTest extends TestCase
 
     public function testIsCacheCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_CACHE, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isCacheCollectorEnabled());
     }
 
     public function testIsEventCollectorEnabled()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_COLLECTOR_EVENT, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('1');
+            ->willReturn(true);
         $this->assertTrue($this->config->isEventCollectorEnabled());
     }
 
     public function testIsActive()
     {
-        $this->scopeConfigMock->expects($this->once())->method('getValue')
+        $this->scopeConfigMock->expects($this->once())->method('isSetFlag')
             ->with(Config::CONFIG_ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-            ->willReturn('0');
+            ->willReturn(false);
         $this->assertFalse($this->config->isActive());
     }
 
