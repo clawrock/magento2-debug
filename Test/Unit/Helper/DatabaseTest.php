@@ -64,13 +64,18 @@ class DatabaseTest extends TestCase
 
     /**
      * @dataProvider queryParametersProvider
+     *
+     * @param string $query
+     * @param array  $parameters
+     * @param string $result
      */
     public function testReplaceQueryParameters($query, array $parameters, $result)
     {
-        $this->resourceConnectionMock->expects($this->exactly(count($parameters)))->method('getConnection')
+        $quoteValueCount = count($parameters) ?: 1;
+        $this->resourceConnectionMock->expects($this->exactly($quoteValueCount))->method('getConnection')
             ->willReturn($this->connectionMock);
 
-        $this->connectionMock->expects($this->exactly(count($parameters)))->method('quote')
+        $this->connectionMock->expects($this->exactly($quoteValueCount))->method('quote')
             ->willReturnCallback(function () {
                 $args = func_get_args();
                 return $args[0];
@@ -91,6 +96,11 @@ class DatabaseTest extends TestCase
             ['SELECT * FROM core_config_data WHERE path = :path', [
                 ':path' => 'web/unsecure/base_url'
             ], 'SELECT * FROM core_config_data WHERE path = web/unsecure/base_url'],
+            [
+                'SELECT COUNT(*) FROM table WHERE (url = \'https://example.com/?utm_source=backend\')',
+                [],
+                'SELECT COUNT(*) FROM table WHERE (url = \'https://example.com/?utm_source=backend\')',
+            ]
         ];
     }
 }
