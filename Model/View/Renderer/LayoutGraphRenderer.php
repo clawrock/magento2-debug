@@ -79,7 +79,8 @@ class LayoutGraphRenderer implements RendererInterface
                 $nodes[] = $this->layoutNodeFactory->create([
                     'block' => $block,
                     'layoutRenderTime' => $this->totalRenderTime,
-                    'children' => $children
+                    'children' => $children,
+                    'prefix' => ''
                 ]);
             }
         }
