@@ -1,5 +1,9 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
 $block->setData('excluded_ajax_paths', '^/_debug');
 ?>
 <script>
@@ -270,7 +274,9 @@ $block->setData('excluded_ajax_paths', '^/_debug');
                     path = url.substr(<?= /* @noEscape */ strlen(rtrim($block->getBaseUrl(), '/')); ?>);
                 }
 
-                if (!path.match(new RegExp(<?= /* @noEscape */ json_encode($block->getData('excluded_ajax_paths'));?>))) {
+                if (!path.match(new RegExp(
+                    <?= /* @noEscape */ json_encode($block->getData('excluded_ajax_paths'));?>
+                ))) {
                     var stackElement = {
                         loading: true,
                         error: false,
@@ -436,7 +442,8 @@ $block->setData('excluded_ajax_paths', '^/_debug');
 
                     Sfjs.addClass(element, 'sf-toggle-content');
 
-                    if (toggles[i].hasAttribute('data-toggle-initial') && toggles[i].getAttribute('data-toggle-initial') == 'display') {
+                    if (toggles[i].hasAttribute('data-toggle-initial')
+                        && toggles[i].getAttribute('data-toggle-initial') == 'display') {
                         Sfjs.addClass(element, 'sf-toggle-visible');
                         Sfjs.removeClass(element, 'sf-toggle-hidden');
                     } else {

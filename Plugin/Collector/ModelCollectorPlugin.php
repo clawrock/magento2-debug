@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Plugin\Collector;
 
@@ -10,20 +11,9 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
  */
 class ModelCollectorPlugin
 {
-    /**
-     * @var \ClawRock\Debug\Model\Collector\ModelCollector
-     */
-    private $modelCollector;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Debug
-     */
-    private $debug;
+    private \ClawRock\Debug\Model\Collector\ModelCollector $modelCollector;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
+    private \ClawRock\Debug\Helper\Debug $debug;
 
     public function __construct(
         \ClawRock\Debug\Model\Collector\ModelCollector $modelCollector,
@@ -35,6 +25,14 @@ class ModelCollectorPlugin
         $this->debug = $debug;
     }
 
+    /**
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $subject
+     * @param callable $proceed
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param mixed $value
+     * @param mixed $field
+     * @return mixed
+     */
     public function aroundLoad(AbstractResource $subject, callable $proceed, $object, $value, $field = null)
     {
         $time = microtime(true);
@@ -48,13 +46,19 @@ class ModelCollectorPlugin
         $this->modelCollector->log(new ModelAction(
             ModelAction::LOAD,
             get_class($object),
-            $this->formatter->microtime(microtime(true) - $time),
+            (float) $this->formatter->microtime(microtime(true) - $time),
             $trace
         ));
 
         return $result;
     }
 
+    /**
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $subject
+     * @param callable $proceed
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return mixed
+     */
     public function aroundSave(AbstractResource $subject, callable $proceed, $object)
     {
         $time = microtime(true);
@@ -68,13 +72,19 @@ class ModelCollectorPlugin
         $this->modelCollector->log(new ModelAction(
             ModelAction::SAVE,
             get_class($object),
-            $this->formatter->microtime(microtime(true) - $time),
+            (float) $this->formatter->microtime(microtime(true) - $time),
             $trace
         ));
 
         return $result;
     }
 
+    /**
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $subject
+     * @param callable $proceed
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return mixed
+     */
     public function aroundDelete(AbstractResource $subject, callable $proceed, $object)
     {
         $time = microtime(true);
@@ -88,7 +98,7 @@ class ModelCollectorPlugin
         $this->modelCollector->log(new ModelAction(
             ModelAction::DELETE,
             get_class($object),
-            $this->formatter->microtime(microtime(true) - $time),
+            (float) $this->formatter->microtime(microtime(true) - $time),
             $trace
         ));
 

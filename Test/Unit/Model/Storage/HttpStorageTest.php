@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Model\Storage;
 
@@ -7,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class HttpStorageTest extends TestCase
 {
-    public function testStorage()
+    public function testStorage(): void
     {
         $requestMock = $this->getMockBuilder(\Magento\Framework\HTTP\PhpEnvironment\Request::class)
             ->disableOriginalConstructor()

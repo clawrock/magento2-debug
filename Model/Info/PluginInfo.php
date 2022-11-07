@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
@@ -8,20 +9,9 @@ use Magento\Framework\Interception\DefinitionInterface;
 
 class PluginInfo
 {
-    /**
-     * @var array
-     */
-    private $plugins;
-
-    /**
-     * @var \Magento\Framework\Interception\PluginList\PluginList
-     */
-    private $pluginList;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Debug
-     */
-    private $debug;
+    private ?array $plugins = null;
+    private \Magento\Framework\Interception\PluginList\PluginList $pluginList;
+    private \ClawRock\Debug\Helper\Debug $debug;
 
     public function __construct(
         \Magento\Framework\Interception\PluginList\PluginList $pluginList,
@@ -35,21 +25,21 @@ class PluginInfo
     {
         $this->resolvePlugins();
 
-        return $this->plugins[PluginCollector::BEFORE];
+        return $this->plugins[PluginCollector::BEFORE] ?? [];
     }
 
     public function getAroundPlugins(): array
     {
         $this->resolvePlugins();
 
-        return $this->plugins[PluginCollector::AROUND];
+        return $this->plugins[PluginCollector::AROUND] ?? [];
     }
 
     public function getAfterPlugins(): array
     {
         $this->resolvePlugins();
 
-        return $this->plugins[PluginCollector::AFTER];
+        return $this->plugins[PluginCollector::AFTER] ?? [];
     }
 
     private function resolvePlugins(): void

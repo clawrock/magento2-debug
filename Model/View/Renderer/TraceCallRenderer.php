@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
@@ -7,23 +8,11 @@ use Magento\Framework\View\Element\Template;
 class TraceCallRenderer implements RendererInterface
 {
     const TEMPLATE = 'ClawRock_Debug::renderer/trace/call.phtml';
-
     const CALL_INFO = ['function', 'class', 'line', 'file'];
 
-    /**
-     * @var array
-     */
-    private $call;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \Magento\Framework\Filesystem\DirectoryList
-     */
-    private $directoryList;
+    private array $call;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \Magento\Framework\Filesystem\DirectoryList $directoryList;
 
     public function __construct(
         array $call,
@@ -56,6 +45,6 @@ class TraceCallRenderer implements RendererInterface
     {
         $rootDirectory = $this->directoryList->getRoot();
 
-        return (string) strpos($path, $rootDirectory) === 0 ? substr($path, strlen($rootDirectory)) : $path;
+        return (string) (strpos($path, $rootDirectory) === 0 ? substr($path, strlen($rootDirectory)) : $path);
     }
 }

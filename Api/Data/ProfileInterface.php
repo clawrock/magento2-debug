@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Api\Data;
 
@@ -9,7 +10,9 @@ interface ProfileInterface
 {
     public function getToken(): string;
 
-    public function getParent(): ProfileInterface;
+    public function setParent(ProfileInterface $parent): void;
+
+    public function getParent(): ?ProfileInterface;
 
     public function getIp(): string;
 
@@ -29,6 +32,8 @@ interface ProfileInterface
 
     public function getCollector(string $name): CollectorInterface;
 
+    public function getCollectors(): array;
+
     public function hasCollector(string $name): bool;
 
     public function getIndex(): array;
@@ -39,7 +44,9 @@ interface ProfileInterface
 
     public function setFileSize(int $fileSize): ProfileInterface;
 
-    public function setRequestTime(string $requestTime): ProfileInterface;
+    public function getRequestTime(): string;
+
+    public function setRequestTime(string $requestTime): void;
 
     public function getStatus(): string;
 

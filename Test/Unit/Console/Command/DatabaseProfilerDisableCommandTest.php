@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Console\Command;
 
 use ClawRock\Debug\Console\Command\DatabaseProfilerDisableCommand;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -13,32 +13,14 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class DatabaseProfilerDisableCommandTest extends TestCase
 {
-    /**
-     * @var \ClawRock\Debug\Model\Config\Database\ProfilerWriter|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $profilerWriterMock;
+    /** @var \ClawRock\Debug\Model\Config\Database\ProfilerWriter&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Config\Database\ProfilerWriter $profilerWriterMock;
+    private \Symfony\Component\Console\Application $application;
+    private \Symfony\Component\Console\Tester\CommandTester $commandTester;
+    private \Symfony\Component\Console\Command\Command $command;
+    private \ClawRock\Debug\Console\Command\DatabaseProfilerDisableCommand $commandObject;
 
-    /**
-     * @var \Symfony\Component\Console\Application
-     */
-    private $application;
-
-    /**
-     * @var \Symfony\Component\Console\Tester\CommandTester
-     */
-    private $commandTester;
-
-    /**
-     * @var \Symfony\Component\Console\Command\Command
-     */
-    private $command;
-
-    /**
-     * @var \ClawRock\Debug\Console\Command\DatabaseProfilerDisableCommand
-     */
-    private $commandObject;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -47,16 +29,13 @@ class DatabaseProfilerDisableCommandTest extends TestCase
             ->getMock();
 
         $this->application = new Application();
-        $this->commandObject = (new ObjectManager($this))->getObject(DatabaseProfilerDisableCommand::class, [
-            'profilerWriter' => $this->profilerWriterMock,
-        ]);
-
+        $this->commandObject = new DatabaseProfilerDisableCommand($this->profilerWriterMock);
         $this->application->add($this->commandObject);
         $this->command = $this->application->find('debug:db-profiler:disable');
         $this->commandTester = new CommandTester($this->command);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->profilerWriterMock->expects($this->once())->method('save')->with(false);
         $this->commandTester->execute(['command' => $this->command->getName()]);

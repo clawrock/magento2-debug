@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View;
 
@@ -8,20 +9,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Summary implements ArgumentInterface
 {
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $url;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\RedirectRendererFactory
-     */
-    private $redirectRendererFactory;
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
+    private \ClawRock\Debug\Helper\Url $url;
+    private \ClawRock\Debug\Model\View\Renderer\RedirectRendererFactory $redirectRendererFactory;
 
     public function __construct(
         \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
@@ -38,7 +28,7 @@ class Summary implements ArgumentInterface
         return $this->profileMemoryStorage->read();
     }
 
-    public function getProfilerUrl($token): string
+    public function getProfilerUrl(string $token): string
     {
         return $this->url->getProfilerUrl($token);
     }

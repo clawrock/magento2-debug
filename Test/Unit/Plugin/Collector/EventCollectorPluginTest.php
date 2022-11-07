@@ -1,26 +1,25 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Plugin\Collector;
 
 use ClawRock\Debug\Plugin\Collector\EventCollectorPlugin;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class EventCollectorPluginTest extends TestCase
 {
-    private $eventCollectorMock;
+    /** @var \ClawRock\Debug\Model\Collector\EventCollector&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Collector\EventCollector $eventCollectorMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    /** @var \Magento\Framework\Event&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event $eventMock;
+    private \Closure $proceedMock;
+    /** @var \Magento\Framework\Event\Invoker\InvokerDefault&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Invoker\InvokerDefault $subjectMock;
+    private \ClawRock\Debug\Plugin\Collector\EventCollectorPlugin $plugin;
 
-    private $observerMock;
-
-    private $eventMock;
-
-    private $proceedMock;
-
-    private $subjectMock;
-
-    private $plugin;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventCollectorMock = $this->getMockBuilder(\ClawRock\Debug\Model\Collector\EventCollector::class)
             ->disableOriginalConstructor()
@@ -42,12 +41,10 @@ class EventCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = (new ObjectManager($this))->getObject(EventCollectorPlugin::class, [
-            'eventCollector' => $this->eventCollectorMock,
-        ]);
+        $this->plugin = new EventCollectorPlugin($this->eventCollectorMock);
     }
 
-    public function testAroundDispatch()
+    public function testAroundDispatch(): void
     {
         $configuration = ['name' => 'observer_name', 'instance' => 'observer_instance'];
 

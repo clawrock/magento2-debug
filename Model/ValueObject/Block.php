@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -7,121 +8,66 @@ use ClawRock\Debug\Model\Collector\LayoutCollector;
 
 class Block implements LoggableInterface
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
-     * @var string
-     */
-    private $module;
-
-    /**
-     * @var float
-     */
-    private $renderTime;
-
-    /**
-     * @var string
-     */
-    private $template;
-
-    /**
-     * @var array
-     */
-    private $children;
-
-    /**
-     * @var string
-     */
-    private $parentId;
+    private string $id;
+    private string $name;
+    private string $class;
+    private string $module;
+    private float $renderTime;
+    private string $template;
+    private array $children;
+    private string $parentId;
 
     public function __construct(\Magento\Framework\View\Element\AbstractBlock $block)
     {
-        $this->id = $block->getData(LayoutCollector::BLOCK_PROFILER_ID_KEY);
-        $this->name = $block->getNameInLayout();
+        $this->id = (string) $block->getData(LayoutCollector::BLOCK_PROFILER_ID_KEY);
+        $this->name = (string) $block->getNameInLayout();
         $this->class = get_class($block);
         $this->module = $block->getModuleName();
-        $this->renderTime = $block->getData(LayoutCollector::RENDER_TIME);
-        $this->template = $block->getTemplate();
+        $this->renderTime = (float) $block->getData(LayoutCollector::RENDER_TIME);
+        $this->template = (string) $block->getTemplate();
         $this->children = $block->getChildNames();
-        $this->parentId = $block->getParentBlock()
-            ? $block->getParentBlock()->getData(LayoutCollector::BLOCK_PROFILER_ID_KEY)
+        $this->parentId = $block->getParentBlock() instanceof \Magento\Framework\View\Element\AbstractBlock
+            ? (string) $block->getParentBlock()->getData(LayoutCollector::BLOCK_PROFILER_ID_KEY)
             : '';
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return string
-     */
     public function getModule(): string
     {
         return $this->module;
     }
 
-    /**
-     * @return float
-     */
     public function getRenderTime(): float
     {
         return $this->renderTime;
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
-        return (string) $this->template;
+        return $this->template;
     }
 
-    /**
-     * @return array
-     */
     public function getChildren(): array
     {
         return $this->children;
     }
 
-    /**
-     * @return string
-     */
     public function getParentId(): string
     {
-        return (string) $this->parentId;
+        return $this->parentId;
     }
 }

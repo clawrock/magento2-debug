@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -28,35 +29,12 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
     const ERROR_THRESHOLD = 2000;
     const WARNING_THRESHOLD = 1000;
 
-    /**
-     * @var \Magento\Framework\Serialize\SerializerInterface
-     */
-    private $serializer;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver
-     */
-    private $stopwatchDriver;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
+    private \Magento\Framework\Serialize\SerializerInterface $serializer;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
 
     public function __construct(
         \Magento\Framework\Serialize\SerializerInterface $serializer,
@@ -81,6 +59,7 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
     public function collect(): CollectorInterface
     {
         $this->dataCollector->setData([
+            // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageWarning
             self::START_TIME => $_SERVER['REQUEST_TIME_FLOAT'],
             self::DURATION   => 0,
             self::EVENTS     => [],
@@ -107,9 +86,6 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isTimeCollectorEnabled();
@@ -137,17 +113,17 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
         return $this->formatter->microtime($this->dataCollector->getData(self::DURATION) ?? 0, 0);
     }
 
-    public function getStartTime()
+    public function getStartTime(): int
     {
         return $this->dataCollector->getData(self::START_TIME) ?? 0;
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         return $this->dataCollector->getData(self::EVENTS) ?? [];
     }
 
-    public function getEvent($event)
+    public function getEvent(string $event): ?\Symfony\Component\Stopwatch\StopwatchEvent
     {
         return $this->dataCollector->getData(self::EVENTS)[$event] ?? null;
     }
@@ -163,26 +139,25 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
         return $colors;
     }
 
-    public function getJsColors()
+    public function getJsColors(): string
     {
-        return $this->serializer->serialize($this->getColors());
+        return (string) $this->serializer->serialize($this->getColors());
     }
 
     public function getJsTimeline(): string
     {
-        /** @var \Symfony\Component\Stopwatch\StopwatchEvent $mainEvent */
         $mainEvent = $this->getEvent('__section__');
         if (!$mainEvent) {
-            return $this->serializer->serialize([]);
+            return (string) $this->serializer->serialize([]);
         }
 
-        return $this->serializer->serialize([
+        return (string) $this->serializer->serialize([
             'max' => sprintf('%f', $mainEvent->getEndTime()),
             'data' => [$this->getTimelineData()],
         ]);
     }
 
-    private function getTimelineData()
+    private function getTimelineData(): array
     {
         $data = [];
 
@@ -197,7 +172,7 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
             foreach ($event->getPeriods() as $period) {
                 $periods[] = [
                     'start' => sprintf('%f', $period->getStartTime()),
-                    'end'   => sprintf('%f', $period->getEndTime())
+                    'end'   => sprintf('%f', $period->getEndTime()),
                 ];
             }
 
@@ -209,7 +184,7 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
                 'endtime'   => sprintf('%f', $event->getEndTime()),
                 'duration'  => sprintf('%f', $event->getDuration()),
                 'memory'    => sprintf('%.1f', $event->getMemory() / 1024 / 1024),
-                'periods'   => $periods
+                'periods'   => $periods,
             ];
         }
 
@@ -219,7 +194,7 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
         return [
             'id'     => $this->profileMemoryStorage->read()->getToken(),
             'left'   => $mainEvent->getStartTime(),
-            'events' => $data
+            'events' => $data,
         ];
     }
 

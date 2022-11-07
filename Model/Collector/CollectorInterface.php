@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -11,9 +12,6 @@ interface CollectorInterface
 
     public function collect(): CollectorInterface;
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool;
 
     public function getData(): array;

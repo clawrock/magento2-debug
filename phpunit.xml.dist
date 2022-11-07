@@ -1,12 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<phpunit bootstrap="./vendor/autoload.php">
-    <testsuites>
-        <testsuite name="ClawRock_Debug module">
-            <directory>Test/Unit</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" colors="true" columns="max" beStrictAboutTestsThatDoNotTestAnything="false" bootstrap="./vendor/autoload.php" cacheResult="false">
+    <coverage processUncoveredFiles="true">
+        <include>
             <directory suffix=".php">Console</directory>
             <directory suffix=".php">Controller</directory>
             <directory suffix=".php">Helper</directory>
@@ -15,9 +10,14 @@
             <directory suffix=".php">Observer</directory>
             <directory suffix=".php">Plugin</directory>
             <directory suffix=".php">Serializer</directory>
-            <exclude>
-                <directory>Test</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <directory>Test</directory>
+        </exclude>
+    </coverage>
+    <testsuites>
+        <testsuite name="Przelewy24 Magento module">
+            <directory>Test/Unit</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

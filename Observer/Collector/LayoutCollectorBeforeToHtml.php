@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Observer\Collector;
 
@@ -8,7 +9,7 @@ use Magento\Framework\Event\ObserverInterface;
 
 class LayoutCollectorBeforeToHtml implements ObserverInterface
 {
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         /** @var \Magento\Framework\View\Element\AbstractBlock $block */
         $block = $observer->getBlock();
@@ -19,7 +20,7 @@ class LayoutCollectorBeforeToHtml implements ObserverInterface
             LayoutCollector::BLOCK_HASH_KEY => spl_object_hash($block),
         ]);
 
-        if ($block->getParentBlock()) {
+        if ($block->getParentBlock() instanceof \Magento\Framework\View\Element\AbstractBlock) {
             $block->addData([
                 LayoutCollector::BLOCK_PARENT_PROFILER_ID_KEY => $block->getParentBlock()
                     ->getData(LayoutCollector::BLOCK_PROFILER_ID_KEY),

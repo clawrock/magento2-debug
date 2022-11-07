@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Controller\Profiler;
 
@@ -7,54 +8,37 @@ use ClawRock\Debug\Api\ProfileRepositoryInterface;
 use ClawRock\Debug\Controller\Profiler\Toolbar;
 use ClawRock\Debug\Model\Profiler;
 use ClawRock\Debug\Model\Storage\ProfileMemoryStorage;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use Magento\Framework\View\Result\Page;
 use PHPUnit\Framework\TestCase;
 
 class ToolbarTest extends TestCase
 {
-    private $resultFactoryMock;
+    /** @var \Magento\Framework\Controller\ResultFactory&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Controller\ResultFactory $resultFactoryMock;
+    /** @var \Magento\Framework\View\Result\Page&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\View\Result\Page $resultMock;
+    /** @var \Magento\Framework\App\RequestInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\App\RequestInterface $requestMock;
+    /** @var \ClawRock\Debug\Api\ProfileRepositoryInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepositoryMock;
+    /** @var \ClawRock\Debug\Api\Data\ProfileInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Api\Data\ProfileInterface $profileMock;
+    /** @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorageMock;
+    private \ClawRock\Debug\Controller\Profiler\Toolbar $controller;
 
-    private $resultMock;
-
-    /**
-     * @var \Magento\Framework\App\RequestInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $requestMock;
-
-    private $contextMock;
-
-    private $profileRepositoryMock;
-
-    private $profileMock;
-
-    private $profileMemoryStorageMock;
-
-    private $controller;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->resultFactoryMock = $this->getMockBuilder(ResultFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->resultMock = $this->getMockBuilder(Page::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->requestMock = $this->getMockForAbstractClass(RequestInterface::class);
-
-        $this->contextMock = $this->getMockBuilder(Context::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->contextMock->expects($this->once())->method('getResultFactory')->willReturn($this->resultFactoryMock);
-        $this->contextMock->expects($this->once())->method('getRequest')->willReturn($this->requestMock);
+        $this->requestMock = $this->getMockForAbstractClass(\Magento\Framework\App\RequestInterface::class);
 
         $this->profileRepositoryMock = $this->getMockForAbstractClass(ProfileRepositoryInterface::class);
 
@@ -64,14 +48,15 @@ class ToolbarTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->controller = (new ObjectManager($this))->getObject(Toolbar::class, [
-            'context' => $this->contextMock,
-            'profileRepository' => $this->profileRepositoryMock,
-            'profileMemoryStorage' => $this->profileMemoryStorageMock,
-        ]);
+        $this->controller = new Toolbar(
+            $this->resultFactoryMock,
+            $this->requestMock,
+            $this->profileMemoryStorageMock,
+            $this->profileRepositoryMock
+        );
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $token = 'token';
         $this->requestMock->expects($this->once())->method('getParam')

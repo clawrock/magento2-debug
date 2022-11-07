@@ -1,24 +1,28 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
-use Symfony\Component\VarDumper\VarDumper;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
-class VarRenderer implements RendererInterface
+class VarRenderer
 {
-    private $variable;
+    private \Symfony\Component\VarDumper\Cloner\VarCloner $cloner;
+    private \Symfony\Component\VarDumper\Dumper\HtmlDumper $dumper;
 
-    public function __construct($variable)
+    public function __construct()
     {
-        $this->variable = $variable;
+        $this->cloner = new VarCloner();
+        $this->dumper = new HtmlDumper();
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param mixed $value
      * @return string
      */
-    public function render(): string
+    public function render($value): string
     {
-        return (string) VarDumper::dump($this->variable);
+        return (string) $this->dumper->dump($this->cloner->cloneVar($value), true);
     }
 }

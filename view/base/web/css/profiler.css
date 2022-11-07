@@ -389,7 +389,7 @@ table tbody ul {
 }
 
 .nowrap {
-    white-space: pre;
+    white-space: nowrap;
 }
 
 .newline {

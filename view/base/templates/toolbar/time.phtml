@@ -1,20 +1,29 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\TimeCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\TimeCollector $collector
+ */
 $collector = $block->getCollector();
 $token = $block->getToken();
 ?>
-<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
-    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+<div class="
+    sf-toolbar-block
+    sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>
+    sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>
+">
+    <a target="_blank" href="<?= $escaper->escapeUrl($block->getProfilerUrl()); ?>">
         <div class="sf-toolbar-icon">
             <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/time.svg'); ?>"
-                 alt="<?= $block->escapeHtmlAttr(__('Time')) ?>"/>
+                 alt="<?= $escaper->escapeHtmlAttr(__('Time')) ?>"/>
             <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getDuration() ?></span>
             <span class="sf-toolbar-label">ms</span>
         </div>
         <div class="sf-toolbar-info">
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Total Time')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Total Time')); ?></strong>
                 <span><?= /* @noEscape */ $collector->getDuration() ?> ms</span>
             </div>
         </div>

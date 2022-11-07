@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer\Collector;
 
@@ -7,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 
 class LayoutCollectorBeforeToHtmlTest extends TestCase
 {
-    private $blockMock;
+    /** @var \Magento\Framework\View\Element\AbstractBlock&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\View\Element\AbstractBlock $blockMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    private \ClawRock\Debug\Observer\Collector\LayoutCollectorBeforeToHtml $observer;
 
-    private $observerMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->blockMock = $this->getMockBuilder(\Magento\Framework\View\Element\AbstractBlock::class)
             ->disableOriginalConstructor()
@@ -27,7 +28,7 @@ class LayoutCollectorBeforeToHtmlTest extends TestCase
         $this->observer = new LayoutCollectorBeforeToHtml();
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->observerMock->expects($this->once())->method('getBlock')->willReturn($this->blockMock);
         $this->blockMock->expects($this->exactly(2))->method('addData');

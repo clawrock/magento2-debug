@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Plugin\ErrorHandler;
 
@@ -6,25 +7,11 @@ use ClawRock\Debug\Model\Config\Source\ErrorHandler;
 use Magento\Framework\App\Bootstrap;
 use Magento\Framework\App\Http;
 
-/**
- * @SuppressWarnings(PHPMD.UnusedFormalParameter)
- */
 class WhoopsPlugin
 {
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \Whoops\RunFactory
-     */
-    private $whoopsFactory;
-
-    /**
-     * @var \Whoops\Handler\PrettyPageHandlerFactory
-     */
-    private $prettyPageHandlerFactory;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \Whoops\RunFactory $whoopsFactory;
+    private \Whoops\Handler\PrettyPageHandlerFactory $prettyPageHandlerFactory;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -36,7 +23,15 @@ class WhoopsPlugin
         $this->prettyPageHandlerFactory = $prettyPageHandlerFactory;
     }
 
-    public function beforeCatchException(Http $subject, Bootstrap $bootstrap, \Exception $exception)
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param \Magento\Framework\App\Http $subject
+     * @param \Magento\Framework\App\Bootstrap $bootstrap
+     * @param \Exception $exception
+     * @return array
+     */
+    public function beforeCatchException(Http $subject, Bootstrap $bootstrap, \Exception $exception): array
     {
         if ($this->config->getErrorHandler() === ErrorHandler::WHOOPS) {
             $whoops = $this->whoopsFactory->create();

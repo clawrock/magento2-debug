@@ -1,11 +1,16 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\CacheCollector $collector */
-$collector = $block->getCollector();
-/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Profiler $viewModel
+ * @var \ClawRock\Debug\Model\Collector\CacheCollector $collector
+ */
 $viewModel = $block->getViewModel();
+$collector = $block->getCollector();
 ?>
-<h2><?= $block->escapeHtml(__('Cache metrics')) ?></h2>
+<h2><?= $escaper->escapeHtml(__('Cache metrics')) ?></h2>
 <div class="metrics">
     <?php foreach ($collector->getStats() as $key => $value): ?>
         <div class="metric">
@@ -15,20 +20,20 @@ $viewModel = $block->getViewModel();
     <?php endforeach; ?>
     <div class="metric">
         <span class="value"><?= /* @noEscape */ $collector->getTotalTime() ?> ms</span>
-        <span class="label"><?= $block->escapeHtml(__('Time')) ?></span>
+        <span class="label"><?= $escaper->escapeHtml(__('Time')) ?></span>
     </div>
 </div>
-<h2><?= $block->escapeHtml(__('Cache configuration')) ?></h2>
+<h2><?= $escaper->escapeHtml(__('Cache configuration')) ?></h2>
 <table class="cache-table">
     <thead>
         <tr>
-            <th class="key"><?= $block->escapeHtml(__('Id')) ?></th>
-            <th><?= $block->escapeHtml(__('Type')) ?></th>
-            <th class="text-center"><?= $block->escapeHtml(__('Profiled Status')) ?></th>
-            <th class="text-center"><?= $block->escapeHtml(__('Current Status')) ?></th>
-            <th class="text-center"><?= $block->escapeHtml(__('Valid')) ?></th>
+            <th class="key"><?= $escaper->escapeHtml(__('Id')) ?></th>
+            <th><?= $escaper->escapeHtml(__('Type')) ?></th>
+            <th class="text-center"><?= $escaper->escapeHtml(__('Profiled Status')) ?></th>
+            <th class="text-center"><?= $escaper->escapeHtml(__('Current Status')) ?></th>
+            <th class="text-center"><?= $escaper->escapeHtml(__('Valid')) ?></th>
             <th class="text-right">
-                <a data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/clean', ['type' => 'all'])) ?>"
+                <a data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/clean', ['type' => 'all'])) ?>"
                    class="btn btn-sm ajax-action">Clean all</a>
             </th>
         </tr>
@@ -40,48 +45,75 @@ $viewModel = $block->getViewModel();
                 <td><?= /* @noEscape */ $cache->getCacheType() ?></td>
                 <td class="text-center">
                     <?php if ($cache->getStatus()): ?>
-                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
-                             alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                        <img src="
+                        <?= $escaper->escapeUrl(
+                            $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg')
+                        ); ?>
+                        " alt="<?= $escaper->escapeHtmlAttr(__('Yes')) ?>"/>
                     <?php else: ?>
-                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
-                             alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                        <img src="
+                        <?= $escaper->escapeUrl(
+                            $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg')
+                        ); ?>
+                        " alt="<?= $escaper->escapeHtmlAttr(__('No')) ?>"/>
                     <?php endif; ?>
                 </td>
                 <td class="text-center">
                     <?php if ($collector->getCacheCurrentStatus($cache->getId())): ?>
-                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
-                             alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                        <img src="
+                        <?= $escaper->escapeUrl(
+                            $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg')
+                        ); ?>
+                        " alt="<?= $escaper->escapeHtmlAttr(__('Yes')) ?>"/>
                     <?php else: ?>
-                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
-                             alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                        <img src="
+                        <?= $escaper->escapeUrl(
+                            $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg')
+                        ); ?>
+                        " alt="<?= $escaper->escapeHtmlAttr(__('No')) ?>"/>
                     <?php endif; ?>
                 </td>
                 <td class="text-center">
                     <?php if (!$collector->getCacheCurrentStatus($cache->getId())): ?>
-                        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
-                             alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                        <img src="
+                        <?= $escaper->escapeUrl(
+                            $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg')
+                        ); ?>
+                        " alt="<?= $escaper->escapeHtmlAttr(__('No')) ?>"/>
                     <?php else: ?>
                         <?php if ($collector->isInvalidated($cache->getId())): ?>
-                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
-                                 alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                            <img src="
+                            <?= $escaper->escapeUrl(
+                                $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg')
+                            ); ?>
+                            " alt="<?= $escaper->escapeHtmlAttr(__('No')) ?>"/>
                         <?php else: ?>
-                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
-                                 alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                            <img src="
+                            <?= $escaper->escapeUrl(
+                                $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg')
+                            ); ?>
+                            " alt="<?= $escaper->escapeHtmlAttr(__('Yes')) ?>"/>
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
                 <td class="text-right">
                     <?php if ($collector->getCacheCurrentStatus($cache->getId())): ?>
                         <a href="#"
-                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/clean', ['type' => $cache->getId()])) ?>"
-                           class="btn btn-sm ajax-action"><?= $block->escapeHtml(__('Clean')) ?></a>
+                           data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/clean', [
+                               'type' => $cache->getId(),
+                           ])) ?>"
+                           class="btn btn-sm ajax-action"><?= $escaper->escapeHtml(__('Clean')) ?></a>
                         <a href="#"
-                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/disable', ['type' => $cache->getId()])) ?>"
-                           class="btn btn-sm ajax-action"><?= $block->escapeHtml(__('Disable')) ?></a>
+                           data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/disable', [
+                               'type' => $cache->getId(),
+                           ])) ?>"
+                           class="btn btn-sm ajax-action"><?= $escaper->escapeHtml(__('Disable')) ?></a>
                     <?php else: ?>
                         <a href="#"
-                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/enable', ['type' => $cache->getId()])) ?>"
-                           class="btn btn-sm ajax-action"><?= $block->escapeHtml(__('Enable')) ?></a>
+                           data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/enable', [
+                               'type' => $cache->getId(),
+                           ])) ?>"
+                           class="btn btn-sm ajax-action"><?= $escaper->escapeHtml(__('Enable')) ?></a>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -89,12 +121,15 @@ $viewModel = $block->getViewModel();
     </tbody>
 </table>
 
-<h2><?= $block->escapeHtml(__('Cache Backend')) ?><br><small><?= /* @noEscape */ $collector->getBackendName() ?></small></h2>
+<h2>
+    <?= $escaper->escapeHtml(__('Cache Backend')) ?><br>
+    <small><?= /* @noEscape */ $collector->getBackendName() ?></small>
+</h2>
 <table>
     <thead>
         <tr>
-            <th><?= $block->escapeHtml(__('Key')) ?></th>
-            <th><?= $block->escapeHtml(__('Value')) ?></th>
+            <th><?= $escaper->escapeHtml(__('Key')) ?></th>
+            <th><?= $escaper->escapeHtml(__('Value')) ?></th>
         </tr>
     </thead>
     <tbody>
@@ -107,15 +142,15 @@ $viewModel = $block->getViewModel();
     </tbody>
 </table>
 
-<h2><?= $block->escapeHtml(__('Cache Calls')) ?></h2>
+<h2><?= $escaper->escapeHtml(__('Cache Calls')) ?></h2>
 <table>
     <thead>
         <tr>
             <th>#</th>
-            <th><?= $block->escapeHtml(__('Action')) ?></th>
+            <th><?= $escaper->escapeHtml(__('Action')) ?></th>
             <th style="width: 100%;">Id</th>
-            <th><?= $block->escapeHtml(__('Hit')) ?></th>
-            <th><?= $block->escapeHtml(__('Time')) ?></th>
+            <th><?= $escaper->escapeHtml(__('Hit')) ?></th>
+            <th><?= $escaper->escapeHtml(__('Time')) ?></th>
         </tr>
     </thead>
     <tbody>
@@ -129,7 +164,7 @@ $viewModel = $block->getViewModel();
                     <?php if ($action->hasTags()): ?>
                         <br>
                         <small>
-                            <strong><?= $block->escapeHtml(__('Tags')) ?>:</strong>
+                            <strong><?= $escaper->escapeHtml(__('Tags')) ?>:</strong>
                             <?= /* @noEscape */ implode(', ', $action->getTags()) ?>
                         </small>
                     <?php endif; ?>
@@ -138,16 +173,24 @@ $viewModel = $block->getViewModel();
                     <?php if (!$action->isLoad()): ?>
                         -
                     <?php else: ?>
-                        <?php if ($action->isHit()) : ?>
-                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg'); ?>"
-                                 alt="<?= $block->escapeHtmlAttr(__('Yes')) ?>"/>
+                        <?php if ($action->isHit()): ?>
+                            <img src="
+                            <?= $escaper->escapeUrl(
+                                $block->getViewFileUrl('ClawRock_Debug::images/icon/yes.svg')
+                            ); ?>
+                            " alt="<?= $escaper->escapeHtmlAttr(__('Yes')) ?>"/>
                         <?php else: ?>
-                            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg'); ?>"
-                                 alt="<?= $block->escapeHtmlAttr(__('No')) ?>"/>
+                            <img src="
+                            <?= $escaper->escapeUrl(
+                                $block->getViewFileUrl('ClawRock_Debug::images/icon/no.svg')
+                            ); ?>
+                            " alt="<?= $escaper->escapeHtmlAttr(__('No')) ?>"/>
                         <?php endif; ?>
                     <?php endif ?>
                 </td>
-                <td class="nowrap"><?= /* @noEscape */ $viewModel->getFormatter()->microtime($action->getTime()) ?> ms</td>
+                <td class="nowrap">
+                    <?= /* @noEscape */ $viewModel->getFormatter()->microtime($action->getTime()) ?> ms
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>

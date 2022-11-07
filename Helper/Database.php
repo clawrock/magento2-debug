@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Helper;
 
@@ -6,15 +7,8 @@ use Magento\Framework\App\ResourceConnection;
 
 class Database
 {
-    /**
-     * @var \Magento\Framework\App\ResourceConnection
-     */
-    private $resourceConnection;
-
-    /**
-     * @var array
-     */
-    private $formatterCache = [];
+    private \Magento\Framework\App\ResourceConnection $resourceConnection;
+    private array $formatterCache = [];
 
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resourceConnection
@@ -24,14 +18,22 @@ class Database
 
     public function getQueryId(\Zend_Db_Profiler_Query $query): string
     {
+        // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
         return md5($query->getQuery() . implode(',', $query->getQueryParams()));
     }
 
-    public function getDuplicatedQueries()
+    public function getDuplicatedQueries(): array
     {
+        /** @var \Magento\Framework\DB\Adapter\Pdo\Mysql $connection */
+        $connection = $this->resourceConnection->getConnection();
+        $queryProfiles = $connection->getProfiler()->getQueryProfiles();
+        if ($queryProfiles === false) {
+            return [];
+        }
+
         $queries = [];
         /** @var \Zend_Db_Profiler_Query $query */
-        foreach ($this->resourceConnection->getConnection()->getProfiler()->getQueryProfiles() as $query) {
+        foreach ($queryProfiles as $query) {
             $queryId = $this->getQueryId($query);
             if (!isset($queries[$queryId])) {
                 $queries[$queryId] = [
@@ -55,14 +57,9 @@ class Database
         return $queries;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param string $sql
-     * @return string
-     */
-    public function formatQuery(string $sql): string
+    public function formatQuery(string $sql): ?string
     {
-        $cacheKey = md5('f' . $sql);
+        $cacheKey = md5('f' . $sql); // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
         if (isset($this->formatterCache[$cacheKey])) {
             return $this->formatterCache[$cacheKey];
         }
@@ -74,14 +71,9 @@ class Database
         );
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param string $sql
-     * @return string
-     */
-    public function highlightQuery(string $sql): string
+    public function highlightQuery(string $sql): ?string
     {
-        $cacheKey = md5('h' . $sql);
+        $cacheKey = md5('h' . $sql); // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
         if (isset($this->formatterCache[$cacheKey])) {
             return $this->formatterCache[$cacheKey];
         }
@@ -93,7 +85,12 @@ class Database
         );
     }
 
-    public function replaceQueryParameters($query, array $parameters)
+    /**
+     * @param string $query
+     * @param array $parameters
+     * @return mixed
+     */
+    public function replaceQueryParameters(string $query, array $parameters)
     {
         $i = !array_key_exists(0, $parameters) && array_key_exists(1, $parameters) ? 1 : 0;
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Helper;
 
@@ -8,15 +9,8 @@ use Magento\Framework\View\Element\Template;
 
 class Injector
 {
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Toolbar
-     */
-    private $viewModel;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \ClawRock\Debug\Model\View\Toolbar $viewModel;
 
     public function __construct(
         \Magento\Framework\View\LayoutInterface $layout,
@@ -26,13 +20,13 @@ class Injector
         $this->viewModel = $viewModel;
     }
 
-    public function inject(Request $request, Response $response, $token = null)
+    public function inject(Request $request, Response $response, ?string $token = null): void
     {
         $content = $response->getBody();
         $pos = strripos($content, '</body>');
 
         if (false !== $pos) {
-            /** @var Toolbar $toolbarBlock */
+            /** @var \Magento\Framework\View\Element\Template $toolbarBlock */
             $toolbarBlock = $this->layout->createBlock(Template::class, 'debug.toolbar');
             $toolbarBlock->setTemplate('ClawRock_Debug::profiler/toolbar/js.phtml')->setData([
                 'view_model' => $this->viewModel,
@@ -40,7 +34,7 @@ class Injector
                 'request'   => $request,
             ]);
 
-            /** @var Template $jsBlock */
+            /** @var \Magento\Framework\View\Element\Template $jsBlock */
             $jsBlock = $this->layout->createBlock(Template::class, 'debug.profiler.js');
             $jsBlock->setTemplate('ClawRock_Debug::profiler/js.phtml');
 

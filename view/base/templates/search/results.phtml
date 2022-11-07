@@ -1,30 +1,37 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Search $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
-<?php $results = $block->getResults(); ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Search $viewModel
+ */
+$viewModel = $block->getViewModel();
+$results = $block->getResults();
+?>
 <div class="status">
     <div class="container">
         <h2>
-            <?= $block->escapeHtml(__('Profile Search')) ?>
-            <a href="<?= $block->escapeUrl($block->getUrl('*/*/purge')); ?>" class="btn btn-sm">
-                <?= $block->escapeHtml(__('Purge All')) ?>
+            <?= $escaper->escapeHtml(__('Profile Search')) ?>
+            <a href="<?= $escaper->escapeUrl($block->getUrl('*/*/purge')); ?>" class="btn btn-sm">
+                <?= $escaper->escapeHtml(__('Purge All')) ?>
             </a>
         </h2>
     </div>
 </div>
 <?php if ($results): ?>
-    <h3><?= count($results); ?> <?= $block->escapeHtml(__('results found')) ?></h3>
+    <h3><?= count($results); ?> <?= $escaper->escapeHtml(__('results found')) ?></h3>
     <table id="search-results">
         <thead>
             <tr>
-                <th style="width: 50px;" scope="col" class="text-center"><?= $block->escapeHtml(__('Status')) ?></th>
-                <th style="width: 50px;" scope="col" class="text-center"><?= $block->escapeHtml(__('Method')) ?></th>
-                <th style="width: 50px;" scope="col"><?= $block->escapeHtml(__('Time')) ?></th>
-                <th style="width: 110px;" scope="col"><?= $block->escapeHtml(__('IP')) ?></th>
-                <th scope="col"><?= $block->escapeHtml(__('URL')) ?></th>
-                <th style="width: 50px;" scope="col"><?= $block->escapeHtml(__('Size')) ?></th>
-                <th style="width: 80px;" scope="col"><?= $block->escapeHtml(__('Timestamp')) ?></th>
-                <th style="width: 50px;" class="text-center" scope="col"><?= $block->escapeHtml(__('Token')) ?></th>
+                <th style="width: 50px;" scope="col" class="text-center"><?= $escaper->escapeHtml(__('Status')) ?></th>
+                <th style="width: 50px;" scope="col" class="text-center"><?= $escaper->escapeHtml(__('Method')) ?></th>
+                <th style="width: 50px;" scope="col"><?= $escaper->escapeHtml(__('Time')) ?></th>
+                <th style="width: 110px;" scope="col"><?= $escaper->escapeHtml(__('IP')) ?></th>
+                <th scope="col"><?= $escaper->escapeHtml(__('URL')) ?></th>
+                <th style="width: 50px;" scope="col"><?= $escaper->escapeHtml(__('Size')) ?></th>
+                <th style="width: 80px;" scope="col"><?= $escaper->escapeHtml(__('Timestamp')) ?></th>
+                <th style="width: 50px;" class="text-center" scope="col"><?= $escaper->escapeHtml(__('Token')) ?></th>
             </tr>
         </thead>
         <tbody>
@@ -38,17 +45,25 @@
                     </td>
                     <td class="text-center"><?= /* @noEscape */ $result->getMethod() ?></td>
                     <td>
-                        <span class="nowrap"><?= /* @noEscape */ $result->getRequestTime() === '0' ? 'n/a' : $result->getRequestTime() . ' ms' ?></span>
+                        <span class="nowrap">
+                            <?= /* @noEscape */ $result->getRequestTime() === '0'
+                                ? 'n/a'
+                                : $result->getRequestTime() . ' ms' ?>
+                        </span>
                     </td>
                     <td><span class="nowrap"><?= /* @noEscape */ $result->getIp() ?></span></td>
                     <td class="break-long-words"><?= /* @noEscape */ $result->getUrl() ?></td>
-                    <td class="text-small nowrap"><?= /* @noEscape */ $viewModel->toMegaBytes($result->getFileSize()) ?> MB</td>
+                    <td class="text-small nowrap">
+                        <?= /* @noEscape */ $viewModel->toMegaBytes((int) $result->getFileSize()) ?> MB
+                    </td>
                     <td class="text-small">
                         <span class="nowrap"><?= /* @noEscape */ $result->getDatetime()->format('d-M-Y') ?></span>
-                        <span class="nowrap newline"><?= /* @noEscape */ $result->getDatetime()->format('H:i:s') ?></span>
+                        <span class="nowrap newline">
+                            <?= /* @noEscape */ $result->getDatetime()->format('H:i:s') ?>
+                        </span>
                     </td>
                     <td class="text-center">
-                        <a href="<?= $block->escapeUrl($viewModel->getProfilerUrl($result->getToken())); ?>">
+                        <a href="<?= $escaper->escapeUrl($viewModel->getProfilerUrl($result->getToken())); ?>">
                             <?= /* @noEscape */ $result->getToken() ?>
                         </a>
                     </td>
@@ -58,6 +73,6 @@
     </table>
 <?php else: ?>
     <div class="empty">
-        <p><?= $block->escapeHtml(__('No results found.')) ?></p>
+        <p><?= $escaper->escapeHtml(__('No results found.')) ?></p>
     </div>
 <?php endif ?>

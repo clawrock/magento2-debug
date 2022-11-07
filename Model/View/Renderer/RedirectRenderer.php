@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
@@ -35,8 +36,10 @@ class RedirectRenderer implements RendererInterface
 
     public function render(): string
     {
-        return $this->layout->createBlock(Template::class)
-            ->setTemplate(self::TEMPLATE)
+        /** @var \Magento\Framework\View\Element\Template $block */
+        $block = $this->layout->createBlock(Template::class);
+
+        return $block->setTemplate(self::TEMPLATE)
             ->setProfilerUrl($this->url->getProfilerUrl($this->redirect->getToken()))
             ->setRedirect($this->redirect)
             ->toHtml();

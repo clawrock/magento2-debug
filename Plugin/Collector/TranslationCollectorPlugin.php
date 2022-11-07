@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Plugin\Collector;
 
@@ -10,20 +11,9 @@ use Magento\Framework\Phrase\Renderer\Translate;
  */
 class TranslationCollectorPlugin
 {
-    /**
-     * @var \Magento\Framework\TranslateInterface
-     */
-    private $translate;
-
-    /**
-     * @var array
-     */
-    private $translations;
-
-    /**
-     * @var \ClawRock\Debug\Model\Collector\TranslationCollector
-     */
-    private $translationCollector;
+    private \Magento\Framework\TranslateInterface $translate;
+    private ?array $translations = null;
+    private \ClawRock\Debug\Model\Collector\TranslationCollector $translationCollector;
 
     public function __construct(
         \Magento\Framework\TranslateInterface $translate,
@@ -33,8 +23,9 @@ class TranslationCollectorPlugin
         $this->translationCollector = $translationCollector;
     }
 
-    public function beforeRender(Translate $subject, array $source, array $arguments)
+    public function beforeRender(Translate $subject, array $source, array $arguments): void
     {
+        /** @var string $text */
         $text = end($source);
         $text = str_replace('\"', '"', $text);
         $text = str_replace("\\'", "'", $text);
@@ -47,8 +38,6 @@ class TranslationCollectorPlugin
         }
 
         $this->translationCollector->log(new Translation(end($source), $translation, $isDefined));
-
-        return null;
     }
 
     private function getTranslations(): array

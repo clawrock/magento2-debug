@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -19,25 +20,10 @@ class CacheAction implements LoggableInterface
     const CACHE_ACTION = 'action';
     const CACHE_INFO   = 'info';
 
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var float
-     */
-    private $time;
-
-    /**
-     * @var array
-     */
-    private $info;
+    private string $id;
+    private string $name;
+    private float $time;
+    private array $info;
 
     public function __construct(string $id, string $name, float $time, array $info = [])
     {
@@ -47,17 +33,11 @@ class CacheAction implements LoggableInterface
         $this->info = $info;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -68,33 +48,21 @@ class CacheAction implements LoggableInterface
         return $this->name === self::LOAD;
     }
 
-    /**
-     * @return float
-     */
     public function getTime(): float
     {
         return $this->time;
     }
 
-    /**
-     * @return array
-     */
     public function getInfo(): array
     {
         return $this->info;
     }
 
-    /**
-     * @return bool
-     */
     public function isHit(): bool
     {
         return $this->info[self::CACHE_HIT] ?? false;
     }
 
-    /**
-     * @return array
-     */
     public function getTags(): array
     {
         return $this->info[self::CACHE_TAGS] ?? [];
@@ -107,6 +75,6 @@ class CacheAction implements LoggableInterface
 
     public function getTTL(): int
     {
-        return (int) $this->info[self::CACHE_TTL] ?? 0;
+        return (int) ($this->info[self::CACHE_TTL] ?? 0);
     }
 }

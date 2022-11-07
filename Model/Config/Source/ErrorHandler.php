@@ -1,15 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Config\Source;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class ErrorHandler implements ArrayInterface
+class ErrorHandler implements OptionSourceInterface
 {
     const MAGENTO = '0';
     const WHOOPS  = 'whoops';
 
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         return [
             ['value' => self::MAGENTO, 'label' => __('Default')],
@@ -17,7 +18,7 @@ class ErrorHandler implements ArrayInterface
         ];
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             self::MAGENTO => __('Default'),

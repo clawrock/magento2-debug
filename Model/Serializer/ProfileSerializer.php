@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Serializer;
 
@@ -6,20 +7,9 @@ use ClawRock\Debug\Api\Data\ProfileInterface;
 
 class ProfileSerializer
 {
-    /**
-     * @var \ClawRock\Debug\Serializer\SerializerInterface
-     */
-    private $serializer;
-
-    /**
-     * @var \ClawRock\Debug\Model\Serializer\CollectorSerializer
-     */
-    private $collectorSerializer;
-
-    /**
-     * @var \ClawRock\Debug\Model\ProfileFactory
-     */
-    private $profileFactory;
+    private \ClawRock\Debug\Serializer\SerializerInterface $serializer;
+    private \ClawRock\Debug\Model\Serializer\CollectorSerializer $collectorSerializer;
+    private \ClawRock\Debug\Model\ProfileFactory $profileFactory;
 
     public function __construct(
         \ClawRock\Debug\Serializer\SerializerInterface $serializer,

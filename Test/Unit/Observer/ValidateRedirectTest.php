@@ -1,24 +1,24 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer;
 
 use ClawRock\Debug\Observer\ValidateRedirect;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class ValidateRedirectTest extends TestCase
 {
-    private $sessionMock;
+    /** @var \ClawRock\Debug\Model\Session&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Session $sessionMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    /** @var \Magento\Framework\App\RequestInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\App\RequestInterface $requestMock;
+    private \ClawRock\Debug\Observer\ValidateRedirect $observer;
 
-    private $observerMock;
-
-    private $requestMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(\ClawRock\Debug\Model\Session\Proxy::class)
+        $this->sessionMock = $this->getMockBuilder(\ClawRock\Debug\Model\Session::class)
             ->setMethods(['getData'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -32,12 +32,10 @@ class ValidateRedirectTest extends TestCase
             ->setMethods(['setParam'])
             ->getMockForAbstractClass();
 
-        $this->observer = (new ObjectManager($this))->getObject(ValidateRedirect::class, [
-            'session' => $this->sessionMock,
-        ]);
+        $this->observer = new ValidateRedirect($this->sessionMock);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->sessionMock->expects($this->once())->method('getData')->willReturn('1');
         $this->observerMock->expects($this->once())->method('getRequest')->willReturn($this->requestMock);

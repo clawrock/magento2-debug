@@ -1,9 +1,15 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\ValueObject\LayoutNode $node */ ?>
-<?php $node = $block->getNode(); ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \ClawRock\Debug\Model\ValueObject\LayoutNode $node
+ */
+$node = $block->getNode();
+?>
 <div class="node">
     <?php if (!$node->getParentId()): ?>
-        <?php if (!$node->getName()) : ?>
+        <?php if (!$node->getName()): ?>
             <small><?= /* @noEscape */ $node->getClass() ?> | <?= /* @noEscape */ $node->getTemplate() ?></small>
         <?php else: ?>
             <strong title="<?= /* @noEscape */ $node->getClass() ?> | <?= /* @noEscape */ $node->getTemplate() ?>">

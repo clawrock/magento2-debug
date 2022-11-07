@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace ClawRock\Debug\Model;
@@ -14,15 +13,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class ProfileRepository implements ProfileRepositoryInterface
 {
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileFileStorage
-     */
-    private $fileStorage;
-
-    /**
-     * @var \ClawRock\Debug\Model\Profile\CriteriaFactory
-     */
-    private $criteriaFactory;
+    private \ClawRock\Debug\Model\Storage\ProfileFileStorage $fileStorage;
+    private \ClawRock\Debug\Model\Profile\CriteriaFactory $criteriaFactory;
 
     public function __construct(
         \ClawRock\Debug\Model\Storage\ProfileFileStorage $fileStorage,
@@ -32,27 +24,15 @@ class ProfileRepository implements ProfileRepositoryInterface
         $this->criteriaFactory = $criteriaFactory;
     }
 
-    /**
-     * @param \ClawRock\Debug\Api\Data\ProfileInterface $profile
-     * @return \ClawRock\Debug\Api\ProfileRepositoryInterface
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
-     */
-    public function save(ProfileInterface $profile): ProfileRepositoryInterface
+    public function save(ProfileInterface $profile): void
     {
         try {
             $this->fileStorage->write($profile);
-
-            return $this;
         } catch (FileSystemException $e) {
             throw new CouldNotSaveException(__('Profile could not be saved.'));
         }
     }
 
-    /**
-     * @param string $token
-     * @return \ClawRock\Debug\Api\Data\ProfileInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
     public function getById(string $token): ProfileInterface
     {
         try {
@@ -62,33 +42,19 @@ class ProfileRepository implements ProfileRepositoryInterface
         }
     }
 
-    /**
-     * @param \ClawRock\Debug\Api\Data\ProfileInterface $profile
-     * @return \ClawRock\Debug\Api\ProfileRepositoryInterface
-     * @throws \Magento\Framework\Exception\CouldNotDeleteException
-     */
-    public function delete(ProfileInterface $profile): ProfileRepositoryInterface
+    public function delete(ProfileInterface $profile): void
     {
         try {
             $this->fileStorage->remove($profile->getToken());
-
-            return $this;
         } catch (FileSystemException $e) {
             throw new CouldNotDeleteException(__('Profile with token %s could not be deleted.', $profile->getToken()));
         }
     }
 
-    /**
-     * @param string $token
-     * @return \ClawRock\Debug\Api\ProfileRepositoryInterface
-     * @throws \Magento\Framework\Exception\CouldNotDeleteException
-     */
-    public function deleteById(string $token): ProfileRepositoryInterface
+    public function deleteById(string $token): void
     {
         try {
             $this->fileStorage->remove($token);
-
-            return $this;
         } catch (FileSystemException $e) {
             throw new CouldNotDeleteException(__('Profile with token %s could not be deleted.', $token));
         }
@@ -99,10 +65,6 @@ class ProfileRepository implements ProfileRepositoryInterface
         return $this->fileStorage->find($criteria);
     }
 
-    /**
-     * @return \ClawRock\Debug\Api\Data\ProfileInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
     public function findLatest(): ProfileInterface
     {
         try {
@@ -110,7 +72,11 @@ class ProfileRepository implements ProfileRepositoryInterface
             $criteria = $this->criteriaFactory->create(['limit' => 1]);
 
             $results = $this->fileStorage->find($criteria);
-            $token = reset($results)->getToken();
+            $latestKey = array_key_first($results);
+            if ($latestKey === null) {
+                throw new NoSuchEntityException(__('Could not find latest token'));
+            }
+            $token = $results[$latestKey]->getToken();
 
             return $this->fileStorage->read($token);
         } catch (FileSystemException $e) {

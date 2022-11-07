@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -8,55 +9,16 @@ class SearchResult
     const STATUS_WARNING = 'warning';
     const STATUS_ERROR = 'error';
 
-    /**
-     * @var string
-     */
-    private $token;
-
-    /**
-     * @var string
-     */
-    private $ip;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var int
-     */
-    private $time;
-
-    /**
-     * @var string
-     */
-    private $statusCode;
-
-    /**
-     * @var string
-     */
-    private $fileSize;
-
-    /**
-     * @var int
-     */
-    private $requestTime;
-
-    /**
-     * @var string
-     */
-    private $parentToken;
-
-    /**
-     * @var \DateTime
-     */
-    private $datetime;
+    private string $token;
+    private string $ip;
+    private string $method;
+    private string $url;
+    private int $time;
+    private string $statusCode;
+    private string $fileSize;
+    private string $requestTime;
+    private ?string $parentToken;
+    private \DateTime $datetime;
 
     public function __construct(
         string $token,
@@ -66,7 +28,7 @@ class SearchResult
         int $time,
         string $statusCode,
         string $fileSize,
-        string $parentToken = null,
+        ?string $parentToken = null,
         string $requestTime = '0'
     ) {
         $this->token = $token;
@@ -81,86 +43,68 @@ class SearchResult
         $this->requestTime = $requestTime;
     }
 
-    public static function createFromCsv(array $csv)
+    // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction
+    public static function createFromCsv(array $csv): SearchResult
     {
-        return new SearchResult(...$csv);
+        [$token, $ip, $method, $url, $time, $statusCode, $fileSize, $parentToken, $requestTime] = $csv;
+        return new SearchResult(
+            $token,
+            $ip,
+            $method,
+            $url,
+            (int) $time,
+            $statusCode,
+            $fileSize,
+            $parentToken ?: null,
+            $requestTime
+        );
     }
 
-    /**
-     * @return string
-     */
     public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @return string
-     */
     public function getIp(): string
     {
         return $this->ip;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return int
-     */
     public function getTime(): int
     {
         return $this->time;
     }
 
-    /**
-     * @return string
-     */
     public function getStatusCode(): string
     {
         return $this->statusCode;
     }
 
-    /**
-     * @return string
-     */
     public function getFileSize(): string
     {
         return $this->fileSize;
     }
 
-    /**
-     * @return string
-     */
     public function getRequestTime(): string
     {
         return $this->requestTime;
     }
 
-    /**
-     * @return string
-     */
-    public function getParentToken(): string
+    public function getParentToken(): ?string
     {
         return $this->parentToken;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDatetime(): \DateTime
     {
         return $this->datetime;

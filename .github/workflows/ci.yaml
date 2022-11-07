@@ -1,0 +1,55 @@
+name: "CI"
+on: ["push", "pull_request"]
+jobs:
+  static-analysis:
+    name: "Static analysis"
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - "7.4"
+          - "8.1"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Setup PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: bcmath, gd, intl, soap, sockets, xsl, zip
+          ini-values: memory_limit=-1
+          tools: composer:v2
+
+      - name: "Cache Composer dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: "/tmp/composer-cache"
+          key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php }}-composer-
+
+      - name: Create auth.json
+        run: echo '${{ secrets.COMPOSER_AUTH_JSON }}' > $GITHUB_WORKSPACE/auth.json
+
+      - name: Composer install
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Remove auth.json
+        run: rm -f $GITHUB_WORKSPACE/auth.json
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit -c phpunit.xml.dist Test --no-interaction
+
+      - name: PHPCS
+        run: vendor/bin/phpcs
+
+      - name: PHPMD
+        run: vendor/bin/phpmd . text phpmd.xml
+
+      - name: PHPCPD
+        run: vendor/bin/phpcpd --exclude vendor .
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --ansi --no-interaction

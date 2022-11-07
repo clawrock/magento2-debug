@@ -1,25 +1,30 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \Zend_Db_Profiler_Query $query */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Zend_Db_Profiler_Query $query
+ */
 $query = $block->getQuery();
 ?>
 <?= /* @noEscape */ $block->getHighlightedQuery(); ?>
-<?php if (!empty($query->getQueryParams())) : ?>
+<?php if (!empty($query->getQueryParams())): ?>
     <div>
-        <strong class="font-normal text-small"><?= $block->escapeHtml(__('Parameters')) ?></strong>:
-        <?= /* @noEscape */ $block->getVarRenderer()->create(['variable' => $query->getQueryParams()])->render(); ?>
+        <strong class="font-normal text-small"><?= $escaper->escapeHtml(__('Parameters')) ?></strong>:
+        <?= /* @noEscape */ $block->getVarRenderer()->render($query->getQueryParams()); ?>
     </div>
 <?php endif; ?>
 <div class="text-small font-normal">
     <a href="#" class="sf-toggle link-inverse"
        data-toggle-selector="#formatted-query-<?= /* @noEscape */ $block->getUniqId() ?>"
-       data-toggle-alt-content="<?= $block->escapeHtml(__('Hide formatted query')) ?>">
-        <?= $block->escapeHtml(__('View formatted query')) ?>
+       data-toggle-alt-content="<?= $escaper->escapeHtml(__('Hide formatted query')) ?>">
+        <?= $escaper->escapeHtml(__('View formatted query')) ?>
     </a>
     <a href="#" class="sf-toggle link-inverse"
        data-toggle-selector="#original-query-<?= /* @noEscape */ $block->getUniqId() ?>"
-       data-toggle-alt-content="<?= $block->escapeHtml(__('Hide runnable query')) ?>">
-        <?= $block->escapeHtml(__('View runnable query')) ?>
+       data-toggle-alt-content="<?= $escaper->escapeHtml(__('Hide runnable query')) ?>">
+        <?= $escaper->escapeHtml(__('View runnable query')) ?>
     </a>
 </div>
 <div id="formatted-query-<?= /* @noEscape */ $block->getUniqId() ?>" class="sql-runnable hidden">

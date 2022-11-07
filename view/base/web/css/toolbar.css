@@ -165,7 +165,7 @@
     text-decoration: none;
 }
 
-.sf-toolbar-block .sf-toolbar-info-piece b {
+.sf-toolbar-block .sf-toolbar-info-piece strong {
     color: #AAA;
     display: table-cell;
     font-size: 11px;
@@ -507,7 +507,7 @@
         max-width: none;
     }
 
-    .sf-toolbar-block .sf-toolbar-info-piece b {
+    .sf-toolbar-block .sf-toolbar-info-piece strong {
         font-size: 12px;
     }
 

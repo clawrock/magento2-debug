@@ -1,7 +1,13 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+?>
 <pre>
     <?php /** @var \ClawRock\Debug\Model\ValueObject\LayoutNode $node */ ?>
-    <?php foreach ($block->getNodes() as $node) : ?>
+    <?php foreach ($block->getNodes() as $node): ?>
         <?= /* @noEscape */ $block->getLayoutNodeRenderer()->create(['node' => $node])->render(); ?>
     <?php endforeach; ?>
 </pre>

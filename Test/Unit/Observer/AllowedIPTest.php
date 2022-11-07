@@ -1,22 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer;
 
 use ClawRock\Debug\Observer\AllowedIP;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class AllowedIPTest extends TestCase
 {
-    private $configMock;
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
+    /** @var \Magento\Framework\App\Request\Http&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\App\Request\Http $requestMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    private \ClawRock\Debug\Observer\AllowedIP $observer;
 
-    private $requestMock;
-
-    private $observerMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
             ->disableOriginalConstructor()
@@ -31,19 +31,17 @@ class AllowedIPTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->observer = (new ObjectManager($this))->getObject(AllowedIP::class, [
-            'config' => $this->configMock,
-        ]);
+        $this->observer = new AllowedIP($this->configMock);
     }
 
-    public function testExecuteAllowed()
+    public function testExecuteAllowed(): void
     {
         $this->configMock->expects($this->once())->method('isAllowedIP')->willReturn(true);
         $this->observerMock->expects($this->never())->method('getRequest');
         $this->observer->execute($this->observerMock);
     }
 
-    public function testExecuteNotAllowed()
+    public function testExecuteNotAllowed(): void
     {
         $this->configMock->expects($this->once())->method('isAllowedIP')->willReturn(false);
         $this->observerMock->expects($this->once())->method('getRequest')->willReturn($this->requestMock);

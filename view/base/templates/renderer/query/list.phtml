@@ -1,13 +1,18 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
 $prefix = $block->getPrefix();
 ?>
 <table class="alt queries-table">
     <thead>
         <tr>
             <th class="nowrap">#</th>
-            <th class="nowrap"><?= $block->escapeHtml(__('Time')) ?></th>
-            <th style="width: 100%;"><?= $block->escapeHtml(__('Info')) ?></th>
+            <th class="nowrap"><?= $escaper->escapeHtml(__('Time')) ?></th>
+            <th style="width: 100%;"><?= $escaper->escapeHtml(__('Info')) ?></th>
         </tr>
     </thead>
     <tbody>

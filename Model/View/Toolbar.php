@@ -1,40 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View;
 
 use ClawRock\Debug\Api\Data\ProfileInterface;
-use ClawRock\Debug\Model\Profiler;
-use Magento\Framework\App\Area;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Toolbar implements ArgumentInterface
 {
     const COLLECTOR_PLACEHOLDER = 'debug.toolbar.collectors.%s';
 
-    /**
-     * @var \ClawRock\Debug\Api\Data\ProfileInterface
-     */
-    private $profile;
-
-    /**
-     * @var \ClawRock\Debug\Model\Collector\CollectorInterface[]
-     */
-    private $collectors;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $url;
+    private ?\ClawRock\Debug\Api\Data\ProfileInterface $profile = null;
+    /** @var \ClawRock\Debug\Model\Collector\CollectorInterface[]|null */
+    private ?array $collectors = null;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
+    private \ClawRock\Debug\Helper\Url $url;
 
     public function __construct(
         \Magento\Framework\View\LayoutInterface $layout,
@@ -48,10 +29,10 @@ class Toolbar implements ArgumentInterface
 
     public function getToken(): string
     {
-        return $this->getProfile() ? $this->getProfile()->getToken() : '';
+        return $this->getProfile()->getToken();
     }
 
-    public function getCollectors()
+    public function getCollectors(): array
     {
         if ($this->collectors === null) {
             $this->collectors = $this->getProfile()->getCollectors();
@@ -60,7 +41,7 @@ class Toolbar implements ArgumentInterface
         return $this->collectors;
     }
 
-    public function getCollectorBlocks()
+    public function getCollectorBlocks(): array
     {
         $blocks = [];
 
@@ -78,19 +59,9 @@ class Toolbar implements ArgumentInterface
         return $blocks;
     }
 
-    public function getUrl($route = '', $params = [])
-    {
-        return $this->url->getUrl($route, $params);
-    }
-
-    public function getToolbarUrl()
+    public function getToolbarUrl(): string
     {
         return $this->url->getToolbarUrl($this->getToken());
-    }
-
-    public function getAdminUrl()
-    {
-        return $this->backendUrl->getRouteUrl(Area::AREA_ADMINHTML);
     }
 
     private function getProfile(): ProfileInterface

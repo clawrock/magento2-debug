@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -10,30 +11,11 @@ class Redirect
     const STATUS_CODE = 'status_code';
     const STATUS_TEXT = 'status_text';
 
-    /**
-     * @var string
-     */
-    private $token;
-
-    /**
-     * @var string
-     */
-    private $action;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var int
-     */
-    private $statusCode;
-
-    /**
-     * @var string
-     */
-    private $statusText;
+    private string $token;
+    private string $action;
+    private string $method;
+    private int $statusCode;
+    private string $statusText;
 
     public function __construct(
         string $token = '',
@@ -49,7 +31,8 @@ class Redirect
         $this->statusText = $statusText;
     }
 
-    public static function createFromArray(array $data = null)
+    // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction
+    public static function createFromArray(?array $data = null): Redirect
     {
         if ($data === null) {
             return new Redirect();
@@ -64,49 +47,31 @@ class Redirect
         );
     }
 
-    /**
-     * @return string
-     */
     public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @return string
-     */
     public function getAction(): string
     {
         return $this->action;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @return int
-     */
     public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    /**
-     * @return string
-     */
     public function getStatusText(): string
     {
         return $this->statusText;
     }
 
-    /**
-     * @return bool
-     */
     public function isEmpty(): bool
     {
         return !(

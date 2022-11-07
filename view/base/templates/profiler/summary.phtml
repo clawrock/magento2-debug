@@ -1,30 +1,36 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Summary $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
+<?php
+declare(strict_types=1);
 
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Summary $viewModel
+ */
+$viewModel = $block->getViewModel();
+?>
 <?php if ($profile = $viewModel->getProfile()): ?>
     <div class="status status-<?= /* @noEscape */ $profile->getStatus() ?>">
         <div class="container">
             <h2 class="break-long-words">
-                <a href="<?= $block->escapeUrl($profile->getUrl()) ?>"><?= /* @noEscape */ $profile->getUrl() ?></a>
+                <a href="<?= $escaper->escapeUrl($profile->getUrl()) ?>"><?= /* @noEscape */ $profile->getUrl() ?></a>
             </h2>
             <?php if ($profile->hasRedirect()): ?>
                 <?= /* @noEscape */  $viewModel->renderRedirect($profile->getRedirect()); ?>
             <?php endif; ?>
             <dl class="metadata">
-                <dt><?= $block->escapeHtml(__('Method')) ?></dt>
+                <dt><?= $escaper->escapeHtml(__('Method')) ?></dt>
                 <dd><?= /* @noEscape */ $profile->getMethod() ?></dd>
                 <?php if ($profile->getRoute()): ?>
-                    <dt><?= $block->escapeHtml(__('Route')) ?></dt>
+                    <dt><?= $escaper->escapeHtml(__('Route')) ?></dt>
                     <dd>@<?= /* @noEscape */  $profile->getRoute(); ?></dd>
                 <?php endif; ?>
-                <dt><?= $block->escapeHtml(__('HTTP Status')) ?></dt>
+                <dt><?= $escaper->escapeHtml(__('HTTP Status')) ?></dt>
                 <dd><?= /* @noEscape */ $profile->getStatusCode() ?></dd>
-                <dt><?= $block->escapeHtml(__('IP')) ?></dt>
+                <dt><?= $escaper->escapeHtml(__('IP')) ?></dt>
                 <dd><?= /* @noEscape */ $profile->getIp() ?></dd>
-                <dt><?= $block->escapeHtml(__('Profiled on')) ?></dt>
+                <dt><?= $escaper->escapeHtml(__('Profiled on')) ?></dt>
                 <dd><?= /* @noEscape */ $profile->getTime() ?></dd>
-                <dt><?= $block->escapeHtml(__('Token')) ?></dt>
+                <dt><?= $escaper->escapeHtml(__('Token')) ?></dt>
                 <dd><?= /* @noEscape */ $profile->getToken(); ?></dd>
             </dl>
         </div>

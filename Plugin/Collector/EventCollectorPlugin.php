@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Plugin\Collector;
 
@@ -11,10 +12,7 @@ use Magento\Framework\Event\Observer;
  */
 class EventCollectorPlugin
 {
-    /**
-     * @var \ClawRock\Debug\Model\Collector\EventCollector
-     */
-    private $eventCollector;
+    private \ClawRock\Debug\Model\Collector\EventCollector $eventCollector;
 
     public function __construct(
         \ClawRock\Debug\Model\Collector\EventCollector $eventCollector
@@ -22,8 +20,12 @@ class EventCollectorPlugin
         $this->eventCollector = $eventCollector;
     }
 
-    public function aroundDispatch(InvokerDefault $subject, callable $proceed, array $configuration, Observer $observer)
-    {
+    public function aroundDispatch(
+        InvokerDefault $subject,
+        callable $proceed,
+        array $configuration,
+        Observer $observer
+    ): void {
         $start = microtime(true);
         $proceed($configuration, $observer);
         $end = microtime(true);

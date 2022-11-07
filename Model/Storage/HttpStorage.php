@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Storage;
 
@@ -7,33 +8,15 @@ use Magento\Framework\HTTP\PhpEnvironment\Response;
 
 class HttpStorage
 {
-    /**
-     * @var \Magento\Framework\HTTP\PhpEnvironment\Request
-     */
-    private $request;
+    private \Magento\Framework\HTTP\PhpEnvironment\Request $request;
+    private \Magento\Framework\HTTP\PhpEnvironment\Response $response;
+    private bool $fpc = false;
 
-    /**
-     * @var \Magento\Framework\HTTP\PhpEnvironment\Response
-     */
-    private $response;
-
-    /**
-     * @var bool
-     */
-    private $fpc = false;
-
-    /**
-     * @return \Magento\Framework\HTTP\PhpEnvironment\Request
-     */
     public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @param \Magento\Framework\HTTP\PhpEnvironment\Request $request
-     * @return HttpStorage
-     */
     public function setRequest(Request $request): HttpStorage
     {
         $this->request = $request;
@@ -41,18 +24,11 @@ class HttpStorage
         return $this;
     }
 
-    /**
-     * @return \Magento\Framework\HTTP\PhpEnvironment\Response
-     */
     public function getResponse(): Response
     {
         return $this->response;
     }
 
-    /**
-     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
-     * @return HttpStorage
-     */
     public function setResponse(Response $response): HttpStorage
     {
         $this->response = $response;

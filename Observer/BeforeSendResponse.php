@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Observer;
 
@@ -7,15 +8,8 @@ use Magento\Framework\Event\ObserverInterface;
 
 class BeforeSendResponse implements ObserverInterface
 {
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\Profiler
-     */
-    private $profiler;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\Profiler $profiler;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -36,7 +30,7 @@ class BeforeSendResponse implements ObserverInterface
         $this->profiler->run($request, $response);
     }
 
-    private function isProfilerAction(\Magento\Framework\HTTP\PhpEnvironment\Request $request)
+    private function isProfilerAction(\Magento\Framework\HTTP\PhpEnvironment\Request $request): bool
     {
         return $request->getModuleName() === '_debug' || $request->getModuleName() === 'debug';
     }

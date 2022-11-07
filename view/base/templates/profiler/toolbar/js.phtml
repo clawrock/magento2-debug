@@ -1,8 +1,15 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Toolbar $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
-<?php $token = $viewModel->getToken(); ?>
+<?php
+declare(strict_types=1);
 
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Toolbar $viewModel
+ */
+$viewModel = $block->getViewModel();
+$token = $viewModel->getToken();
+// phpcs:disable Generic.Files.LineLength.TooLong
+?>
 <div id="sfwdt<?= /* @noEscape */ $token ?>" class="sf-toolbar" style="display: none"></div>
 <iframe name="profiler_link_target" style="display: none;"></iframe>
 <?= $block->getChildHtml('debug_profiler_js'); ?>

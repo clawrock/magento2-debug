@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -37,27 +38,13 @@ class RequestCollector implements CollectorInterface
     const ACTION_NAME       = 'action_name';
     const FULL_ACTION_NAME  = 'full_action_name';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\RequestInfo
-     */
-    private $requestInfo;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Info\RequestInfo $requestInfo;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
         \ClawRock\Debug\Model\Info\RequestInfo $requestInfo
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
         $this->requestInfo = $requestInfo;
     }
@@ -80,7 +67,7 @@ class RequestCollector implements CollectorInterface
             self::SESSION_ATTRIBUTES => $this->requestInfo->getSessionAttributes(),
             self::PATH_INFO          => $this->requestInfo->getPathInfo(),
             self::FPC_HIT            => $this->requestInfo->isFPCRequest(),
-            self::REDIRECT           => $this->requestInfo->getRedirect()
+            self::REDIRECT           => $this->requestInfo->getRedirect(),
         ]);
 
         return $this;
@@ -91,37 +78,37 @@ class RequestCollector implements CollectorInterface
         return $this->dataCollector->getData(self::REQUEST_METHOD) ?? '';
     }
 
-    public function getRequestGet()
+    public function getRequestGet(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::REQUEST_GET);
     }
 
-    public function getRequestPost()
+    public function getRequestPost(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::REQUEST_POST);
     }
 
-    public function getRequestHeaders()
+    public function getRequestHeaders(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::REQUEST_HEADERS);
     }
 
-    public function getRequestServer()
+    public function getRequestServer(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::REQUEST_SERVER);
     }
 
-    public function getRequestCookies()
+    public function getRequestCookies(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::REQUEST_COOKIES);
     }
 
-    public function getRequestAttributes()
+    public function getRequestAttributes(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::REQUEST_ATTRIBUTES) ?? [];
     }
 
-    public function getResponseHeaders()
+    public function getResponseHeaders(): \Laminas\Stdlib\ParametersInterface
     {
         return $this->dataCollector->getData(self::RESPONSE_HEADERS);
     }
@@ -201,9 +188,6 @@ class RequestCollector implements CollectorInterface
         return $this->dataCollector->getData(self::REQUEST_ATTRIBUTES)[self::FULL_ACTION_NAME] ?? '';
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return true;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Model\Storage;
 
@@ -6,41 +7,35 @@ use ClawRock\Debug\Model\Storage\ProfileFileStorage;
 use ClawRock\Debug\Model\ValueObject\SearchResult;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Phrase;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class ProfileFileStorageTest extends TestCase
 {
-    /**
-     * @var \Magento\Framework\Filesystem\Driver\File|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $fileSystemMock;
+    /** @var \Magento\Framework\Filesystem\Driver\File&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Filesystem\Driver\File $fileSystemMock;
+    /** @var \Magento\Framework\Filesystem\File\ReadFactory&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Filesystem\File\ReadFactory $fileReadFactoryMock;
+    /** @var \Magento\Framework\Filesystem\File\Read&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Filesystem\File\Read $readMock;
+    /** @var \Magento\Framework\Filesystem\File\WriteFactory&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactoryMock;
+    /** @var \Magento\Framework\Filesystem\File\WriteInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Filesystem\File\WriteInterface $writeMock;
+    /** @var \ClawRock\Debug\Logger\Logger&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Logger\Logger $loggerMock;
+    /** @var \ClawRock\Debug\Helper\File&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\File $fileHelperMock;
+    /** @var \ClawRock\Debug\Model\Serializer\ProfileSerializer&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializerMock;
+    /** @var \ClawRock\Debug\Model\Indexer\ProfileIndexer&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexerMock;
+    /** @var \ClawRock\Debug\Api\Data\ProfileInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Api\Data\ProfileInterface $profileMock;
+    /** @var \ClawRock\Debug\Model\Profile\Criteria&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Profile\Criteria $criteriaMock;
+    private \ClawRock\Debug\Model\Storage\ProfileFileStorage $storage;
 
-    private $fileReadFactoryMock;
-
-    private $readMock;
-
-    private $fileWriteFactoryMock;
-
-    private $writeMock;
-
-    private $loggerMock;
-
-    private $fileHelperMock;
-
-    private $profileFactoryMock;
-
-    private $profileSerializerMock;
-
-    private $profileIndexerMock;
-
-    private $profileMock;
-
-    private $criteriaMock;
-
-    private $storage;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -70,10 +65,6 @@ class ProfileFileStorageTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->profileFactoryMock = $this->getMockBuilder(\ClawRock\Debug\Model\ProfileFactory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->profileSerializerMock = $this->getMockBuilder(\ClawRock\Debug\Model\Serializer\ProfileSerializer::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -88,19 +79,18 @@ class ProfileFileStorageTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->storage = (new ObjectManager($this))->getObject(ProfileFileStorage::class, [
-            'fileSystem' => $this->fileSystemMock,
-            'fileReadFactory' => $this->fileReadFactoryMock,
-            'fileWriteFactory' => $this->fileWriteFactoryMock,
-            'logger' => $this->loggerMock,
-            'fileHelper' => $this->fileHelperMock,
-            'profileFactory' => $this->profileFactoryMock,
-            'profileSerializer' => $this->profileSerializerMock,
-            'profileIndexer' => $this->profileIndexerMock,
-        ]);
+        $this->storage = new ProfileFileStorage(
+            $this->fileSystemMock,
+            $this->fileReadFactoryMock,
+            $this->fileWriteFactoryMock,
+            $this->loggerMock,
+            $this->fileHelperMock,
+            $this->profileSerializerMock,
+            $this->profileIndexerMock
+        );
     }
 
-    public function testPurge()
+    public function testPurge(): void
     {
         $this->fileHelperMock->expects($this->once())->method('getProfileDirectory')->willReturn('profile_directory');
         $this->fileSystemMock->expects($this->once())->method('deleteDirectory')->with('profile_directory');
@@ -108,7 +98,7 @@ class ProfileFileStorageTest extends TestCase
         $this->storage->purge();
     }
 
-    public function testRead()
+    public function testRead(): void
     {
         $token = 'token';
         $this->fileHelperMock->expects($this->once())->method('getProfileFilename')
@@ -126,7 +116,7 @@ class ProfileFileStorageTest extends TestCase
         $this->assertEquals($this->profileMock, $this->storage->read($token));
     }
 
-    public function testWrite()
+    public function testWrite(): void
     {
         $token = 'token';
         $path = 'path';
@@ -153,7 +143,7 @@ class ProfileFileStorageTest extends TestCase
         $this->assertEquals($path, $this->storage->write($this->profileMock));
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $token = 'token';
         $this->fileHelperMock->expects($this->once())->method('getProfileFilename')
@@ -164,16 +154,16 @@ class ProfileFileStorageTest extends TestCase
         $this->storage->remove($token);
     }
 
-    public function testFindNoIndex()
+    public function testFindNoIndex(): void
     {
         $this->fileHelperMock->expects($this->once())->method('getProfileIndex')->willReturn('file');
         $this->fileSystemMock->expects($this->once())->method('isExists')->with('file')->willReturn(false);
         $this->assertEquals([], $this->storage->find($this->criteriaMock));
     }
 
-    public function testFind()
+    public function testFind(): void
     {
-        $searchResult = ['token', 'ip', 'method', 'url', 3600, '200', '1024', null];
+        $searchResult = ['token', 'ip', 'method', 'url', 3600, '200', '1024', null, '100'];
         $this->fileHelperMock->expects($this->exactly(2))->method('getProfileIndex')->willReturn('file');
         $this->fileSystemMock->expects($this->once())->method('isExists')->with('file')->willReturn(true);
         $this->fileSystemMock->expects($this->once())->method('fileOpen')->with('file', 'r')->willReturn('resource');
@@ -186,13 +176,13 @@ class ProfileFileStorageTest extends TestCase
         $this->assertEquals([new SearchResult(...$searchResult)], $this->storage->find($this->criteriaMock));
     }
 
-    public function testFindException()
+    public function testFindException(): void
     {
         $exception = new FileSystemException(new Phrase('Exception'));
         $this->fileHelperMock->expects($this->once())->method('getProfileIndex')->willReturn('file');
         $this->fileSystemMock->expects($this->once())->method('isExists')
             ->with('file')->willThrowException($exception);
-        $this->loggerMock->expects($this->once())->method('critical')->with($exception);
+        $this->loggerMock->expects($this->once())->method('error');
 
         $this->assertEquals([], $this->storage->find($this->criteriaMock));
     }

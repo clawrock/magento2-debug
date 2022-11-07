@@ -1,26 +1,30 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer\Collector;
 
 use ClawRock\Debug\Observer\Collector\LayoutCollectorAfterToHtml;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class LayoutCollectorAfterToHtmlTest extends TestCase
 {
-    private $blockMock;
+    /** @var \Magento\Framework\View\Element\AbstractBlock&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\View\Element\AbstractBlock $blockMock;
+    /** @var \ClawRock\Debug\Model\Collector\LayoutCollector&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollectorMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    private \ClawRock\Debug\Observer\Collector\LayoutCollectorAfterToHtml $observer;
 
-    private $layoutCollectorMock;
-
-    private $observerMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->blockMock = $this->getMockBuilder(\Magento\Framework\View\Element\AbstractBlock::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->blockMock->expects($this->any())->method('getNameInLayout')->willReturn('block_name');
+        $this->blockMock->expects($this->any())->method('getModuleName')->willReturn('module_name');
+        $this->blockMock->expects($this->any())->method('getChildNames')->willReturn([]);
 
         $this->observerMock = $this->getMockBuilder(\Magento\Framework\Event\Observer::class)
             ->setMethods(['getBlock'])
@@ -31,12 +35,10 @@ class LayoutCollectorAfterToHtmlTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->observer = (new ObjectManager($this))->getObject(LayoutCollectorAfterToHtml::class, [
-            'layoutCollector' => $this->layoutCollectorMock,
-        ]);
+        $this->observer = new LayoutCollectorAfterToHtml($this->layoutCollectorMock);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->observerMock->expects($this->once())->method('getBlock')->willReturn($this->blockMock);
         $this->blockMock->expects($this->once())->method('addData');

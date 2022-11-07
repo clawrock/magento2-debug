@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -6,30 +7,11 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class EventObserver implements LoggableInterface
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
-     * @var string
-     */
-    private $event;
-
-    /**
-     * @var float
-     */
-    private $time;
+    private string $id;
+    private string $name;
+    private string $class;
+    private string $event;
+    private float $time;
 
     public function __construct(
         string $name,
@@ -44,38 +26,26 @@ class EventObserver implements LoggableInterface
         $this->time = $time;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->getName() . '_' . $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return string
-     */
     public function getEvent(): string
     {
         return $this->event;
     }
 
-    /**
-     * @return float
-     */
     public function getTime(): float
     {
         return $this->time;

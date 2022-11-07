@@ -1,29 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Controller\Cache;
 
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
 
-class Disable extends Action
+class Disable extends \ClawRock\Debug\Controller\Cache
 {
-    /**
-     * @var \Magento\Framework\App\Cache\Manager
-     */
-    private $cacheManager;
-
-    public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\App\Cache\Manager $cacheManager
-    ) {
-        parent::__construct($context);
-        $this->cacheManager = $cacheManager;
-    }
-
-    public function execute()
+    public function execute(): ?ResultInterface
     {
         $result = $this->resultFactory->create(ResultFactory::TYPE_JSON);
-        $types = $this->getRequest()->getParam('type');
+        $types = $this->request->getParam('type');
 
         $this->cacheManager->setEnabled((array) $types, false);
 

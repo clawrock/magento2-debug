@@ -1,33 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
 class Plugin
 {
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var int
-     */
-    private $sortOrder;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var string
-     */
-    private $type;
+    private string $class;
+    private string $name;
+    private int $sortOrder;
+    private string $method;
+    private string $type;
 
     public function __construct(string $class, string $name, int $sortOrder, string $method, string $type)
     {
@@ -38,41 +20,26 @@ class Plugin
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
     public function getSortOrder(): int
     {
         return $this->sortOrder;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;

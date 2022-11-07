@@ -1,43 +1,44 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Controller\Profiler;
 
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
 
-class Purge extends Action
+class Purge implements HttpGetActionInterface
 {
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileFileStorage
-     */
-    private $profileFileStorage;
-
-    /**
-     * @var \ClawRock\Debug\Logger\Logger
-     */
-    private $logger;
+    private \ClawRock\Debug\Model\Storage\ProfileFileStorage $profileFileStorage;
+    private \ClawRock\Debug\Logger\Logger $logger;
+    private \Magento\Framework\Controller\ResultFactory $resultFactory;
+    private \Magento\Framework\App\Response\RedirectInterface $redirect;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
+        \Magento\Framework\Controller\ResultFactory $resultFactory,
+        \Magento\Framework\App\Response\RedirectInterface $redirect,
         \ClawRock\Debug\Model\Storage\ProfileFileStorage $profileFileStorage,
         \ClawRock\Debug\Logger\Logger $logger
     ) {
-        parent::__construct($context);
+        $this->resultFactory = $resultFactory;
+        $this->redirect = $redirect;
         $this->profileFileStorage = $profileFileStorage;
         $this->logger = $logger;
     }
 
-    public function execute()
+    public function execute(): ?ResultInterface
     {
         try {
             $this->profileFileStorage->purge();
         } catch (FileSystemException $e) {
-            $this->logger->critical($e);
+            $this->logger->error('ClawRock_Debug: failed to purge file storage', ['exception' => $e]);
         }
 
-        /** @var  $resultRedirect */
-        return $this->resultFactory->create(ResultFactory::TYPE_REDIRECT)
-            ->setUrl($this->_redirect->getRefererUrl());
+        /** @var \Magento\Framework\Controller\Result\Redirect $result */
+        $result = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $result->setUrl($this->redirect->getRefererUrl());
+
+        return $result;
     }
 }

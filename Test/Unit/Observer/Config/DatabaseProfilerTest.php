@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer\Config;
 
@@ -6,22 +7,21 @@ use ClawRock\Debug\Helper\Config;
 use ClawRock\Debug\Observer\Config\DatabaseProfiler;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Phrase;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class DatabaseProfilerTest extends TestCase
 {
-    private $messageManagerMock;
+    /** @var \Magento\Framework\Message\ManagerInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Message\ManagerInterface $messageManagerMock;
+    /** @var \ClawRock\Debug\Model\Config\Database\ProfilerWriter&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Config\Database\ProfilerWriter $dbProfilerWriterMock;
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    private \ClawRock\Debug\Observer\Config\DatabaseProfiler $observer;
 
-    private $dbProfilerWriterMock;
-
-    private $configMock;
-
-    private $observerMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->messageManagerMock = $this->getMockForAbstractClass(\Magento\Framework\Message\ManagerInterface::class);
 
@@ -38,20 +38,20 @@ class DatabaseProfilerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->observer = (new ObjectManager($this))->getObject(DatabaseProfiler::class, [
-            'messageManager' => $this->messageManagerMock,
-            'dbProfilerWriter' => $this->dbProfilerWriterMock,
-            'config' => $this->configMock,
-        ]);
+        $this->observer = new DatabaseProfiler(
+            $this->messageManagerMock,
+            $this->dbProfilerWriterMock,
+            $this->configMock
+        );
     }
 
-    public function testExecuteIndependentConfig()
+    public function testExecuteIndependentConfig(): void
     {
         $this->observerMock->expects($this->once())->method('getChangedPaths')->willReturn(['not/related/to/database']);
-        $this->assertNull($this->observer->execute($this->observerMock));
+        $this->observer->execute($this->observerMock);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->observerMock->expects($this->once())
             ->method('getChangedPaths')
@@ -75,7 +75,7 @@ class DatabaseProfilerTest extends TestCase
         $this->observer->execute($this->observerMock);
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $this->observerMock->expects($this->once())
             ->method('getChangedPaths')

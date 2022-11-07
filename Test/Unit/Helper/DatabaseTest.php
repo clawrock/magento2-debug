@@ -1,20 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Helper;
 
 use ClawRock\Debug\Helper\Database;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class DatabaseTest extends TestCase
 {
-    private $resourceConnectionMock;
+    /** @var \Magento\Framework\App\ResourceConnection&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\App\ResourceConnection $resourceConnectionMock;
+    /** @var \Magento\Framework\DB\Adapter\AdapterInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\DB\Adapter\AdapterInterface $connectionMock;
+    private \ClawRock\Debug\Helper\Database $database;
 
-    private $connectionMock;
-
-    private $database;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,12 +24,10 @@ class DatabaseTest extends TestCase
 
         $this->connectionMock = $this->getMockForAbstractClass(\Magento\Framework\DB\Adapter\AdapterInterface::class);
 
-        $this->database = (new ObjectManager($this))->getObject(Database::class, [
-            'resourceConnection' => $this->resourceConnectionMock
-        ]);
+        $this->database = new Database($this->resourceConnectionMock);
     }
 
-    public function testFormatQuery()
+    public function testFormatQuery(): void
     {
         $query = 'SELECT * FROM core_config_data;';
         $formattedQuery = \SqlFormatter::format($query);
@@ -38,7 +36,7 @@ class DatabaseTest extends TestCase
         $this->assertEquals($formattedQuery, $this->database->formatQuery($query)); // Cache test
     }
 
-    public function testHighlightQuery()
+    public function testHighlightQuery(): void
     {
         $query = 'SELECT * FROM core_config_data;';
         $highlightedQuery = \SqlFormatter::highlight($query);
@@ -47,7 +45,7 @@ class DatabaseTest extends TestCase
         $this->assertEquals($highlightedQuery, $this->database->highlightQuery($query)); // Cache test
     }
 
-    public function testGetQueryId()
+    public function testGetQueryId(): void
     {
         $query = 'query';
         $params = ['param1', 'param2'];
@@ -57,8 +55,9 @@ class DatabaseTest extends TestCase
             ->getMock();
 
         $profilerQueryMock->expects($this->once())->method('getQuery')->willReturn($query);
-        $profilerQueryMock->expects(($this->once()))->method('getQueryParams')->willReturn($params);
+        $profilerQueryMock->expects($this->once())->method('getQueryParams')->willReturn($params);
 
+        // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
         $this->assertEquals(md5($query . implode(',', $params)), $this->database->getQueryId($profilerQueryMock));
     }
 
@@ -69,7 +68,7 @@ class DatabaseTest extends TestCase
      * @param array  $parameters
      * @param string $result
      */
-    public function testReplaceQueryParameters($query, array $parameters, $result)
+    public function testReplaceQueryParameters($query, array $parameters, $result): void
     {
         $quoteValueCount = count($parameters) ?: 1;
         $this->resourceConnectionMock->expects($this->exactly($quoteValueCount))->method('getConnection')
@@ -84,23 +83,23 @@ class DatabaseTest extends TestCase
         $this->assertEquals($result, $this->database->replaceQueryParameters($query, $parameters));
     }
 
-    public function queryParametersProvider()
+    public function queryParametersProvider(): array
     {
         return [
             ['SELECT * FROM core_config_data WHERE path = ?', [
-                'web/secure/base_url'
+                'web/secure/base_url',
             ], 'SELECT * FROM core_config_data WHERE path = web/secure/base_url'],
             ['INSERT INTO `table` (`field1`, `field2`) VALUES (\'2000-01-01 10:00:00\', ?)', [
                 'value',
             ], 'INSERT INTO `table` (`field1`, `field2`) VALUES (\'2000-01-01 10:00:00\', value)'],
             ['SELECT * FROM core_config_data WHERE path = :path', [
-                ':path' => 'web/unsecure/base_url'
+                ':path' => 'web/unsecure/base_url',
             ], 'SELECT * FROM core_config_data WHERE path = web/unsecure/base_url'],
             [
                 'SELECT COUNT(*) FROM table WHERE (url = \'https://example.com/?utm_source=backend\')',
                 [],
                 'SELECT COUNT(*) FROM table WHERE (url = \'https://example.com/?utm_source=backend\')',
-            ]
+            ],
         ];
     }
 }

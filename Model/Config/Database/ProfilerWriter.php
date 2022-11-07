@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Config\Database;
 
@@ -8,10 +9,7 @@ use Magento\Framework\DB\Profiler;
 
 class ProfilerWriter
 {
-    /**
-     * @var \Magento\Framework\App\DeploymentConfig\Writer
-     */
-    private $configWriter;
+    private \Magento\Framework\App\DeploymentConfig\Writer $configWriter;
 
     public function __construct(
         \Magento\Framework\App\DeploymentConfig\Writer $configWriter
@@ -19,11 +17,7 @@ class ProfilerWriter
         $this->configWriter = $configWriter;
     }
 
-    /**
-     * @param bool $flag
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function save(bool $flag)
+    public function save(bool $flag): void
     {
         $configGroup = [
             ConfigOptionsListConstants::CONFIG_PATH_DB => [
@@ -31,11 +25,11 @@ class ProfilerWriter
                     'default' => [
                         'profiler' => [
                             'class' => Profiler::class,
-                            'enabled' => $flag
-                        ]
-                    ]
-                ]
-            ]
+                            'enabled' => $flag,
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $this->configWriter->saveConfig([ConfigFilePool::APP_ENV => $configGroup]);

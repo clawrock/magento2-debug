@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
@@ -8,25 +9,10 @@ class LayoutNodeRenderer implements RendererInterface
 {
     const TEMPLATE = 'ClawRock_Debug::renderer/layout/node.phtml';
 
-    /**
-     * @var \ClawRock\Debug\Model\ValueObject\LayoutNode
-     */
-    private $node;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory
-     */
-    private $layoutNodeRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Model\ValueObject\LayoutNode $node;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         \ClawRock\Debug\Model\ValueObject\LayoutNode $node,
@@ -42,8 +28,10 @@ class LayoutNodeRenderer implements RendererInterface
 
     public function render(): string
     {
-        return $this->layout->createBlock(Template::class)
-            ->setTemplate(self::TEMPLATE)
+        /** @var \Magento\Framework\View\Element\Template $block */
+        $block = $this->layout->createBlock(Template::class);
+
+        return $block->setTemplate(self::TEMPLATE)
             ->setData([
                 'node' => $this->node,
                 'formatter' => $this->formatter,

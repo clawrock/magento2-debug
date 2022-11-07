@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
@@ -8,25 +9,10 @@ class TraceRenderer implements RendererInterface
 {
     const TEMPLATE = 'ClawRock_Debug::renderer/trace.phtml';
 
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var array
-     */
-    private $trace;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\TraceCallRendererFactory
-     */
-    private $traceCallRendererFactory;
+    private string $id;
+    private array $trace;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \ClawRock\Debug\Model\View\Renderer\TraceCallRendererFactory $traceCallRendererFactory;
 
     public function __construct(
         array $trace,
@@ -41,17 +27,16 @@ class TraceRenderer implements RendererInterface
 
     public function render(): string
     {
-        return $this->layout->createBlock(Template::class)
-            ->setTemplate(self::TEMPLATE)
+        /** @var \Magento\Framework\View\Element\Template $block */
+        $block = $this->layout->createBlock(Template::class);
+
+        return $block->setTemplate(self::TEMPLATE)
             ->setData('trace', $this->trace)
             ->setData('trace_id', $this->id)
             ->setData('trace_call_renderer', $this->traceCallRendererFactory)
             ->toHtml();
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;

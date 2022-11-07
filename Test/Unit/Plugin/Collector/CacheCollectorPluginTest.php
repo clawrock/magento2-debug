@@ -1,22 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Plugin\Collector;
 
 use ClawRock\Debug\Plugin\Collector\CacheCollectorPlugin;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class CacheCollectorPluginTest extends TestCase
 {
-    private $cacheCollectorMock;
+    /** @var \ClawRock\Debug\Model\Collector\CacheCollector&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Collector\CacheCollector $cacheCollectorMock;
+    private \Closure $proceedMock;
+    /** @var \Magento\Framework\App\Cache&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\App\Cache $subjectMock;
+    private \ClawRock\Debug\Plugin\Collector\CacheCollectorPlugin $plugin;
 
-    private $proceedMock;
-
-    private $subjectMock;
-
-    private $plugin;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cacheCollectorMock = $this->getMockBuilder(\ClawRock\Debug\Model\Collector\CacheCollector::class)
             ->disableOriginalConstructor()
@@ -30,12 +29,10 @@ class CacheCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = (new ObjectManager($this))->getObject(CacheCollectorPlugin::class, [
-            'cacheCollector' => $this->cacheCollectorMock,
-        ]);
+        $this->plugin = new CacheCollectorPlugin($this->cacheCollectorMock);
     }
 
-    public function testAroundLoad()
+    public function testAroundLoad(): void
     {
         $identifier = 'cache_id';
 
@@ -44,7 +41,7 @@ class CacheCollectorPluginTest extends TestCase
         $this->assertTrue($this->plugin->aroundLoad($this->subjectMock, $this->proceedMock, $identifier));
     }
 
-    public function testAroundSave()
+    public function testAroundSave(): void
     {
         $identifier = 'cache_id';
         $tags = ['cache_tag'];
@@ -55,7 +52,7 @@ class CacheCollectorPluginTest extends TestCase
         $this->assertTrue($this->plugin->aroundSave($this->subjectMock, $this->proceedMock, $data, $identifier, $tags));
     }
 
-    public function testAroundRemove()
+    public function testAroundRemove(): void
     {
         $identifier = 'cache_id';
 
@@ -64,12 +61,12 @@ class CacheCollectorPluginTest extends TestCase
         $this->assertTrue($this->plugin->aroundRemove($this->subjectMock, $this->proceedMock, $identifier));
     }
 
-    public function testAroundClean()
+    public function testAroundClean(): void
     {
-        $identifier = 'cache_id';
+        $tags = ['tag'];
 
         $this->cacheCollectorMock->expects($this->once())->method('log');
 
-        $this->assertTrue($this->plugin->aroundClean($this->subjectMock, $this->proceedMock, $identifier));
+        $this->assertTrue($this->plugin->aroundClean($this->subjectMock, $this->proceedMock, $tags));
     }
 }

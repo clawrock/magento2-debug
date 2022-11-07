@@ -1,74 +1,104 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Search $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Search $viewModel
+ */
+$viewModel = $block->getViewModel();
+?>
 <div id="sidebar-shortcuts">
     <div class="shortcuts">
-        <a href="#" class="visible-small" onclick="Sfjs.toggleClass(document.getElementById('sidebar'), 'expanded'); return false;">
-    <span class="icon">
-        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/menu.svg'); ?>" alt="<?= $block->escapeHtmlAttr(__('Menu')) ?>"/>
-    </span>
+        <a href="#"
+           class="visible-small"
+           onclick="Sfjs.toggleClass(document.getElementById('sidebar'), 'expanded'); return false;">
+            <span class="icon">
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/menu.svg'); ?>"
+                     alt="<?= $escaper->escapeHtmlAttr(__('Menu')) ?>"/>
+            </span>
         </a>
-        <a class="btn btn-sm" href="<?= $block->escapeUrl($block->getUrl('_debug/profiler/search', ['limit' => 10])) ?>">
-            <?= $block->escapeHtml(__('Last 10')) ?>
+        <a class="btn btn-sm"
+           href="<?= $escaper->escapeUrl($block->getUrl('_debug/profiler/search', ['limit' => 10])) ?>">
+            <?= $escaper->escapeHtml(__('Last 10')) ?>
         </a>
-        <a class="btn btn-sm" href="<?= $block->escapeUrl($block->getUrl('_debug/profiler/info/token/latest')); ?>">
-            <?= $block->escapeHtml(__('Latest')) ?>
+        <a class="btn btn-sm" href="<?= $escaper->escapeUrl($block->getUrl('_debug/profiler/info/token/latest')); ?>">
+            <?= $escaper->escapeHtml(__('Latest')) ?>
         </a>
-        <a class="sf-toggle btn btn-sm" data-toggle-selector="#sidebar-search" <?= $block->getExpanded() ? 'data-toggle-initial="display"' : ''; ?>>
-            <img width="24" height="24" src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/search.svg'); ?>" alt="<?= $block->escapeHtmlAttr(__('Search')) ?>"/>
-            <span class="hidden-small"><?= $block->escapeHtml(__('Search')) ?></span>
+        <a class="sf-toggle btn btn-sm"
+           data-toggle-selector="#sidebar-search" <?= $block->getExpanded() ? 'data-toggle-initial="display"' : ''; ?>>
+            <img width="24"
+                 height="24"
+                 src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/search.svg'); ?>"
+                 alt="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"/>
+            <span class="hidden-small"><?= $escaper->escapeHtml(__('Search')) ?></span>
         </a>
 
         <div id="sidebar-search" class="sf-toggle-content sf-toggle-hidden">
-            <form action="<?= $block->escapeUrl($block->getUrl('_debug/profiler/search')); ?>" method="get">
+            <form action="<?= $escaper->escapeUrl($block->getUrl('_debug/profiler/search')); ?>" method="get">
                 <div class="form-group">
-                    <label for="ip"><?= $block->escapeHtml(__('IP')) ?></label>
-                    <input type="text" name="ip" id="ip" value="<?= $block->escapeHtmlAttr($viewModel->getParam('ip')); ?>">
+                    <label for="ip"><?= $escaper->escapeHtml(__('IP')) ?></label>
+                    <input type="text"
+                           name="ip"
+                           id="ip"
+                           value="<?= $escaper->escapeHtmlAttr($viewModel->getParam('ip')); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="method"><?= $block->escapeHtml(__('Method')) ?></label>
+                    <label for="method"><?= $escaper->escapeHtml(__('Method')) ?></label>
                     <select name="method" id="method">
-                        <option value=""><?= $block->escapeHtml(__('Any')) ?></option>
+                        <option value=""><?= $escaper->escapeHtml(__('Any')) ?></option>
                         <?php foreach ($viewModel->getMethods() as $method): ?>
                             <option<?= $viewModel->isParamSelected('method', $method) ? ' selected="selected"' : ''; ?>>
-                                <?= $block->escapeHtml($method) ?>
+                                <?= $escaper->escapeHtml($method) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="status_code"><?= $block->escapeHtml(__('Status')) ?></label>
+                    <label for="status_code"><?= $escaper->escapeHtml(__('Status')) ?></label>
                     <input type="number" name="status_code" id="status_code"
-                           value="<?= $block->escapeHtmlAttr($viewModel->getParam('status_code')); ?>">
+                           value="<?= $escaper->escapeHtmlAttr($viewModel->getParam('status_code')); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="url"><?= $block->escapeHtml(__('URL')) ?></label>
-                    <input type="text" name="url" id="url" value="<?= $block->escapeHtmlAttr($viewModel->getParam('url')); ?>">
+                    <label for="url"><?= $escaper->escapeHtml(__('URL')) ?></label>
+                    <input type="text"
+                           name="url"
+                           id="url"
+                           value="<?= $escaper->escapeHtmlAttr($viewModel->getParam('url')); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="token"><?= $block->escapeHtml(__('Token')) ?></label>
-                    <input type="text" name="_token" id="token" value="<?= $block->escapeHtmlAttr($viewModel->getParam('_token')); ?>">
+                    <label for="token"><?= $escaper->escapeHtml(__('Token')) ?></label>
+                    <input type="text"
+                           name="_token"
+                           id="token"
+                           value="<?= $escaper->escapeHtmlAttr($viewModel->getParam('_token')); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="start"><?= $block->escapeHtml(__('From')) ?></label>
-                    <input type="date" name="start" id="start" value="<?= $block->escapeHtmlAttr($viewModel->getParam('start')); ?>">
+                    <label for="start"><?= $escaper->escapeHtml(__('From')) ?></label>
+                    <input type="date"
+                           name="start"
+                           id="start"
+                           value="<?= $escaper->escapeHtmlAttr($viewModel->getParam('start')); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="end"><?= $block->escapeHtml(__('Until')) ?></label>
-                    <input type="date" name="end" id="end" value="<?= $block->escapeHtmlAttr($viewModel->getParam('end')); ?>">
+                    <label for="end"><?= $escaper->escapeHtml(__('Until')) ?></label>
+                    <input type="date"
+                           name="end"
+                           id="end"
+                           value="<?= $escaper->escapeHtmlAttr($viewModel->getParam('end')); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="limit"><?= $block->escapeHtml(__('Results')) ?></label>
+                    <label for="limit"><?= $escaper->escapeHtml(__('Results')) ?></label>
                     <select name="limit" id="limit">
                         <?php foreach ($viewModel->getLimits() as $limit): ?>
                             <option<?= $viewModel->isParamSelected('limit', $limit) ? ' selected="selected"' : ''; ?>>
-                                <?= $block->escapeHtml($limit) ?>
+                                <?= $escaper->escapeHtml($limit) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-sm"><?= $block->escapeHtml(__('Search')) ?></button>
+                    <button type="submit" class="btn btn-sm"><?= $escaper->escapeHtml(__('Search')) ?></button>
                 </div>
             </form>
         </div>

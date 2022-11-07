@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -6,20 +7,9 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class Translation implements LoggableInterface
 {
-    /**
-     * @var string
-     */
-    private $phrase;
-
-    /**
-     * @var string
-     */
-    private $translation;
-
-    /**
-     * @var bool
-     */
-    private $defined;
+    private string $phrase;
+    private string $translation;
+    private bool $defined;
 
     public function __construct(string $phrase, string $translation, bool $defined)
     {
@@ -28,30 +18,21 @@ class Translation implements LoggableInterface
         $this->defined = $defined;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->phrase;
     }
 
-    /**
-     * @return string
-     */
     public function getPhrase(): string
     {
         return $this->phrase;
     }
 
-    /**
-     * @return string
-     */
     public function getTranslation(): string
     {
         return $this->translation;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefined(): bool
     {
         return $this->defined;

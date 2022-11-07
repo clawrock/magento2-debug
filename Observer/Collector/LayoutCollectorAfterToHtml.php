@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Observer\Collector;
 
@@ -9,10 +10,7 @@ use Magento\Framework\Event\ObserverInterface;
 
 class LayoutCollectorAfterToHtml implements ObserverInterface
 {
-    /**
-     * @var \ClawRock\Debug\Model\Collector\LayoutCollector
-     */
-    private $layoutCollector;
+    private \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollector;
 
     public function __construct(
         \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollector

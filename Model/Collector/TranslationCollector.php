@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -12,20 +13,9 @@ class TranslationCollector implements CollectorInterface, LoggerCollectorInterfa
     const DEFINED = 'defined';
     const MISSING = 'missing';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Logger\DataLogger
-     */
-    private $dataLogger;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Logger\DataLogger $dataLogger;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -80,9 +70,6 @@ class TranslationCollector implements CollectorInterface, LoggerCollectorInterfa
         return count($this->getDefinedTranslations()) + count($this->getMissingTranslations());
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isTranslationCollectorEnabled();
