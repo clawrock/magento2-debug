@@ -1,15 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Plugin\ErrorHandler;
 
 use ClawRock\Debug\Model\Config\Source\ErrorHandler;
 use ClawRock\Debug\Plugin\ErrorHandler\WhoopsPlugin;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class WhoopsPluginTest extends TestCase
 {
-    public function testBeforeCatchException()
+    public function testBeforeCatchException(): void
     {
         $subjectMock = $this->getMockBuilder(\Magento\Framework\App\Http::class)
             ->disableOriginalConstructor()
@@ -47,14 +47,10 @@ class WhoopsPluginTest extends TestCase
         $whoopsMock->expects($this->once())->method('pushHandler')->with($prettyPageHandlerMock);
         $whoopsMock->expects($this->once())->method('handleException')->with($exception);
 
-        $plugin = (new ObjectManager($this))->getObject(WhoopsPlugin::class, [
-            'config' => $configMock,
-            'whoopsFactory' => $whoopsFactoryMock,
-            'prettyPageHandlerFactory' => $prettyPageHandlerFactoryMock,
-        ]);
+        $plugin = new WhoopsPlugin($configMock, $whoopsFactoryMock, $prettyPageHandlerFactoryMock);
 
         $this->assertEquals([
-            $bootstrapMock, $exception
+            $bootstrapMock, $exception,
         ], $plugin->beforeCatchException($subjectMock, $bootstrapMock, $exception));
     }
 }

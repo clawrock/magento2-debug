@@ -1,66 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View;
 
 use ClawRock\Debug\Api\Data\ProfileInterface;
 use ClawRock\Debug\Helper\Formatter;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Zend\Stdlib\ParametersInterface;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveParameterList)
  */
 class Profiler implements ArgumentInterface
 {
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\TraceRendererFactory
-     */
-    private $traceRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\LayoutGraphRendererFactory
-     */
-    private $layoutGraphRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\ParametersRendererFactory
-     */
-    private $parametersRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\QueryParametersRendererFactory
-     */
-    private $queryParametersRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory
-     */
-    private $queryRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\QueryListFactory
-     */
-    private $queryListRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\TableRendererFactory
-     */
-    private $tableRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\VarRendererFactory
-     */
-    private $varRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Model\View\Renderer\TraceRendererFactory $traceRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\LayoutGraphRendererFactory $layoutGraphRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\ParametersRendererFactory $parametersRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\QueryParametersRendererFactory $queryParametersRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\QueryListRendererFactory $queryListRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\TableRendererFactory $tableRendererFactory;
+    private \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer;
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         \ClawRock\Debug\Model\View\Renderer\TraceRendererFactory $traceRendererFactory,
@@ -70,7 +31,7 @@ class Profiler implements ArgumentInterface
         \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory,
         \ClawRock\Debug\Model\View\Renderer\QueryListRendererFactory $queryListRendererFactory,
         \ClawRock\Debug\Model\View\Renderer\TableRendererFactory $tableRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\VarRendererFactory $varRendererFactory,
+        \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer,
         \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
         \ClawRock\Debug\Helper\Formatter $formatter
     ) {
@@ -81,16 +42,16 @@ class Profiler implements ArgumentInterface
         $this->queryRendererFactory = $queryRendererFactory;
         $this->queryListRendererFactory = $queryListRendererFactory;
         $this->tableRendererFactory = $tableRendererFactory;
-        $this->varRendererFactory = $varRendererFactory;
+        $this->varRenderer = $varRenderer;
         $this->profileMemoryStorage = $profileMemoryStorage;
         $this->formatter = $formatter;
     }
 
-    public function renderLayoutGraph(array $blocks, float $totalTime): string
+    public function renderLayoutGraph(array $blocks, string $totalTime): string
     {
         return $this->layoutGraphRendererFactory->create([
             'blocks' => $blocks,
-            'totalRenderTime' => $totalTime
+            'totalRenderTime' => $totalTime,
         ])->render();
     }
 
@@ -99,7 +60,7 @@ class Profiler implements ArgumentInterface
         return $this->traceRendererFactory->create(['trace' => $trace])->render();
     }
 
-    public function renderParameters(ParametersInterface $parameters): string
+    public function renderParameters(\Laminas\Stdlib\ParametersInterface $parameters): string
     {
         return $this->parametersRendererFactory->create(['parameters' => $parameters])->render();
     }
@@ -108,7 +69,7 @@ class Profiler implements ArgumentInterface
     {
         return $this->queryParametersRendererFactory->create([
             'query' => $query,
-            'parameters' => $parameters
+            'parameters' => $parameters,
         ])->render();
     }
 
@@ -127,9 +88,9 @@ class Profiler implements ArgumentInterface
         return $this->tableRendererFactory->create(['items' => $items, 'labels' => $labels])->render();
     }
 
-    public function dump($variable): string
+    public function dump(string $variable): string
     {
-        return $this->varRendererFactory->create(['variable' => $variable])->render();
+        return $this->varRenderer->render($variable);
     }
 
     public function getProfile(): ProfileInterface

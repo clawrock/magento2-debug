@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model;
 
@@ -8,61 +9,26 @@ use Magento\Framework\HTTP\PhpEnvironment\Request;
 use Magento\Framework\HTTP\PhpEnvironment\Response;
 use Magento\Framework\Profiler as MagentoProfiler;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Profiler
 {
     const URL_TOKEN_PARAMETER      = 'token';
     const URL_PANEL_PARAMETER      = 'panel';
     const TOOLBAR_FULL_ACTION_NAME = 'debug_profiler_toolbar';
 
-    /**
-     * @var null|CollectorInterface[]
-     */
-    private $dataCollectors = null;
-
-    /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    private $objectManager;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\ProfileFactory
-     */
-    private $profileFactory;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $urlHelper;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Injector
-     */
-    private $injector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
-
-    /**
-     * @var \ClawRock\Debug\Api\ProfileRepositoryInterface
-     */
-    private $profileRepository;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\HttpStorage
-     */
-    private $httpStorage;
-
-    /**
-     * @var \ClawRock\Debug\Logger\Logger
-     */
-    private $logger;
+    /** @var null|\ClawRock\Debug\Model\Collector\CollectorInterface[] */
+    private ?array $dataCollectors = null;
+    private \Magento\Framework\ObjectManagerInterface $objectManager;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\ProfileFactory $profileFactory;
+    private \ClawRock\Debug\Helper\Url $urlHelper;
+    private \ClawRock\Debug\Helper\Injector $injector;
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
+    private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository;
+    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
+    private \ClawRock\Debug\Logger\Logger $logger;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -86,7 +52,7 @@ class Profiler
         $this->logger = $logger;
     }
 
-    public function run(Request $request, Response $response)
+    public function run(Request $request, Response $response): void
     {
         if (!$this->config->isAllowedIP()) {
             return;
@@ -102,7 +68,7 @@ class Profiler
         }
 
         $token = null;
-        /** @var \Zend\Http\Header\HeaderInterface $header */
+        /** @var \Laminas\Http\Header\HeaderInterface $header */
         foreach ($response->getHeaders() as $header) {
             if ($header->getFieldName() === 'X-Debug-Token') {
                 $token = $header->getFieldValue();
@@ -116,17 +82,18 @@ class Profiler
 
         $this->injector->inject($request, $response, $token);
 
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         register_shutdown_function([$this, 'onTerminate']);
     }
 
-    public function getDataCollector($name)
+    public function getDataCollector(string $name): ?CollectorInterface
     {
         $collectors = $this->getDataCollectors();
 
-        return isset($collectors[$name]) ? $collectors[$name] : false;
+        return $collectors[$name] ?? null;
     }
 
-    public function getDataCollectors()
+    public function getDataCollectors(): array
     {
         if ($this->dataCollectors === null) {
             $this->dataCollectors = [];
@@ -147,17 +114,14 @@ class Profiler
         return $this->dataCollectors;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param \Magento\Framework\HTTP\PhpEnvironment\Request  $request
-     * @param \Magento\Framework\HTTP\PhpEnvironment\Response $response
-     * @return \ClawRock\Debug\Model\Profile
-     */
-    public function collect(Request $request, Response $response)
+    public function collect(Request $request, Response $response): Profile
     {
         $start = microtime(true);
         /** @var \ClawRock\Debug\Model\Profile $profile */
-        $profile = $this->profileFactory->create(['token' => substr(hash('sha256', uniqid(mt_rand(), true)), 0, 6)]);
+        $profile = $this->profileFactory->create([
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+            'token' => substr(hash('sha256', uniqid((string) mt_rand(), true)), 0, 6),
+        ]);
         $profile->setUrl($request->getRequestString() ? $request->getRequestString() : '/');
         $profile->setMethod($request->getMethod());
         $profile->setRoute($this->urlHelper->getRequestFullActionName($request));
@@ -173,7 +137,7 @@ class Profiler
         MagentoProfiler::start($profileKey);
         foreach ($this->getDataCollectors() as $collector) {
             $profileCollectorKey = $profileKey . '::' . $collector->getName();
-            /** @var CollectorInterface $collector */
+            /** @var \ClawRock\Debug\Model\Collector\CollectorInterface $collector */
             MagentoProfiler::start($profileCollectorKey);
             $collector->collect();
             MagentoProfiler::stop($profileCollectorKey);
@@ -187,7 +151,7 @@ class Profiler
         return $profile;
     }
 
-    public function onTerminate()
+    public function onTerminate(): void
     {
         try {
             $profile = $this->profileMemoryStorage->read();
@@ -199,7 +163,7 @@ class Profiler
 
             $this->profileRepository->save($profile);
         } catch (\Exception $e) {
-            $this->logger->critical($e);
+            $this->logger->error('ClawRock_Debug: onTerminate error', ['exception' => $e]);
         }
     }
 }

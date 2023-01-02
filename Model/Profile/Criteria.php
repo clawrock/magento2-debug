@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Profile;
 
@@ -7,49 +8,22 @@ use Magento\Framework\App\RequestInterface;
 
 class Criteria
 {
-    /**
-     * @var string
-     */
-    private $ip;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var int
-     */
-    private $limit;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var \DateTime
-     */
-    private $start;
-
-    /**
-     * @var \DateTime
-     */
-    private $end;
-
-    /**
-     * @var int
-     */
-    private $statusCode;
+    private string $ip;
+    private string $url;
+    private int $limit;
+    private string $method;
+    private ?\DateTime $start;
+    private ?\DateTime $end;
+    private ?int $statusCode;
 
     public function __construct(
         string $ip = '',
         string $url = '',
         int $limit = 0,
         string $method = '',
-        \DateTime $start = null,
-        \DateTime $end = null,
-        int $statusCode = null
+        ?\DateTime $start = null,
+        ?\DateTime $end = null,
+        ?int $statusCode = null
     ) {
         $this->ip = $ip;
         $this->url = $url;
@@ -60,7 +34,8 @@ class Criteria
         $this->statusCode = $statusCode;
     }
 
-    public static function createFromRequest(RequestInterface $request)
+    // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction
+    public static function createFromRequest(RequestInterface $request): Criteria
     {
         return new Criteria(
             (string) preg_replace('/[^:\d\.]/', '', $request->getParam('ip')),
@@ -73,65 +48,53 @@ class Criteria
         );
     }
 
-    /**
-     * @return string
-     */
     public function getIp(): string
     {
         return $this->ip;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return int
-     */
     public function getLimit(): int
     {
         return $this->limit;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getStart(): \DateTime
+    public function getStart(): ?\DateTime
     {
         return $this->start;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getEnd(): \DateTime
+    public function getEnd(): ?\DateTime
     {
         return $this->end;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatusCode(): int
+    public function getStatusCode(): ?int
     {
         return $this->statusCode;
     }
 
-    public function match(array $data)
+    public function match(array $data): bool
     {
-        $data = array_combine(Profile::INDEX_PROPERTIES, $data);
+        try {
+            $data = array_combine(Profile::INDEX_PROPERTIES, $data);
+        } catch (\Throwable $e) {
+            $data = false;
+        }
+
+        if ($data === false) {
+            return false;
+        }
+
         foreach ($data as $property => $value) {
             if ($property === 'time' && !$this->matchTime((int) $value)) {
                 return false;

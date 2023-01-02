@@ -1,14 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Plugin\Collector;
 
 use ClawRock\Debug\Plugin\Collector\TranslationCollectorPlugin;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class TranslationCollectorPluginTest extends TestCase
 {
-    public function testBeforeRender()
+    public function testBeforeRender(): void
     {
         $subjectMock = $this->getMockBuilder(\Magento\Framework\Phrase\Renderer\Translate::class)
             ->disableOriginalConstructor()
@@ -20,16 +20,13 @@ class TranslationCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $plugin = (new ObjectManager($this))->getObject(TranslationCollectorPlugin::class, [
-            'translate' => $translateMock,
-            'translationCollector' => $translationCollectorMock,
-        ]);
+        $plugin = new TranslationCollectorPlugin($translateMock, $translationCollectorMock);
 
         $translateMock->expects($this->once())->method('getData')->willReturn(['text' => 'translation']);
 
         $source = ['text'];
         $args = [];
 
-        $this->assertNull($plugin->beforeRender($subjectMock, $source, $args));
+        $plugin->beforeRender($subjectMock, $source, $args);
     }
 }

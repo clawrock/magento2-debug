@@ -1,13 +1,18 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\LayoutCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\LayoutCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
 <div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>">
-    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+    <a target="_blank" href="<?= $escaper->escapeUrl($block->getProfilerUrl()); ?>">
         <div class="sf-toolbar-icon">
             <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/layout.svg'); ?>"
-                 alt="<?= $block->escapeHtmlAttr(__('Layout')) ?>"/>
+                 alt="<?= $escaper->escapeHtmlAttr(__('Layout')) ?>"/>
             <span class="sf-toolbar-value">
                 <?= /* @noEscape */ $collector->getRenderTime() ?> <span class="unit">ms</span>
             </span>
@@ -16,7 +21,7 @@ $collector = $block->getCollector();
     <div class="sf-toolbar-info">
         <div class="sf-toolbar-info-group">
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Layout handles')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Layout handles')); ?></strong>
                 <?php foreach ($collector->getHandles() as $handle): ?>
                     <?= /* @noEscape */ $handle ?><br>
                 <?php endforeach; ?>
@@ -24,15 +29,15 @@ $collector = $block->getCollector();
         </div>
         <div class="sf-toolbar-info-group">
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Render Time')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Render Time')); ?></strong>
                 <span><?= /* @noEscape */ $collector->getRenderTime(); ?> ms</span>
             </div>
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Block created')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Block created')); ?></strong>
                 <span class="sf-toolbar-status"><?= count($collector->getCreatedBlocks()) ?></span>
             </div>
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Block rendered')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Block rendered')); ?></strong>
                 <span class="sf-toolbar-status"><?= count($collector->getRenderedBlocks()) ?></span>
             </div>
         </div>

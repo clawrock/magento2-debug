@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
@@ -9,20 +10,9 @@ class DatabaseInfo
     const ALL_QUERIES        = 'all';
     const DUPLICATED_QUERIES = 'duplicated';
 
-    /**
-     * @var \Magento\Framework\App\ResourceConnection
-     */
-    private $resourceConnection;
-
-    /**
-     * @var \Zend_Db_Profiler
-     */
-    private $profiler;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Database
-     */
-    private $databaseHelper;
+    private \Magento\Framework\App\ResourceConnection $resourceConnection;
+    private ?\Zend_Db_Profiler $profiler = null;
+    private \ClawRock\Debug\Helper\Database $databaseHelper;
 
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resourceConnection,
@@ -43,8 +33,13 @@ class DatabaseInfo
             \Zend_Db_Profiler::QUERY => [],
         ];
 
+        $queryProfiles = $this->getProfiler()->getQueryProfiles();
+        if ($queryProfiles === false) {
+            return $queries;
+        }
+
         /** @var \Zend_Db_Profiler_Query $query */
-        foreach ($this->getProfiler()->getQueryProfiles() as $query) {
+        foreach ($queryProfiles as $query) {
             $type = $query->getQueryType();
             if (!isset($queries[$type])) {
                 $type = \Zend_Db_Profiler::QUERY;

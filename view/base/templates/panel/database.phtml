@@ -1,39 +1,50 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\DatabaseCollector $collector */
-$collector = $block->getCollector();
-/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Profiler $viewModel
+ * @var \ClawRock\Debug\Model\Collector\DatabaseCollector $collector
+ */
 $viewModel = $block->getViewModel();
+$collector = $block->getCollector();
 ?>
 <div style="float:left; width: 50%">
-    <h2><?= $block->escapeHtml(__('Query metrics')) ?></h2>
+    <h2><?= $escaper->escapeHtml(__('Query metrics')) ?></h2>
     <div class="metrics">
         <div class="metric">
             <span class="value"><?= /* @noEscape */ $collector->getQueriesCount() ?></span>
-            <span class="label"><?= $block->escapeHtml(__('Database queries')) ?></span>
+            <span class="label"><?= $escaper->escapeHtml(__('Database queries')) ?></span>
         </div>
         <div class="metric">
             <span class="value"><?= count($collector->getDuplicatedQueries()); ?></span>
-            <span class="label"><?= $block->escapeHtml(__('Duplicated queries')) ?></span>
+            <span class="label"><?= $escaper->escapeHtml(__('Duplicated queries')) ?></span>
         </div>
         <div class="metric">
             <span class="value"><?= /* @noEscape */ $collector->getTotalTime() ?> ms</span>
-            <span class="label"><?= $block->escapeHtml(__('Query time')) ?></span>
+            <span class="label"><?= $escaper->escapeHtml(__('Query time')) ?></span>
         </div>
     </div>
 </div>
 <div style="clear: both;"></div>
-<h2><?= $block->escapeHtml(__('Queries')) ?></h2>
+<h2><?= $escaper->escapeHtml(__('Queries')) ?></h2>
 <div class="sf-tabs">
     <div class="tab">
-        <h3 class="tab-title"><?= $block->escapeHtml(__('All')) ?> <span class="badge"><?= /* @noEscape */ $collector->getQueriesCount() ?></span></h3>
+        <h3 class="tab-title">
+            <?= $escaper->escapeHtml(__('All')) ?>
+            <span class="badge"><?= /* @noEscape */ $collector->getQueriesCount() ?></span>
+        </h3>
         <div class="tab-content">
             <?= /* @noEscape */ $viewModel->renderQueryList($collector->getAllQueries()); ?>
         </div>
     </div>
     <?php if (count($collector->getDuplicatedQueries())): ?>
         <div class="tab">
-            <h3 class="tab-title"><?= $block->escapeHtml(__('Duplicated queries')) ?> <span class="badge"><?= count($collector->getDuplicatedQueries()); ?></span></h3>
+            <h3 class="tab-title">
+                <?= $escaper->escapeHtml(__('Duplicated queries')) ?>
+                <span class="badge"><?= count($collector->getDuplicatedQueries()); ?></span>
+            </h3>
             <div class="tab-content">
                 <?= /* @noEscape */ $viewModel->renderQueryList($collector->getDuplicatedQueries()); ?>
             </div>

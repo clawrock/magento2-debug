@@ -1,13 +1,18 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\CacheCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\CacheCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
 <div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>">
-    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+    <a target="_blank" href="<?= $escaper->escapeUrl($block->getProfilerUrl()); ?>">
         <div class="sf-toolbar-icon">
             <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/cache.svg'); ?>"
-                 alt="<?= $block->escapeHtmlAttr(__('Cache')) ?>"/>
+                 alt="<?= $escaper->escapeHtmlAttr(__('Cache')) ?>"/>
             <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getTotalTime(); ?> ms</span>
         </div>
     </a>
@@ -15,47 +20,61 @@ $collector = $block->getCollector();
         <div class="sf-toolbar-info-group">
             <?php foreach ($collector->getCacheList() as $cache): ?>
                 <div class="sf-toolbar-info-piece">
-                    <b><?= /* @noEscape */ $cache->getCacheType(); ?></b>
+                    <strong><?= /* @noEscape */ $cache->getCacheType(); ?></strong>
                     <?php if ($cache->getStatus() === 1): ?>
                         <?php if ($collector->isInvalidated($cache->getId())): ?>
-                            <span class="sf-toolbar-status sf-toolbar-status-yellow"><?= $block->escapeHtml(__('INV')); ?></span>
+                            <span class="sf-toolbar-status sf-toolbar-status-yellow">
+                                <?= $escaper->escapeHtml(__('INV')); ?>
+                            </span>
                         <?php else: ?>
-                            <span class="sf-toolbar-status sf-toolbar-status-green"><?= $block->escapeHtml(__('YES')); ?></span>
+                            <span class="sf-toolbar-status sf-toolbar-status-green">
+                                <?= $escaper->escapeHtml(__('YES')); ?>
+                            </span>
                         <?php endif; ?>
                         &nbsp;
                         <a href="#"
-                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/clean', ['type' => $cache->getId()])) ?>"
-                           class="ajax-action"><?= $block->escapeHtml(__('Clean')); ?></a> /
+                           data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/clean', [
+                               'type' => $cache->getId(),
+                           ])) ?>"
+                           class="ajax-action"><?= $escaper->escapeHtml(__('Clean')); ?></a> /
                         <a href="#"
-                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/disable', ['type' => $cache->getId()])) ?>"
-                           class="ajax-action"><?= $block->escapeHtml(__('Disable')); ?></a>
+                           data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/disable', [
+                               'type' => $cache->getId(),
+                           ])) ?>"
+                           class="ajax-action"><?= $escaper->escapeHtml(__('Disable')); ?></a>
                     <?php else:?>
-                        <span class="sf-toolbar-status"><?= $block->escapeHtml(__('NO')); ?></span>
+                        <span class="sf-toolbar-status"><?= $escaper->escapeHtml(__('NO')); ?></span>
                         &nbsp;
                         <a href="#"
-                           data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/enable', ['type' => $cache->getId()])) ?>"
-                           class="ajax-action"><?= $block->escapeHtml(__('Enable')); ?></a>
+                           data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/enable', [
+                               'type' => $cache->getId(),
+                           ])) ?>"
+                           class="ajax-action"><?= $escaper->escapeHtml(__('Enable')); ?></a>
                     <?php endif;?>
                 </div>
             <?php endforeach; ?>
         </div>
         <div class="sf-toolbar-info-group" >
             <div class="sf-toolbar-info-piece" style="text-align: right; display: block;">
-                <a href="#" data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/clean')) ?>" class="ajax-action">
-                    <?= $block->escapeHtml(__('Clean')); ?>
+                <a href="#"
+                   data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/clean')) ?>"
+                   class="ajax-action">
+                    <?= $escaper->escapeHtml(__('Clean')); ?>
                 </a> /
-                <a href="#" data-url="<?= $block->escapeUrl($block->getUrl('_debug/cache/flush')) ?>" class="ajax-action">
-                    <?= $block->escapeHtml(__('Flush')); ?>
+                <a href="#"
+                   data-url="<?= $escaper->escapeUrl($block->getUrl('_debug/cache/flush')) ?>"
+                   class="ajax-action">
+                    <?= $escaper->escapeHtml(__('Flush')); ?>
                 </a>
             </div>
         </div>
         <div class="sf-toolbar-info-group" >
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Cache calls')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Cache calls')); ?></strong>
                 <span class="sf-toolbar-status"><?= /* @noEscape */ $collector->getCacheCalls() ?></span>
             </div>
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Time')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Time')); ?></strong>
                 <span><?= /* @noEscape */ $collector->getTotalTime() ?> ms</span>
             </div>
         </div>

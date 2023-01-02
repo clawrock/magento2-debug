@@ -1,18 +1,26 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\RequestCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\RequestCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
 <div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-normal ">
-    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+    <a target="_blank" href="<?= $escaper->escapeUrl($block->getProfilerUrl()); ?>">
         <div class="sf-toolbar-icon">
             <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus(); ?>">
                 <?= /* @noEscape */ $collector->getStatusCode() ?>
             </span>
             <?php if ($collector->getFullActionName()): ?>
                 <?php if ($collector->getRedirect()): ?>
-                    <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/redirect.svg'); ?>"
-                         class="redirect-img" alt="<?= $block->escapeHtmlAttr(__('Redirect')) ?>"/>
+                    <img src="
+                    <?= $escaper->escapeUrl(
+                        $block->getViewFileUrl('ClawRock_Debug::images/collector/redirect.svg')
+                    ); ?>
+                    " class="redirect-img" alt="<?= $escaper->escapeHtmlAttr(__('Redirect')) ?>"/>
                 <?php endif; ?>
                 <span class="sf-toolbar-label">
                     <?= /* @noEscape */ $collector->getMethod() !== 'GET' ? $collector->getMethod() : '' ?>@
@@ -29,30 +37,38 @@ $collector = $block->getCollector();
     <div class="sf-toolbar-info">
         <div class="sf-toolbar-info-group">
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('HTTP status')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('HTTP status')); ?></strong>
                 <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus(); ?>">
                     <?= /* @noEscape */ $collector->getStatusCode() ?>
                 </span>
             </div>
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('FPC Hit')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('FPC Hit')); ?></strong>
                 <?php if ($collector->isFPCHit()): ?>
-                    <span class="sf-toolbar-status sf-toolbar-status-green"><?= $block->escapeHtml(__('Yes')); ?></span>
+                    <span class="sf-toolbar-status sf-toolbar-status-green">
+                        <?= $escaper->escapeHtml(__('Yes')); ?>
+                    </span>
                 <?php else:?>
-                    <span class="sf-toolbar-status"><?= $block->escapeHtml(__('No')); ?></span>
+                    <span class="sf-toolbar-status"><?= $escaper->escapeHtml(__('No')); ?></span>
                 <?php endif;?>
             </div>
 
-            <?php if (!$collector->isFPCHit()) : ?>
+            <?php if (!$collector->isFPCHit()): ?>
                 <div class="sf-toolbar-info-piece">
-                    <b><?= $block->escapeHtml(__('Module')); ?></b><span><?= /* @noEscape */ $collector->getControllerModule() ?></span>
+                    <strong><?= $escaper->escapeHtml(__('Module')); ?></strong>
+                    <span><?= /* @noEscape */ $collector->getControllerModule() ?></span>
                 </div>
                 <div class="sf-toolbar-info-piece">
-                    <b><?= $block->escapeHtml(__('Controller')); ?></b>
-                    <span><?= /* @noEscape */ $collector->getControllerName() ?>\<?= /* @noEscape */ $collector->getActionName() ?> </span>
+                    <strong><?= $escaper->escapeHtml(__('Controller')); ?></strong>
+                    <span>
+                        <?=
+                        /* @noEscape */ $collector->getControllerName()
+                        ?>\<?=
+                        /* @noEscape */ $collector->getActionName() ?>
+                    </span>
                 </div>
                 <div class="sf-toolbar-info-piece">
-                    <b><?= $block->escapeHtml(__('Full action name')); ?></b>
+                    <strong><?= $escaper->escapeHtml(__('Full action name')); ?></strong>
                     <span><?= /* @noEscape */ $collector->getFullActionName(); ?></span>
                 </div>
             <?php endif; ?>
@@ -62,14 +78,15 @@ $collector = $block->getCollector();
         <?php if (!$redirect->isEmpty()): ?>
             <div class="sf-toolbar-info-group">
                 <div class="sf-toolbar-info-piece">
-                    <b>
+                    <strong>
                         <span class="sf-toolbar-redirection-status sf-toolbar-status-yellow">
                             <?= /* @noEscape */ $redirect->getStatusCode() ?>
                         </span>
-                        <?= $block->escapeHtml(__('Redirect from')); ?>
-                    </b>
+                        <?= $escaper->escapeHtml(__('Redirect from')); ?>
+                    </strong>
                     <span>
-                        (<a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl($redirect->getToken())) ?>">
+                        (<a target="_blank"
+                            href="<?= $escaper->escapeUrl($block->getProfilerUrl($redirect->getToken())) ?>">
                             <?= /* @noEscape */ $redirect->getToken() ?>
                         </a>)
                     </span>

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\ValueObject;
 
@@ -12,30 +13,11 @@ class ModelAction implements LoggableInterface
 
     const LOOP_LOAD = 'loop_load';
 
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $model;
-
-    /**
-     * @var float
-     */
-    private $time;
-
-    /**
-     * @var array
-     */
-    private $trace;
+    private string $id;
+    private string $name;
+    private string $model;
+    private float $time;
+    private array $trace;
 
     public function __construct(string $name, string $model, float $time, array $trace = [])
     {
@@ -46,55 +28,38 @@ class ModelAction implements LoggableInterface
         $this->trace = $trace;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->name . '::' . $this->id . '::' . $this->model;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getModel(): string
     {
         return $this->model;
     }
 
-    /**
-     * @return float
-     */
     public function getTime(): float
     {
         return $this->time;
     }
 
-    /**
-     * @return array
-     */
     public function getTrace(): array
     {
         return $this->trace;
     }
 
-    /**
-     * @return string
-     */
     public function getTraceHash(): string
     {
         if (empty($this->getTrace())) {
             return '';
         }
 
+        // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
         return md5(serialize($this->getTrace()));
     }
 }

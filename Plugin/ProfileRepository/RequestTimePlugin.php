@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Plugin\ProfileRepository;
 
@@ -15,7 +16,7 @@ class RequestTimePlugin
      * @param \ClawRock\Debug\Api\Data\ProfileInterface      $profile
      * @return array
      */
-    public function beforeSave(ProfileRepositoryInterface $subject, ProfileInterface $profile)
+    public function beforeSave(ProfileRepositoryInterface $subject, ProfileInterface $profile): array
     {
         try {
             /** @var \ClawRock\Debug\Model\Collector\TimeCollector $timeCollector */

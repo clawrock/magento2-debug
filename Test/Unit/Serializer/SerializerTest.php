@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Serializer;
 
@@ -8,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 class SerializerTest extends TestCase
 {
     /**
+     * @param mixed $input
+     * @return void
      * @dataProvider serializationProvider
      */
-    public function testSerialization($input)
+    public function testSerialization($input): void
     {
         $serializer = new Serializer();
 
         $this->assertEquals($input, $serializer->unserialize($serializer->serialize($input)));
     }
 
-    public function serializationProvider()
+    public function serializationProvider(): array
     {
         return [
             ['1', 2, 3],

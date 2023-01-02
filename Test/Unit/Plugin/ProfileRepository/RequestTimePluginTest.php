@@ -1,49 +1,44 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Plugin\ProfileRepository;
 
 use ClawRock\Debug\Model\Collector\TimeCollector;
 use ClawRock\Debug\Plugin\ProfileRepository\RequestTimePlugin;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class RequestTimePluginTest extends TestCase
 {
-    private $timeCollectorMock;
+    /** @var \ClawRock\Debug\Model\Collector\TimeCollector&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Collector\TimeCollector $timeCollectorMock;
+    /** @var \ClawRock\Debug\Api\Data\ProfileInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Api\Data\ProfileInterface $profileMock;
+    /** @var \ClawRock\Debug\Api\ProfileRepositoryInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Api\ProfileRepositoryInterface $subjectMock;
+    private \ClawRock\Debug\Plugin\ProfileRepository\RequestTimePlugin $plugin;
 
-    private $profileMock;
-
-    private $subjectMock;
-
-    private $plugin;
-
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->timeCollectorMock = $this->getMockBuilder(\ClawRock\Debug\Model\Collector\TimeCollector::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->profileMock = $this->getMockForAbstractClass(\ClawRock\Debug\Api\Data\ProfileInterface::class);
-
-        $this->subjectMock = $this->getMockForAbstractClass(\ClawRock\Debug\Api\ProfileRepositoryInterface::class);
-
-        $this->plugin = (new ObjectManager($this))->getObject(RequestTimePlugin::class);
+        $this->timeCollectorMock = $this->createMock(\ClawRock\Debug\Model\Collector\TimeCollector::class);
+        $this->profileMock = $this->createMock(\ClawRock\Debug\Api\Data\ProfileInterface::class);
+        $this->subjectMock = $this->createMock(\ClawRock\Debug\Api\ProfileRepositoryInterface::class);
+        $this->plugin = new RequestTimePlugin();
     }
 
-    public function testBeforeSave()
+    public function testBeforeSave(): void
     {
         $this->profileMock->expects($this->once())
             ->method('getCollector')
             ->with(TimeCollector::NAME)
             ->willReturn($this->timeCollectorMock);
 
-        $this->timeCollectorMock->expects($this->once())->method('getDuration')->willReturn(1);
+        $this->timeCollectorMock->expects($this->once())->method('getDuration')->willReturn('1');
         $this->profileMock->expects($this->once())->method('setRequestTime')->with(1);
 
         $this->assertEquals([$this->profileMock], $this->plugin->beforeSave($this->subjectMock, $this->profileMock));
     }
 
-    public function testBeforeSaveException()
+    public function testBeforeSaveException(): void
     {
         $this->profileMock->expects($this->once())
             ->method('getCollector')

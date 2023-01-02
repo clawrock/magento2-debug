@@ -1,11 +1,16 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\ModelCollector $collector */
-$collector  = $block->getCollector();
-/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Profiler $viewModel
+ * @var \ClawRock\Debug\Model\Collector\ModelCollector $collector
+ */
 $viewModel = $block->getViewModel();
+$collector = $block->getCollector();
 ?>
-<h2><?= $block->escapeHtml(__('Model CRUD metrics')) ?></h2>
+<h2><?= $escaper->escapeHtml(__('Model CRUD metrics')) ?></h2>
 <div class="metrics">
     <?php foreach ($collector->getMetrics() as $metric => $value): ?>
         <div class="metric">
@@ -15,13 +20,13 @@ $viewModel = $block->getViewModel();
     <?php endforeach; ?>
     <div class="metric">
         <span class="value"><?= /* @noEscape */ $collector->getTime(); ?> ms</span>
-        <span class="label"><?= $block->escapeHtml(__('Total time')) ?></span>
+        <span class="label"><?= $escaper->escapeHtml(__('Total time')) ?></span>
     </div>
 </div>
 <div class="sf-tabs">
     <div class="tab">
         <?php $log = $collector->getLog(); ?>
-        <h3 class="tab-title"><?= $block->escapeHtml(__('All')) ?> <span class="badge"><?= count($log) ?></span></h3>
+        <h3 class="tab-title"><?= $escaper->escapeHtml(__('All')) ?> <span class="badge"><?= count($log) ?></span></h3>
         <div id="all-crud-operations" class="tab-content">
             <?php foreach ($collector->getOperations() as $operation): ?>
                 <span data-toggle="crud-operation" data-operation="<?= /* @noEscape */$operation ?>" class="label">
@@ -34,9 +39,9 @@ $viewModel = $block->getViewModel();
             <table>
                 <thead>
                     <tr>
-                        <th><?= $block->escapeHtml(__('Class')) ?></th>
-                        <th><?= $block->escapeHtml(__('Action')) ?></th>
-                        <th><?= $block->escapeHtml(__('Time')) ?></th>
+                        <th><?= $escaper->escapeHtml(__('Class')) ?></th>
+                        <th><?= $escaper->escapeHtml(__('Action')) ?></th>
+                        <th><?= $escaper->escapeHtml(__('Time')) ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,19 +61,22 @@ $viewModel = $block->getViewModel();
         </div>
     </div>
     <div class="tab">
-        <h3 class="tab-title"><?= $block->escapeHtml(__('Load calls in loops')) ?> <span class="badge"><?= /* @noEscape */ $collector->getLoopLoadMetric() ?></span></h3>
+        <h3 class="tab-title">
+            <?= $escaper->escapeHtml(__('Load calls in loops')) ?>
+            <span class="badge"><?= /* @noEscape */ $collector->getLoopLoadMetric() ?></span>
+        </h3>
         <div class="tab-content">
             <?php if (!$collector->getLoopLoadMetric()): ?>
                 <div class="empty">
-                    <p><?= $block->escapeHtml(__('No load calls in loops detected')) ?></p>
+                    <p><?= $escaper->escapeHtml(__('No load calls in loops detected')) ?></p>
                 </div>
             <?php else: ?>
                 <table>
                     <thead>
                         <tr>
-                            <th><?= $block->escapeHtml(__('Class')) ?></th>
-                            <th><?= $block->escapeHtml(__('Count')) ?></th>
-                            <th><?= $block->escapeHtml(__('Time')) ?></th>
+                            <th><?= $escaper->escapeHtml(__('Class')) ?></th>
+                            <th><?= $escaper->escapeHtml(__('Count')) ?></th>
+                            <th><?= $escaper->escapeHtml(__('Time')) ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,7 +122,8 @@ $viewModel = $block->getViewModel();
         cursor: pointer;
     }
     <?php foreach ($collector->getOperations() as $name): ?>
-        #all-crud-operations[data-operation="<?= /* @noEscape */$name ?>"] tbody > tr:not([data-operation="<?= /* @noEscape */$name ?>"]) {
+        <?php // phpcs:ignore Generic.Files.LineLength.TooLong ?>
+        #all-crud-operations[data-operation="<?= /* @noEscape */ $name ?>"] tbody > tr:not([data-operation="<?= /* @noEscape */ $name ?>"]) {
             display: none;
         }
     <?php endforeach;?>

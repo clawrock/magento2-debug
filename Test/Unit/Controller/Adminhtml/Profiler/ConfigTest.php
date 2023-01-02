@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Controller\Adminhtml\Profiler;
 
@@ -7,22 +8,21 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\UrlInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
-    private $contextMock;
+    /** @var \Magento\Backend\App\Action\Context&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Backend\App\Action\Context $contextMock;
+    /** @var \Magento\Framework\Controller\Result\RedirectFactory&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactoryMock;
+    /** @var \Magento\Framework\Controller\Result\Redirect&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Controller\Result\Redirect $resultRedirectMock;
+    /** @var \Magento\Backend\Model\UrlInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Backend\Model\UrlInterface $urlMock;
+    private \ClawRock\Debug\Controller\Adminhtml\Profiler\Config $controller;
 
-    private $resultRedirectFactoryMock;
-
-    private $resultRedirectMock;
-
-    private $urlMock;
-
-    private $controller;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,12 +44,10 @@ class ConfigTest extends TestCase
             ->willReturn($this->resultRedirectFactoryMock);
         $this->contextMock->expects($this->once())->method('getUrl')->willReturn($this->urlMock);
 
-        $this->controller = (new ObjectManager($this))->getObject(Config::class, [
-            'context' => $this->contextMock,
-        ]);
+        $this->controller = new Config($this->contextMock);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->resultRedirectFactoryMock->expects($this->once())->method('create')
             ->willReturn($this->resultRedirectMock);

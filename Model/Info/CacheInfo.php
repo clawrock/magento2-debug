@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
@@ -11,25 +12,10 @@ class CacheInfo
     const STATS_MISS  = 'stats_miss';
     const STATS_SAVE  = 'stats_save';
 
-    /**
-     * @var \Magento\Framework\App\Cache
-     */
-    private $cache;
-
-    /**
-     * @var \Magento\Framework\App\Cache\TypeListInterface
-     */
-    private $typeList;
-
-    /**
-     * @var array
-     */
-    private $stats;
-
-    /**
-     * @var float
-     */
-    private $totalTime;
+    private \Magento\Framework\App\Cache $cache;
+    private \Magento\Framework\App\Cache\TypeListInterface $typeList;
+    private ?array $stats = null;
+    private ?float $totalTime = null;
 
     public function __construct(
         \Magento\Framework\App\Cache $cache,

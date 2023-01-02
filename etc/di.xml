@@ -25,6 +25,21 @@
             </argument>
         </arguments>
     </type>
+    <type name="ClawRock\Debug\Model\Info\CustomerInfo">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="ClawRock\Debug\Model\Info\RequestInfo">
+        <arguments>
+            <argument name="session" xsi:type="object">ClawRock\Debug\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="ClawRock\Debug\Observer\ValidateRedirect">
+        <arguments>
+            <argument name="session" xsi:type="object">ClawRock\Debug\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
     <type name="Magento\Framework\Phrase\Renderer\Translate">
         <plugin name="ClawRock_Debug::translation_collector_plugin" type="ClawRock\Debug\Plugin\Collector\TranslationCollectorPlugin"/>
     </type>

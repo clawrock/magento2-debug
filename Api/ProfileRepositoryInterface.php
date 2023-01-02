@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Api;
 
@@ -9,10 +10,10 @@ interface ProfileRepositoryInterface
 {
     /**
      * @param \ClawRock\Debug\Api\Data\ProfileInterface $profile
-     * @return \ClawRock\Debug\Api\ProfileRepositoryInterface
+     * @return void
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function save(ProfileInterface $profile): ProfileRepositoryInterface;
+    public function save(ProfileInterface $profile): void;
 
     /**
      * @param string $token
@@ -23,17 +24,17 @@ interface ProfileRepositoryInterface
 
     /**
      * @param \ClawRock\Debug\Api\Data\ProfileInterface $profile
-     * @return \ClawRock\Debug\Api\ProfileRepositoryInterface
+     * @return void
      * @throws \Magento\Framework\Exception\CouldNotDeleteException
      */
-    public function delete(ProfileInterface $profile): ProfileRepositoryInterface;
+    public function delete(ProfileInterface $profile): void;
 
     /**
      * @param string $token
-     * @return \ClawRock\Debug\Api\ProfileRepositoryInterface
+     * @return void
      * @throws \Magento\Framework\Exception\CouldNotDeleteException
      */
-    public function deleteById(string $token): ProfileRepositoryInterface;
+    public function deleteById(string $token): void;
 
     public function find(Criteria $criteria): array;
 

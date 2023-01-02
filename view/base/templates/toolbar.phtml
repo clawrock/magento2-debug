@@ -1,11 +1,22 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Toolbar $vm */ ?>
-<?php $vm = $block->getViewModel(); ?>
-<?php $token = $vm->getToken(); ?>
+<?php
+declare(strict_types=1);
 
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Toolbar $viewModel
+ */
+$viewModel = $block->getViewModel();
+$token = $viewModel->getToken();
+?>
 <div id="sfMiniToolbar-<?= /* @noEscape */ $token; ?>" class="sf-minitoolbar" data-no-turbolink>
-    <a href="#" title="<?= $block->escapeHtml(__('Debug Toolbar')) ?>" id="sfToolbarMiniToggler-<?= /* @noEscape */ $token; ?>" tabindex="-1" accesskey="D">
-        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>" alt="ClawRock"/>
+    <a href="#"
+       title="<?= $escaper->escapeHtml(__('Debug Toolbar')) ?>"
+       id="sfToolbarMiniToggler-<?= /* @noEscape */ $token; ?>"
+       tabindex="-1"
+       accesskey="D">
+        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>"
+             alt="ClawRock"/>
     </a>
 </div>
 <div id="sfToolbarClearer-<?= /* @noEscape */ $token; ?>" class="sf-toolbar-clearer"></div>
@@ -13,15 +24,22 @@
     <div class="sf-toolbar-block sf-toolbar-block-clawrock sf-toolbar-status-normal">
         <a target="_blank" href="http://clawrock.com">
             <div class="sf-toolbar-icon">
-                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>" alt="ClawRock"/>
+                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>"
+                     alt="ClawRock"/>
             </div>
         </a>
     </div>
     <?php /** @var \Magento\Framework\View\Element\Template $collectorBlock */ ?>
-    <?php foreach ($vm->getCollectorBlocks() as $collectorBlock): ?>
+    <?php foreach ($viewModel->getCollectorBlocks() as $collectorBlock): ?>
         <?= $collectorBlock->toHtml(); ?>
     <?php endforeach; ?>
-    <a href="#" class="hide-button" id="sfToolbarHideButton-<?= /* @noEscape */ $token; ?>" title="<?= $block->escapeHtml(__('Close Toolbar')) ?>" tabindex="-1" accesskey="D">
-        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/close.svg'); ?>" alt="<?= $block->escapeHtml(__('Close')) ?>">
+    <a href="#"
+       class="hide-button"
+       id="sfToolbarHideButton-<?= /* @noEscape */ $token; ?>"
+       title="<?= $escaper->escapeHtml(__('Close Toolbar')) ?>"
+       tabindex="-1"
+       accesskey="D">
+        <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/close.svg'); ?>"
+             alt="<?= $escaper->escapeHtml(__('Close')) ?>">
     </a>
 </div>

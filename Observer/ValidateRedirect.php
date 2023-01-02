@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Observer;
 
@@ -8,13 +9,10 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ValidateRedirect implements ObserverInterface
 {
-    /**
-     * @var \ClawRock\Debug\Model\Session
-     */
-    private $session;
+    private \ClawRock\Debug\Model\Session $session;
 
     public function __construct(
-        \ClawRock\Debug\Model\Session\Proxy $session
+        \ClawRock\Debug\Model\Session $session
     ) {
         $this->session = $session;
     }

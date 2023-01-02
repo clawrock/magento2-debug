@@ -1,45 +1,41 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Controller\Profiler;
 
 use ClawRock\Debug\Model\Profile\Criteria;
 use ClawRock\Debug\Model\Profiler;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
 
-class Search extends Action
+class Search implements HttpGetActionInterface
 {
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Api\ProfileRepositoryInterface
-     */
-    private $profileRepository;
+    private \Magento\Framework\Controller\ResultFactory $resultFactory;
+    private \Magento\Framework\App\RequestInterface $request;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
+        \Magento\Framework\Controller\ResultFactory $resultFactory,
+        \Magento\Framework\App\RequestInterface $request,
         \Magento\Framework\View\LayoutInterface $layout,
         \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository
     ) {
-        parent::__construct($context);
-
+        $this->resultFactory = $resultFactory;
+        $this->request = $request;
         $this->layout = $layout;
         $this->profileRepository = $profileRepository;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
-     */
-    public function execute()
+    public function execute(): ?ResultInterface
     {
-        $request  = $this->getRequest();
+        if (!empty($token = $this->request->getParam('_token'))) {
+            /** @var \Magento\Framework\Controller\Result\Redirect $result */
+            $result = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $result->setPath('_debug/profiler/info', [Profiler::URL_TOKEN_PARAMETER => $token]);
 
-        if (!empty($token = $request->getParam('_token'))) {
-            return $this->_redirect('_debug/profiler/info', [Profiler::URL_TOKEN_PARAMETER => $token]);
+            return $result;
         }
 
         /** @var \Magento\Framework\View\Result\Page $page */
@@ -49,12 +45,16 @@ class Search extends Action
             'profiler' => 'info',
         ], 'debug');
 
-        $criteria = Criteria::createFromRequest($request);
+        $criteria = Criteria::createFromRequest($this->request);
 
-        $this->layout->getBlock('debug.profiler.panel.content')->addData([
-            'results' => $this->profileRepository->find($criteria),
-            'criteria' => $criteria,
-        ]);
+        $contentBlock = $this->layout->getBlock('debug.profiler.panel.content');
+
+        if ($contentBlock instanceof \Magento\Framework\View\Element\AbstractBlock) {
+            $contentBlock->addData([
+                'results' => $this->profileRepository->find($criteria),
+                'criteria' => $criteria,
+            ]);
+        }
 
         return $page;
     }

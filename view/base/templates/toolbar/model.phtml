@@ -1,37 +1,52 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\ModelCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\ModelCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
-<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName()?> sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
-    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+<div class="
+    sf-toolbar-block
+    sf-toolbar-block-<?= /* @noEscape */ $collector->getName()?>
+    sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>
+">
+    <a target="_blank" href="<?= $escaper->escapeUrl($block->getProfilerUrl()); ?>">
         <div class="sf-toolbar-icon">
             <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/model.svg'); ?>"
-                 alt="<?= $block->escapeHtmlAttr(__('Model')) ?>"/>
+                 alt="<?= $escaper->escapeHtmlAttr(__('Model')) ?>"/>
             <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getTotalActionsMetric() ?></span>
         </div>
     </a>
     <div class="sf-toolbar-info">
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Model loads')); ?></b>
-            <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->isThresholdExceeded() ? 'yellow' : '' ?>">
+            <strong><?= $escaper->escapeHtml(__('Model loads')); ?></strong>
+            <span class="
+                sf-toolbar-status
+                sf-toolbar-status-<?= /* @noEscape */ $collector->isThresholdExceeded() ? 'yellow' : '' ?>
+            ">
                  <?= /* @noEscape */ $collector->getLoadMetric(); ?>
             </span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Loads in loops')); ?></b>
-            <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getLoopLoadMetric() ? 'red' : '' ?>">
+            <strong><?= $escaper->escapeHtml(__('Loads in loops')); ?></strong>
+            <span class="
+                sf-toolbar-status
+                sf-toolbar-status-<?= /* @noEscape */ $collector->getLoopLoadMetric() ? 'red' : '' ?>
+            ">
                  <?= /* @noEscape */ $collector->getLoopLoadMetric() ?>
             </span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Model save')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Model save')); ?></strong>
             <span class="sf-toolbar-status">
                  <?= /* @noEscape */ $collector->getSaveMetric(); ?>
             </span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Model delete')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Model delete')); ?></strong>
             <span class="sf-toolbar-status">
                  <?= /* @noEscape */ $collector->getDeleteMetric(); ?>
             </span>

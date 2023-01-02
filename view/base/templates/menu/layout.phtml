@@ -1,18 +1,27 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Menu $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
+<?php
+declare(strict_types=1);
 
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Menu $viewModel
+ */
+$viewModel = $block->getViewModel();
+?>
 <?php if ($viewModel->isActive($block->getCollectorName())): ?>
     <?php /** @var \ClawRock\Debug\Model\Collector\LayoutCollector $collector */ ?>
     <?php $collector = $viewModel->getCollector($block->getCollectorName()); ?>
     <li class="request<?= $viewModel->isCurrentPanel($block->getCollectorName()) ? ' selected' : '' ?>">
-        <a href="<?= $block->escapeUrl($viewModel->getProfilerUrl($block->getCollectorName())); ?>">
+        <a href="<?= $escaper->escapeUrl($viewModel->getProfilerUrl($block->getCollectorName())); ?>">
             <span class="label label-status-<?= /* @noEscape */ $collector->getStatus() ?>">
                 <span class="icon">
-                    <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/layout.svg'); ?>"
-                         alt="<?= $block->escapeHtmlAttr(__('Layout')); ?>"/>
+                    <img src="
+                    <?= $escaper->escapeUrl(
+                        $block->getViewFileUrl('ClawRock_Debug::images/collector/layout.svg')
+                    ); ?>
+                    " alt="<?= $escaper->escapeHtmlAttr(__('Layout')); ?>"/>
                 </span>
-                <strong><?= $block->escapeHtml(__('Layout')); ?></strong>
+                <strong><?= $escaper->escapeHtml(__('Layout')); ?></strong>
                 <?php if (count($collector->getNotRenderedBlocks())): ?>
                     <span class="count">
                         <span><?= count($collector->getNotRenderedBlocks()) ?></span>

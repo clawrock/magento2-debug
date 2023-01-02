@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model;
 
@@ -34,87 +35,25 @@ class Profile implements ProfileInterface
         'requestTime',
     ];
 
-    /**
-     * @var string
-     */
-    private $token;
-
-    /**
-     * @var \Magento\Framework\UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
-     * @var array
-     */
-    private $collectors = [];
-
-    /**
-     * @var string
-     */
-    private $ip;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var string
-     */
-    private $route;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var int
-     */
-    private $time;
-
-    /**
-     * @var int
-     */
-    private $statusCode;
-
-    /**
-     * @var int
-     */
-    private $collectTime;
-
-    /**
-     * @var \ClawRock\Debug\Model\Profile
-     */
-    private $parent;
-
-    /**
-     * @var string
-     */
-    private $parentToken;
-
-    /**
-     * @var array
-     */
-    private $children = [];
-
-    /**
-     * @var int
-     */
-    private $fileSize;
-
-    /**
-     * @var float
-     */
-    private $requestTime = 0;
+    private string $token;
+    private array $collectors = [];
+    private string $ip;
+    private string $method;
+    private string $route;
+    private string $url;
+    private int $time;
+    private int $statusCode;
+    private float $collectTime;
+    private ?\ClawRock\Debug\Api\Data\ProfileInterface $parent = null;
+    private ?string $parentToken = null;
+    private array $children = [];
+    private int $fileSize;
+    private string $requestTime = '0.0';
 
     public function __construct(
-        $token,
-        \Magento\Framework\UrlInterface $urlBuilder
+        string $token
     ) {
         $this->token = $token;
-        $this->urlBuilder = $urlBuilder;
     }
 
     public function getToken(): string
@@ -122,13 +61,13 @@ class Profile implements ProfileInterface
         return $this->token;
     }
 
-    public function setParent(ProfileInterface $parent)
+    public function setParent(ProfileInterface $parent): void
     {
         $this->parent = $parent;
         $this->parentToken = $parent->getToken();
     }
 
-    public function getParent(): ProfileInterface
+    public function getParent(): ?ProfileInterface
     {
         return $this->parent;
     }
@@ -143,7 +82,7 @@ class Profile implements ProfileInterface
         return $this->ip;
     }
 
-    public function setIp($ip)
+    public function setIp(string $ip): void
     {
         $this->ip = $ip;
     }
@@ -153,23 +92,17 @@ class Profile implements ProfileInterface
         return strtoupper($this->method);
     }
 
-    public function setMethod($method)
+    public function setMethod(string $method): void
     {
         $this->method = $method;
     }
 
-    /**
-     * @return string
-     */
     public function getRoute(): string
     {
         return $this->route;
     }
 
-    /**
-     * @param string $route
-     */
-    public function setRoute(string $route)
+    public function setRoute(string $route): void
     {
         $this->route = $route;
     }
@@ -179,7 +112,7 @@ class Profile implements ProfileInterface
         return $this->url;
     }
 
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -189,12 +122,12 @@ class Profile implements ProfileInterface
         return date('r', $this->time);
     }
 
-    public function setTime($time)
+    public function setTime(int $time): void
     {
         $this->time = $time;
     }
 
-    public function setStatusCode(int $statusCode)
+    public function setStatusCode(int $statusCode): void
     {
         $this->statusCode = $statusCode;
     }
@@ -209,9 +142,9 @@ class Profile implements ProfileInterface
         return $this->collectTime;
     }
 
-    public function setCollectTime($time)
+    public function setCollectTime(float $time): void
     {
-        return $this->collectTime = $time;
+        $this->collectTime = $time;
     }
 
     public function getChildren(): array
@@ -219,7 +152,7 @@ class Profile implements ProfileInterface
         return $this->children;
     }
 
-    public function setChildren(array $children)
+    public function setChildren(array $children): void
     {
         $this->children = [];
         foreach ($children as $child) {
@@ -227,7 +160,7 @@ class Profile implements ProfileInterface
         }
     }
 
-    public function addChild(ProfileInterface $child)
+    public function addChild(ProfileInterface $child): void
     {
         $this->children[] = $child;
         $child->setParent($this);
@@ -242,12 +175,12 @@ class Profile implements ProfileInterface
         return $this->collectors[$name];
     }
 
-    public function getCollectors()
+    public function getCollectors(): array
     {
         return $this->collectors;
     }
 
-    public function setCollectors(array $collectors)
+    public function setCollectors(array $collectors): void
     {
         $this->collectors = [];
         foreach ($collectors as $collector) {
@@ -255,11 +188,9 @@ class Profile implements ProfileInterface
         }
     }
 
-    public function addCollector(CollectorInterface $collector)
+    public function addCollector(CollectorInterface $collector): void
     {
         $this->collectors[$collector->getName()] = $collector;
-
-        return $this;
     }
 
     public function hasCollector(string $name): bool
@@ -278,9 +209,6 @@ class Profile implements ProfileInterface
         return $data;
     }
 
-    /**
-     * @return array
-     */
     public function getData(): array
     {
         $data = [];
@@ -305,10 +233,11 @@ class Profile implements ProfileInterface
         return $this;
     }
 
-    /**
-     * @param int $fileSize
-     * @return \ClawRock\Debug\Api\Data\ProfileInterface
-     */
+    public function getFileSize(): int
+    {
+        return $this->fileSize;
+    }
+
     public function setFileSize(int $fileSize): ProfileInterface
     {
         $this->fileSize = $fileSize;
@@ -316,15 +245,14 @@ class Profile implements ProfileInterface
         return $this;
     }
 
-    /**
-     * @param string $requestTime
-     * @return \ClawRock\Debug\Api\Data\ProfileInterface
-     */
-    public function setRequestTime(string $requestTime): ProfileInterface
+    public function getRequestTime(): string
+    {
+        return $this->requestTime;
+    }
+
+    public function setRequestTime(string $requestTime): void
     {
         $this->requestTime = $requestTime;
-
-        return $this;
     }
 
     public function getStatus(): string

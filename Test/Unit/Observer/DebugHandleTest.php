@@ -1,25 +1,25 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer;
 
 use ClawRock\Debug\Model\Profiler;
 use ClawRock\Debug\Observer\DebugHandle;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class DebugHandleTest extends TestCase
 {
-    private $layoutMock;
+    /** @var \Magento\Framework\View\LayoutInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\View\LayoutInterface $layoutMock;
+    /** @var \Magento\Framework\View\Layout\ProcessorInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\View\Layout\ProcessorInterface $updateMock;
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    private \ClawRock\Debug\Observer\DebugHandle $observer;
 
-    private $updateMock;
-
-    private $configMock;
-
-    private $observerMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->layoutMock = $this->getMockForAbstractClass(\Magento\Framework\View\LayoutInterface::class);
 
@@ -34,12 +34,10 @@ class DebugHandleTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->observer = (new ObjectManager($this))->getObject(DebugHandle::class, [
-            'config' => $this->configMock,
-        ]);
+        $this->observer = new DebugHandle($this->configMock);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->configMock->expects($this->once())->method('isEnabled')->willReturn(true);
         $this->observerMock->expects($this->once())

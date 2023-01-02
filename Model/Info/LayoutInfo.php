@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
@@ -7,10 +8,7 @@ use ClawRock\Debug\Model\ValueObject\Block;
 
 class LayoutInfo
 {
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
+    private \Magento\Framework\View\LayoutInterface $layout;
 
     public function __construct(
         \Magento\Framework\View\LayoutInterface $layout

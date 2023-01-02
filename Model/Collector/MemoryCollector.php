@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -9,25 +10,10 @@ class MemoryCollector implements CollectorInterface, LateCollectorInterface
     const MEMORY_USAGE = 'memory_usage';
     const MEMORY_LIMIT = 'memory_limit';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\MemoryInfo
-     */
-    private $memoryInfo;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Info\MemoryInfo $memoryInfo;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -58,24 +44,21 @@ class MemoryCollector implements CollectorInterface, LateCollectorInterface
         return $this;
     }
 
-    public function getMemoryUsage()
+    public function getMemoryUsage(): string
     {
         return $this->formatter->toMegaBytes($this->dataCollector->getData(self::MEMORY_USAGE), 1);
     }
 
-    public function getMemoryLimit()
+    public function getMemoryLimit(): string
     {
         return $this->formatter->toMegaBytes($this->dataCollector->getData(self::MEMORY_LIMIT));
     }
 
-    public function hasMemoryLimit()
+    public function hasMemoryLimit(): bool
     {
         return $this->dataCollector->getData(self::MEMORY_LIMIT) !== -1;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isMemoryCollectorEnabled();

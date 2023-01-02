@@ -1,28 +1,33 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\CustomerCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\CustomerCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
 <div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>">
     <div class="sf-toolbar-icon">
         <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/customer.svg'); ?>"
-             alt="<?= $block->escapeHtmlAttr(__('Customer')) ?>"/>
+             alt="<?= $escaper->escapeHtmlAttr(__('Customer')) ?>"/>
         <span class="sf-toolbar-value">
             <?php if ($collector->isLoggedIn()): ?>
                 <?= /* @noEscape */ $collector->getCustomerEmail(); ?>
             <?php else: ?>
-                <?= $block->escapeHtml(__('@guest')); ?>
+                <?= $escaper->escapeHtml(__('@guest')); ?>
             <?php endif; ?>
         </span>
     </div>
     <div class="sf-toolbar-info">
         <?php if ($collector->isLoggedIn()): ?>
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Logged in as')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Logged in as')); ?></strong>
                 <span><?= /* @noEscape */ $collector->getCustomerEmail(); ?></span>
             </div>
             <div class="sf-toolbar-info-piece">
-                <b><?= $block->escapeHtml(__('Name')); ?></b>
+                <strong><?= $escaper->escapeHtml(__('Name')); ?></strong>
                 <span>
                     <?= /* @noEscape */ $collector->getCustomerName(); ?>&nbsp;
                     #<?= /* @noEscape */ $collector->getCustomerId(); ?>
@@ -30,34 +35,34 @@ $collector = $block->getCollector();
             </div>
         <?php endif; ?>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Customer Group')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Customer Group')); ?></strong>
             <span>
                 <?= /* @noEscape */ $collector->getCustomerGroupCode(); ?>&nbsp;
                 #<?= /* @noEscape */ $collector->getCustomerGroupId(); ?>
             </span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Tax Class')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Tax Class')); ?></strong>
             <span>
                 <?= /* @noEscape */ $collector->getCustomerTaxClassName(); ?>&nbsp;
                 #<?= /* @noEscape */ $collector->getCustomerTaxClassId(); ?>
             </span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Actions')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Actions')); ?></strong>
             <?php if ($collector->isLoggedIn()): ?>
                 <span>
-                    <a href="<?= $block->escapeUrl($block->getUrl('customer/account/logout')); ?>">
-                        <?= $block->escapeHtml(__('Logout')); ?>
+                    <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/logout')); ?>">
+                        <?= $escaper->escapeHtml(__('Logout')); ?>
                     </a>
                 </span>
             <?php else: ?>
                 <span>
-                    <a href="<?= $block->escapeUrl($block->getUrl('customer/account/login')); ?>">
-                        <?= $block->escapeHtml(__('Login')); ?>
+                    <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/login')); ?>">
+                        <?= $escaper->escapeHtml(__('Login')); ?>
                     </a>&nbsp;
-                    <a href="<?= $block->escapeUrl($block->getUrl('customer/account/create')); ?>">
-                        <?= $block->escapeHtml(__('Register')); ?>
+                    <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/create')); ?>">
+                        <?= $escaper->escapeHtml(__('Register')); ?>
                     </a>
                 </span>
             <?php endif; ?>

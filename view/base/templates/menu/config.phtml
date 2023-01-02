@@ -1,16 +1,25 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Menu $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
+<?php
+declare(strict_types=1);
 
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Menu $viewModel
+ */
+$viewModel = $block->getViewModel();
+?>
 <?php if ($viewModel->isActive($block->getCollectorName())): ?>
     <li class="request<?= $viewModel->isCurrentPanel($block->getCollectorName()) ? ' selected' : '' ?>">
-        <a href="<?= $block->escapeUrl($viewModel->getProfilerUrl($block->getCollectorName())); ?>">
+        <a href="<?= $escaper->escapeUrl($viewModel->getProfilerUrl($block->getCollectorName())); ?>">
             <span class="label">
                 <span class="icon">
-                    <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/config.svg'); ?>"
-                         alt="<?= $block->escapeHtmlAttr(__('Config')); ?>"/>
+                    <img src="
+                    <?= $escaper->escapeUrl(
+                        $block->getViewFileUrl('ClawRock_Debug::images/collector/config.svg')
+                    ); ?>
+                    " alt="<?= $escaper->escapeHtmlAttr(__('Config')); ?>"/>
                 </span>
-                <strong><?= $block->escapeHtml(__('Config')); ?></strong>
+                <strong><?= $escaper->escapeHtml(__('Config')); ?></strong>
             </span>
         </a>
     </li>

@@ -1,50 +1,61 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\TimeCollector $collector */
-$collector = $block->getCollector();
-/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Profiler $viewModel
+ * @var \ClawRock\Debug\Model\Collector\TimeCollector $collector
+ */
 $viewModel = $block->getViewModel();
-/** @var \ClawRock\Debug\Model\Profile $profile */
+$collector = $block->getCollector();
 $profile = $viewModel->getProfile();
 $events = $collector->getEvents();
 ?>
-<h2><?= $block->escapeHtml(__('Performance metrics')) ?></h2>
+<h2><?= $escaper->escapeHtml(__('Performance metrics')) ?></h2>
 <div class="metrics">
     <div class="metric">
         <span class="value">
             <?= /* @noEscape */ $collector->getDuration() ?>
             <span class="unit">ms</span>
         </span>
-        <span class="label"><?= $block->escapeHtml(__('Total execution time')) ?></span>
+        <span class="label"><?= $escaper->escapeHtml(__('Total execution time')) ?></span>
     </div>
     <div class="metric">
         <span class="value">
             <?= /* @noEscape */$profile->getCollector('memory')->getMemoryUsage() ?>
             <span class="unit">MB</span>
         </span>
-        <span class="label"><?= $block->escapeHtml(__('Peak memory usage')) ?></span>
+        <span class="label"><?= $escaper->escapeHtml(__('Peak memory usage')) ?></span>
     </div>
 </div>
 <?php if (count($events) === 0): ?>
     <div class="empty status-error">
-        <p><?= $block->escapeHtml(__('No detailed performance data is available.')) ?></p>
+        <p><?= $escaper->escapeHtml(__('No detailed performance data is available.')) ?></p>
     </div>
 <?php else: ?>
     <script>
         var requests = <?= /* @noEscape */ $collector->getJsTimeline(); ?>;
     </script>
 
-    <h2><?= $block->escapeHtml(__('Execution timeline')) ?></h2>
+    <h2><?= $escaper->escapeHtml(__('Execution timeline')) ?></h2>
     <?php if (!$events): ?>
         <p class="label status-warning">
-            <strong><?= $block->escapeHtml(__('You need to enable Varien Profiler to render timeline.')) ?></strong></p>
+            <strong>
+                <?= $escaper->escapeHtml(__('You need to enable Varien Profiler to render timeline.')) ?>
+            </strong>
+        </p>
     <?php endif; ?>
 
     <form id="timeline-control" action="" method="get">
         <input type="hidden" name="panel" value="time">
-        <label for="threshold"><?= $block->escapeHtml(__('Threshold')) ?></label>
+        <label for="threshold"><?= $escaper->escapeHtml(__('Threshold')) ?></label>
         <input type="number" size="3" name="threshold" id="threshold" value="3" min="0"> ms
-        <span class="help">(<?= $block->escapeHtml(__('timeline only displays events with a duration longer than this threshold')) ?>)</span>
+        <span class="help">
+            <?= $escaper->escapeHtml(
+                __('(timeline only displays events with a duration longer than this threshold)')
+            ) ?>
+        </span>
     </form>
 
     <div class="sf-profiler-timeline">
@@ -54,7 +65,10 @@ $events = $collector->getEvents();
                       style="border-left-color: <?= /* @noEscape */ $hexCode ?>;"><?= /* @noEscape */ $color ?></span>
             <?php endforeach; ?>
         </div>
-        <canvas width="2120" height="1216" id="timeline_<?= /* @noEscape */ $viewModel->getProfile()->getToken() ?>" class="timeline"
+        <canvas width="2120"
+                height="1216"
+                id="timeline_<?= /* @noEscape */ $viewModel->getProfile()->getToken() ?>"
+                class="timeline"
                 style="width: 1060px; height: 608px;"></canvas>
     </div>
 
@@ -173,6 +187,7 @@ $events = $collector->getEvents();
                         if (isChildEvent(event)) {
                             /* create a striped background dynamically */
                             var img       = new Image();
+                            <?php // phpcs:ignore Generic.Files.LineLength.TooLong ?>
                             img.src       = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKBAMAAAB/HNKOAAAAIVBMVEX////w8PDd7h7d7h7d7h7d7h7w8PDw8PDw8PDw8PDw8PAOi84XAAAAKUlEQVQImWNI71zAwMBQMYuBgY0BxExnADErGEDMTgYQE8hnAKtCZwIAlcMNSR9a1OEAAAAASUVORK5CYII=';
                             var pattern   = ctx.createPattern(img, 'repeat');
                             ctx.fillStyle = pattern;
@@ -257,7 +272,9 @@ $events = $collector->getEvents();
                     ctx.fillStyle = "#444";
                     ctx.font      = "12px sans-serif";
                     text          = event.name;
-                    ms            = "  " + (event.duration < 1 ? event.duration : parseInt(event.duration, 10)) + " ms / " + event.memory + " MB";
+                    ms            = "  " + (
+                        event.duration < 1 ? event.duration : parseInt(event.duration, 10)
+                    ) + " ms / " + event.memory + " MB";
                     if (x + event.starttime * ratio + ctx.measureText(text + ms).width > width) {
                         ctx.textAlign = "end";
                         ctx.font      = "10px sans-serif";

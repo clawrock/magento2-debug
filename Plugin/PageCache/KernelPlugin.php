@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Plugin\PageCache;
 
@@ -7,10 +8,7 @@ namespace ClawRock\Debug\Plugin\PageCache;
  */
 class KernelPlugin
 {
-    /**
-     * @var \ClawRock\Debug\Model\Storage\HttpStorage
-     */
-    private $httpStorage;
+    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
 
     public function __construct(
         \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View;
 
@@ -7,30 +8,11 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Search implements ArgumentInterface
 {
-    /**
-     * @var \Magento\Framework\App\RequestInterface
-     */
-    private $request;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
-
-    /**
-     * @var string
-     */
-    private $token;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $url;
+    private \Magento\Framework\App\RequestInterface $request;
+    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
+    private ?string $token = null;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
+    private \ClawRock\Debug\Helper\Url $url;
 
     public function __construct(
         \Magento\Framework\App\RequestInterface $request,
@@ -44,27 +26,27 @@ class Search implements ArgumentInterface
         $this->url = $url;
     }
 
-    public function isParamSelected($param, $expected): bool
+    public function isParamSelected(string $param, string $expected): bool
     {
         return $this->request->getParam($param) === $expected;
     }
 
-    public function getParam($param)
+    public function getParam(string $param): ?string
     {
         return $this->request->getParam($param);
     }
 
-    public function getLimits()
+    public function getLimits(): array
     {
         return ['10', '50', '100'];
     }
 
-    public function getMethods()
+    public function getMethods(): array
     {
         return ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'HEAD'];
     }
 
-    public function getToken()
+    public function getToken(): string
     {
         if ($this->token === null) {
             $this->token = $this->profileMemoryStorage->read()->getToken();
@@ -73,7 +55,7 @@ class Search implements ArgumentInterface
         return $this->token;
     }
 
-    public function toMegaBytes(int $value)
+    public function toMegaBytes(int $value): string
     {
         return $this->formatter->toMegaBytes($value, 2);
     }

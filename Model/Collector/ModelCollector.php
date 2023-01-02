@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -17,36 +18,18 @@ class ModelCollector implements CollectorInterface, LoggerCollectorInterface
     const LOG        = 'log';
     const LOAD_LOOPS = 'load_loops';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Logger\DataLogger
-     */
-    private $dataLogger;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Logger\DataLogger $dataLogger;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Logger\DataLoggerFactory $dataLoggerFactory,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        \ClawRock\Debug\Logger\DataLoggerFactory $dataLoggerFactory
     ) {
         $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
         $this->dataLogger = $dataLoggerFactory->create();
-        $this->formatter = $formatter;
     }
 
     public function collect(): CollectorInterface
@@ -106,14 +89,14 @@ class ModelCollector implements CollectorInterface, LoggerCollectorInterface
         return $this;
     }
 
-    public function getLog()
+    public function getLog(): array
     {
         return $this->dataCollector->getData(self::LOG) ?? [];
     }
 
     public function getTime(): string
     {
-        return $this->dataCollector->getData(self::TOTAL_TIME) ?? 0;
+        return (string) ($this->dataCollector->getData(self::TOTAL_TIME) ?? 0);
     }
 
     public function getMetrics(): array
@@ -176,9 +159,6 @@ class ModelCollector implements CollectorInterface, LoggerCollectorInterface
         return ucfirst(str_replace('_', ' ', $metric));
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isModelCollectorEnabled();

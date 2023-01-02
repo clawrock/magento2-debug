@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Profiler\Driver;
 
@@ -20,10 +21,7 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
     const CATEGORY_DEBUG = 'debug';
     const CATEGORY_UNKNOWN = 'unknown';
 
-    /**
-     * @var \Symfony\Component\Stopwatch\Stopwatch
-     */
-    private $stopwatch;
+    private \Symfony\Component\Stopwatch\Stopwatch $stopwatch;
 
     public function __construct()
     {
@@ -40,10 +38,10 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
      * @param array|null $tags
      * @return void
      */
-    public function start($timerId, array $tags = null)
+    public function start($timerId, ?array $tags = null)
     {
         $timerId = $this->stripNesting($timerId);
-        $category = $this->getCategory($timerId);
+        $category = $this->getCategory((string) $timerId);
         $this->stopwatch->start($timerId, $category);
     }
 
@@ -69,17 +67,21 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
      * @param string|null $timerId
      * @return void
      */
-    public function clear($timerId = null)
+    public function clear($timerId = null) // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedFunction
     {
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         $this->stopwatch->stopSection('magento');
 
         return $this->stopwatch->getSectionEvents('magento');
     }
 
+    /**
+     * @param string $timerId
+     * @return string
+     */
     private function stripNesting($timerId)
     {
         $timerName = strrchr($timerId, Profiler::NESTING_SEPARATOR);
@@ -90,10 +92,10 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
     /**
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @param $timerId
+     * @param string $timerId
      * @return string
      */
-    private function getCategory($timerId)
+    private function getCategory(string $timerId): string
     {
         if ($this->isCoreTimer($timerId)) {
             return self::CATEGORY_CORE;
@@ -134,52 +136,52 @@ class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
         return self::CATEGORY_UNKNOWN;
     }
 
-    private function isCoreTimer($timerId)
+    private function isCoreTimer(string $timerId): bool
     {
-        list($namespace) = explode(':', $timerId);
+        [$namespace] = explode(':', $timerId);
         return strtolower($namespace) === 'magento' || strtolower($namespace) === 'core';
     }
 
-    private function isEventTimer($timerId)
+    private function isEventTimer(string $timerId): bool
     {
-        list($namespace) = explode(':', $timerId);
+        [$namespace] = explode(':', $timerId);
         return strtolower($namespace) === 'event' || strtolower($namespace) === 'observer';
     }
 
-    private function isConfigTimer($timerId)
+    private function isConfigTimer(string $timerId): bool
     {
-        list($namespace) = explode(':', $timerId);
+        [$namespace] = explode(':', $timerId);
         return strtolower($namespace) === 'load_area';
     }
 
-    private function isControllerTimer($timerId)
+    private function isControllerTimer(string $timerId): bool
     {
-        list($namespace) = explode(':', $timerId);
+        [$namespace] = explode(':', $timerId);
         return strtolower($namespace) === 'controller_action';
     }
 
-    private function isEavTimer($timerId)
+    private function isEavTimer(string $timerId): bool
     {
-        list($namespace) = explode(':', $timerId);
+        [$namespace] = explode(':', $timerId);
         return strtolower($namespace) === 'eav';
     }
 
-    private function isTemplateTimer($timerId)
+    private function isTemplateTimer(string $timerId): bool
     {
         return substr($timerId, -6) === '.phtml' || strpos(strtolower($timerId), 'template') === 0;
     }
 
-    private function isRoutingTimer($timerId)
+    private function isRoutingTimer(string $timerId): bool
     {
         return $timerId === 'routers_match' || $timerId === 'store.resolve';
     }
 
-    private function isLayoutTimer($timerId)
+    private function isLayoutTimer(string $timerId): bool
     {
         return strpos(strtolower($timerId), 'layout') === 0;
     }
 
-    private function isDebugTimer($timerId)
+    private function isDebugTimer(string $timerId): bool
     {
         return strpos(strtolower($timerId), 'debug::profiler') === 0;
     }

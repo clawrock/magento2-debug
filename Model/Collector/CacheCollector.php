@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
 use ClawRock\Debug\Logger\LoggableInterface;
 use ClawRock\Debug\Model\Info\CacheInfo;
-use ClawRock\Debug\Model\Log\CacheLogger;
 
 class CacheCollector implements CollectorInterface, LoggerCollectorInterface
 {
@@ -19,30 +19,11 @@ class CacheCollector implements CollectorInterface, LoggerCollectorInterface
     const TOTAL_TIME      = 'total_time';
     const CACHE_STATUS    = 'status';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Logger\DataLogger
-     */
-    private $dataLogger;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\CacheInfo
-     */
-    private $cacheInfo;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Logger\DataLogger $dataLogger;
+    private \ClawRock\Debug\Model\Info\CacheInfo $cacheInfo;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -73,9 +54,6 @@ class CacheCollector implements CollectorInterface, LoggerCollectorInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isCacheCollectorEnabled();
@@ -91,6 +69,10 @@ class CacheCollector implements CollectorInterface, LoggerCollectorInterface
         return $this->dataCollector->getData(self::BACKEND_OPTIONS) ?? [];
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function getStats(string $key = '')
     {
         if ($key) {
@@ -100,6 +82,9 @@ class CacheCollector implements CollectorInterface, LoggerCollectorInterface
         return $this->dataCollector->getData(self::STATS) ?? [];
     }
 
+    /**
+     * @return mixed
+     */
     public function getCacheCalls()
     {
         return $this->getStats(CacheInfo::STATS_TOTAL);

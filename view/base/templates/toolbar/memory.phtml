@@ -1,23 +1,36 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\MemoryCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\MemoryCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
-<div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
+<div class="
+    sf-toolbar-block
+    sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?>
+    sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>
+">
     <div class="sf-toolbar-icon">
         <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/memory.svg'); ?>"
-             alt="<?= $block->escapeHtmlAttr(__('Memory')) ?>"/>
+             alt="<?= $escaper->escapeHtmlAttr(__('Memory')) ?>"/>
         <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getMemoryUsage() ?></span>
         <span class="sf-toolbar-label">MB</span>
     </div>
     <div class="sf-toolbar-info">
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Peak memory usage')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Peak memory usage')); ?></strong>
             <span><?= /* @noEscape */ $collector->getMemoryUsage(); ?> MB</span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('PHP memory limit')); ?></b>
-            <span><?= /* @noEscape */ $collector->hasMemoryLimit() ? $block->escapeHtml(__('Unlimited')) : $collector->getMemoryLimit(); ?></span>
+            <strong><?= $escaper->escapeHtml(__('PHP memory limit')); ?></strong>
+            <span>
+                <?= $collector->hasMemoryLimit()
+                    ? $escaper->escapeHtml(__('Unlimited'))
+                    : /* @noEscape */ $collector->getMemoryLimit(); ?>
+            </span>
         </div>
     </div>
 </div>

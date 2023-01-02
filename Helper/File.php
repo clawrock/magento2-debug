@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Helper;
 
 class File
 {
-    /**
-     * @var \Magento\Framework\App\Filesystem\DirectoryList
-     */
-    private $directoryList;
+    private \Magento\Framework\App\Filesystem\DirectoryList $directoryList;
 
     public function __construct(
         \Magento\Framework\App\Filesystem\DirectoryList $directoryList
@@ -15,36 +13,23 @@ class File
         $this->directoryList = $directoryList;
     }
 
-    /**
-     * @return string
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function getProfileDirectory()
+    public function getProfileDirectory(): string
     {
         return $this->directoryList->getPath('var') . DIRECTORY_SEPARATOR . 'debug';
     }
 
-    /**
-     * @return string
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function getProfileIndex()
+    public function getProfileIndex(): string
     {
         return $this->directoryList->getPath('var') . DIRECTORY_SEPARATOR . 'debug' . DIRECTORY_SEPARATOR . 'index.csv';
     }
 
-    public function getProfileTempIndex()
+    public function getProfileTempIndex(): string
     {
         return $this->directoryList->getPath('var') . DIRECTORY_SEPARATOR . 'debug' . DIRECTORY_SEPARATOR . 'tmp'
             . DIRECTORY_SEPARATOR . 'index.csv';
     }
 
-    /**
-     * @param $token
-     * @return string
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function getProfileFilename($token)
+    public function getProfileFilename(string $token): string
     {
         return $this->getProfileDirectory() . DIRECTORY_SEPARATOR
             . substr($token, -2, 2) . DIRECTORY_SEPARATOR

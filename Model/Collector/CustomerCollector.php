@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -15,20 +16,9 @@ class CustomerCollector implements CollectorInterface
     const CUSTOMER_TAX_CLASS_ID   = 'customer_tax_class_id';
     const CUSTOMER_TAX_CLASS_NAME = 'customer_tax_class_name';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\CustomerInfo
-     */
-    private $customerInfo;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Info\CustomerInfo $customerInfo;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,

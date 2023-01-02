@@ -1,20 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
 class MemoryInfo
 {
-    public function getCurrentMemoryLimit()
+    public function getCurrentMemoryLimit(): int
     {
-        return $this->convertToBytes(ini_get('memory_limit'));
+        return $this->convertToBytes((string) ini_get('memory_limit'));
     }
 
-    public function getCurrentPeakMemoryUsage()
+    public function getCurrentPeakMemoryUsage(): int
     {
         return memory_get_peak_usage(true);
     }
 
-    private function convertToBytes($memoryLimit)
+    private function convertToBytes(string $memoryLimit): int
     {
         if ('-1' === $memoryLimit) {
             return -1;
@@ -40,14 +41,16 @@ class MemoryInfo
         return $max;
     }
 
-    private function readValue($memoryLimit): int
+    private function readValue(string $memoryLimit): int
     {
         $value = ltrim($memoryLimit, '+');
         if (0 === strpos($value, '0x')) {
+            // phpcs:ignore Magento2.Functions.DiscouragedFunction.DiscouragedWithAlternative
             return intval($value, 16);
         }
 
         if (0 === strpos($value, '0')) {
+            // phpcs:ignore Magento2.Functions.DiscouragedFunction.DiscouragedWithAlternative
             return intval($value, 8);
         }
 

@@ -1,14 +1,24 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\View\Menu $viewModel */ ?>
-<?php $viewModel = $block->getViewModel(); ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\View\Menu $viewModel
+ */
+$viewModel = $block->getViewModel();
+?>
 <li class="settings">
-    <a href="<?= $block->escapeUrl($viewModel->getConfigurationUrl()) ?>">
+    <a href="<?= $escaper->escapeUrl($viewModel->getConfigurationUrl()) ?>">
         <span class="label">
             <span class="icon">
-                <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/icon/settings.svg'); ?>"
-                     alt="<?= $block->escapeHtmlAttr(__('Settings')); ?>"/>
+                <img src="
+                <?= $escaper->escapeUrl(
+                    $block->getViewFileUrl('ClawRock_Debug::images/icon/settings.svg')
+                ); ?>
+                " alt="<?= $escaper->escapeHtmlAttr(__('Settings')); ?>"/>
             </span>
-            <strong><?= $block->escapeHtml(__('Settings')); ?></strong>
+            <strong><?= $escaper->escapeHtml(__('Settings')); ?></strong>
         </span>
     </a>
 </li>

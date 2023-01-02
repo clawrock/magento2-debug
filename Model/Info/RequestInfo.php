@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
 use ClawRock\Debug\Model\Collector\RequestCollector;
 use ClawRock\Debug\Model\ValueObject\Redirect;
-use Zend\Stdlib\Parameters;
-use Zend\Stdlib\ParametersInterface;
+use Laminas\Stdlib\Parameters;
+use Laminas\Stdlib\ParametersInterface;
 
 class RequestInfo
 {
@@ -16,19 +17,12 @@ class RequestInfo
     const PASSWORD_PLACEHOLDER = '******';
     const REDIRECT_PARAM = 'cdbg_redirect';
 
-    /**
-     * @var \ClawRock\Debug\Model\Storage\HttpStorage
-     */
-    private $httpStorage;
-
-    /**
-     * @var \ClawRock\Debug\Model\Session
-     */
-    private $session;
+    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
+    private \ClawRock\Debug\Model\Session $session;
 
     public function __construct(
         \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
-        \ClawRock\Debug\Model\Session\Proxy $session
+        \ClawRock\Debug\Model\Session $session
     ) {
         $this->httpStorage = $httpStorage;
         $this->session = $session;
@@ -52,9 +46,17 @@ class RequestInfo
     public function getRequestHeaders(): ParametersInterface
     {
         $headers = $this->httpStorage->getRequest()->getHeaders();
-        $authHeader = $this->httpStorage->getRequest()->getHeader('php-auth-pw', false);
-        if ($authHeader !== false) {
+        if (!$headers instanceof \Laminas\Http\Headers) {
+            return new Parameters();
+        }
+        $authHeader = $headers->get('php-auth-pw');
+        if ($authHeader instanceof \Laminas\Http\Header\HeaderInterface) {
             $headers->removeHeader($authHeader);
+        }
+        if ($authHeader instanceof \ArrayIterator) {
+            foreach ($authHeader as $header) {
+                $headers->removeHeader($header);
+            }
         }
 
         return new Parameters($headers->toArray());
@@ -82,13 +84,19 @@ class RequestInfo
 
     public function getRequestAttributes(): ParametersInterface
     {
+        $request = $this->httpStorage->getRequest();
+
         return new Parameters([
-            RequestCollector::REQUEST_STRING    => $this->httpStorage->getRequest()->getRequestString(),
-            RequestCollector::REQUEST_URI       => $this->httpStorage->getRequest()->getRequestUri(),
-            RequestCollector::CONTROLLER_MODULE => $this->httpStorage->getRequest()->getControllerModule(),
-            RequestCollector::CONTROLLER_NAME   => ucwords($this->httpStorage->getRequest()->getControllerName()),
-            RequestCollector::ACTION_NAME       => ucwords($this->httpStorage->getRequest()->getActionName()),
-            RequestCollector::FULL_ACTION_NAME  => $this->httpStorage->getRequest()->getFullActionName(),
+            RequestCollector::REQUEST_STRING => $request->getRequestString(),
+            RequestCollector::REQUEST_URI => $request->getRequestUri(),
+            RequestCollector::CONTROLLER_MODULE => $request instanceof \Magento\Framework\App\Request\Http
+                ? $request->getControllerModule()
+                : '',
+            RequestCollector::CONTROLLER_NAME => ucwords((string) $request->getControllerName()),
+            RequestCollector::ACTION_NAME => ucwords((string) $request->getActionName()),
+            RequestCollector::FULL_ACTION_NAME => $request instanceof \Magento\Framework\App\Request\Http
+                ? $request->getFullActionName()
+                : '',
         ]);
     }
 
@@ -105,7 +113,7 @@ class RequestInfo
     public function getContentType(): string
     {
         $header = $this->httpStorage->getResponse()->getHeader('Content-Type');
-        if ($header instanceof \Zend\Http\Header\HeaderInterface) {
+        if ($header instanceof \Laminas\Http\Header\HeaderInterface) {
             return $header->getFieldValue();
         }
 
@@ -128,7 +136,7 @@ class RequestInfo
      */
     public function getSessionAttributes(): array
     {
-        return $_SESSION;
+        return $_SESSION; // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageError
     }
 
     public function getPathInfo(): string
@@ -141,19 +149,21 @@ class RequestInfo
         return $this->httpStorage->isFPCRequest();
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @return \ClawRock\Debug\Model\ValueObject\Redirect
-     */
     public function getRedirect(): Redirect
     {
         $redirect = Redirect::createFromArray($this->session->getData(self::REDIRECT_PARAM, true));
 
         if ($this->httpStorage->getResponse()->isRedirect()) {
+            $tokenHeader = $this->httpStorage->getResponse()->getHeader('X-Debug-Token');
+            $request = $this->httpStorage->getRequest();
             $this->session->setData(self::REDIRECT_PARAM, [
-                Redirect::TOKEN       => $this->httpStorage->getResponse()->getHeader('X-Debug-Token')->getFieldValue(),
-                Redirect::ACTION      => $this->httpStorage->getRequest()->getFullActionName(),
-                Redirect::METHOD      => $this->getMethod(),
+                Redirect::TOKEN => $tokenHeader instanceof \Laminas\Http\Header\HeaderInterface
+                    ? $tokenHeader->getFieldValue()
+                    : '',
+                Redirect::ACTION => $request instanceof \Magento\Framework\App\Request\Http
+                    ? $request->getFullActionName()
+                    : '',
+                Redirect::METHOD => $this->getMethod(),
                 Redirect::STATUS_CODE => $this->getStatusCode(),
                 Redirect::STATUS_TEXT => $this->getStatusText(),
             ]);

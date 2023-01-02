@@ -1,26 +1,26 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Observer;
 
 use ClawRock\Debug\Observer\BeforeSendResponse;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class BeforeSendResponseTest extends TestCase
 {
-    private $configMock;
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
+    /** @var \ClawRock\Debug\Model\Profiler&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Profiler $profilerMock;
+    /** @var \Magento\Framework\HTTP\PhpEnvironment\Request&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\HTTP\PhpEnvironment\Request $requestMock;
+    /** @var \Magento\Framework\HTTP\PhpEnvironment\Response&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\HTTP\PhpEnvironment\Response $responseMock;
+    /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\Event\Observer $observerMock;
+    private \ClawRock\Debug\Observer\BeforeSendResponse $observer;
 
-    private $profilerMock;
-
-    private $requestMock;
-
-    private $responseMock;
-
-    private $observerMock;
-
-    private $observer;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
             ->disableOriginalConstructor()
@@ -43,13 +43,10 @@ class BeforeSendResponseTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->observer = (new ObjectManager($this))->getObject(BeforeSendResponse::class, [
-            'config' => $this->configMock,
-            'profiler' => $this->profilerMock,
-        ]);
+        $this->observer = new BeforeSendResponse($this->configMock, $this->profilerMock);
     }
 
-    public function testNoExecute()
+    public function testNoExecute(): void
     {
         $this->observerMock->expects($this->once())
             ->method('getRequest')
@@ -68,7 +65,7 @@ class BeforeSendResponseTest extends TestCase
         $this->observer->execute($this->observerMock);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->observerMock->expects($this->once())
             ->method('getRequest')

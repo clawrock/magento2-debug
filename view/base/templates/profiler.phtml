@@ -1,15 +1,24 @@
-<?php /** @var Magento\Framework\View\Element\Template $block */ ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
 <div id="header">
     <div class="container">
         <h1>
-            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/magento.svg'); ?>" alt="Magento"/>
+            <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('ClawRock_Debug::images/magento.svg')); ?>"
+                 alt="Magento"/>
             Magento 2
-            <span><?= $block->escapeHtml(__('Profiler')) ?></span>
+            <span><?= $escaper->escapeHtml(__('Profiler')) ?></span>
         </h1>
     </div>
     <div class="clawrock">
-        <a href="http://clawrock.com" target="_blank">
-            <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg'); ?>" alt="ClawRock">
+        <a href="https://clawrock.com" target="_blank">
+            <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('ClawRock_Debug::images/clawrock.svg')); ?>"
+                 alt="ClawRock">
             <h4>ClawRock.com</h4>
         </a>
     </div>

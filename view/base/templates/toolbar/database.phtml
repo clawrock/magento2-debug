@@ -1,16 +1,21 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\DatabaseCollector $collector */
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\Collector\DatabaseCollector $collector
+ */
 $collector = $block->getCollector();
 ?>
 <div class="sf-toolbar-block sf-toolbar-block-<?= /* @noEscape */ $collector->getName() ?> sf-toolbar-status-normal">
-    <a target="_blank" href="<?= $block->escapeUrl($block->getProfilerUrl()); ?>">
+    <a target="_blank" href="<?= $escaper->escapeUrl($block->getProfilerUrl()); ?>">
         <div class="sf-toolbar-icon">
             <img src="<?= /* @noEscape */ $block->getViewFileUrl('ClawRock_Debug::images/collector/database.svg'); ?>"
-                 alt="<?= $block->escapeHtmlAttr(__('Database')) ?>"/>
+                 alt="<?= $escaper->escapeHtmlAttr(__('Database')) ?>"/>
             <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getQueriesCount() ?></span>
             <span class="sf-toolbar-info-piece-additional-detail">
-                <span class="sf-toolbar-label"><?= $block->escapeHtml(__('in')); ?></span>
+                <span class="sf-toolbar-label"><?= $escaper->escapeHtml(__('in')); ?></span>
                 <span class="sf-toolbar-value"><?= /* @noEscape */ $collector->getTotalTime() ?></span>
                 <span class="sf-toolbar-label">ms</span>
             </span>
@@ -18,17 +23,17 @@ $collector = $block->getCollector();
     </a>
     <div class="sf-toolbar-info">
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Database Queries')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Database Queries')); ?></strong>
             <span class="sf-toolbar-status "><?= /* @noEscape */ $collector->getQueriesCount() ?></span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Duplicated Queries')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Duplicated Queries')); ?></strong>
             <span class="sf-toolbar-status sf-toolbar-status-<?= /* @noEscape */ $collector->getStatus() ?>">
                 <?= count($collector->getDuplicatedQueries()) ?>
             </span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b><?= $block->escapeHtml(__('Query time')); ?></b>
+            <strong><?= $escaper->escapeHtml(__('Query time')); ?></strong>
             <span><?= /* @noEscape */ $collector->getTotalTime() ?> ms</span>
         </div>
     </div>

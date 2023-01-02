@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model;
 
 class DataCollector
 {
-    /**
-     * @var array
-     */
-    private $data = [];
+    private array $data = [];
 
     public function setData(array $data): DataCollector
     {
@@ -18,6 +16,10 @@ class DataCollector
         return $this;
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function getData(string $key = '')
     {
         if ($key) {
@@ -27,6 +29,11 @@ class DataCollector
         return $this->data;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
     public function addData(string $key, $value): DataCollector
     {
         $this->data[$key] = $value;
@@ -34,6 +41,11 @@ class DataCollector
         return $this;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
     public function appendData(string $key, $value): DataCollector
     {
         if (!isset($this->data[$key])) {

@@ -1,20 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Plugin\PageCache;
 
 use ClawRock\Debug\Plugin\PageCache\KernelPlugin;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 class KernelPluginTest extends TestCase
 {
-    private $httpStorageMock;
+    /** @var \ClawRock\Debug\Model\Storage\HttpStorage&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorageMock;
+    /** @var \Magento\Framework\App\PageCache\Kernel&\PHPUnit\Framework\MockObject\MockObject */
+    private \Magento\Framework\App\PageCache\Kernel $subjectMock;
+    private \ClawRock\Debug\Plugin\PageCache\KernelPlugin $plugin;
 
-    private $subjectMock;
-
-    private $plugin;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->httpStorageMock = $this->getMockBuilder(\ClawRock\Debug\Model\Storage\HttpStorage::class)
             ->disableOriginalConstructor()
@@ -24,20 +24,18 @@ class KernelPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = (new ObjectManager($this))->getObject(KernelPlugin::class, [
-            'httpStorage' => $this->httpStorageMock,
-        ]);
+        $this->plugin = new KernelPlugin($this->httpStorageMock);
     }
 
-    public function testAfterLoad()
+    public function testAfterLoad(): void
     {
         $this->httpStorageMock->expects($this->never())->method('markAsFPCRequest');
         $this->assertFalse($this->plugin->afterLoad($this->subjectMock, false));
     }
 
-    public function testAfterLoadFPC()
+    public function testAfterLoadFPC(): void
     {
-        $result = 'cached_content';
+        $result = $this->createMock(\Magento\Framework\App\Response\Http::class);
         $this->httpStorageMock->expects($this->once())->method('markAsFPCRequest');
         $this->assertEquals($result, $this->plugin->afterLoad($this->subjectMock, $result));
     }

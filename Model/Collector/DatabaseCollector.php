@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -12,25 +13,10 @@ class DatabaseCollector implements CollectorInterface
     const QUERY_COUNT = 'query_count';
     const QUERIES     = 'queries';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\DatabaseInfo
-     */
-    private $databaseInfo;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Info\DatabaseInfo $databaseInfo;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -55,7 +41,7 @@ class DatabaseCollector implements CollectorInterface
         return $this;
     }
 
-    public function getQueries()
+    public function getQueries(): array
     {
         return $this->dataCollector->getData(self::QUERIES) ?? [];
     }
@@ -105,9 +91,6 @@ class DatabaseCollector implements CollectorInterface
         return array_column($this->dataCollector->getData(self::QUERIES)[DatabaseInfo::DUPLICATED_QUERIES], 'query');
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isDatabaseCollectorEnabled();

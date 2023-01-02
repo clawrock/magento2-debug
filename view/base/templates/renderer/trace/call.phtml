@@ -1,4 +1,10 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+?>
 <div class="trace-function">
     <?php if ($block->hasClass()): ?>
         <span><?= /* @noEscape */ $block->getClass() ?></span>

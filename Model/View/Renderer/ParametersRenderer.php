@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
@@ -8,37 +9,28 @@ class ParametersRenderer implements RendererInterface
 {
     const TEMPLATE = 'ClawRock_Debug::renderer/parameters.phtml';
 
-    /**
-     * @var \Zend\Stdlib\ParametersInterface
-     */
-    private $parameters;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\VarRendererFactory
-     */
-    private $varRendererFactory;
+    private \Laminas\Stdlib\ParametersInterface $parameters;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer;
 
     public function __construct(
-        \Zend\Stdlib\ParametersInterface $parameters,
+        \Laminas\Stdlib\ParametersInterface $parameters,
         \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Model\View\Renderer\VarRendererFactory $varRendererFactory
+        \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer
     ) {
         $this->parameters = $parameters;
         $this->layout = $layout;
-        $this->varRendererFactory = $varRendererFactory;
+        $this->varRenderer = $varRenderer;
     }
 
     public function render(): string
     {
-        return $this->layout->createBlock(Template::class)
-            ->setTemplate(self::TEMPLATE)
+        /** @var \Magento\Framework\View\Element\Template $block */
+        $block = $this->layout->createBlock(Template::class);
+
+        return $block->setTemplate(self::TEMPLATE)
             ->setData('parameters', $this->parameters)
-            ->setData('var_renderer', $this->varRendererFactory)
+            ->setData('var_renderer', $this->varRenderer)
             ->toHtml();
     }
 }

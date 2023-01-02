@@ -1,16 +1,23 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
 <table>
     <thead>
         <tr>
-            <th scope="col" class="key"><?= $block->escapeHtml(__($block->getKeyLabel())); ?></th>
-            <th scope="col" class="key"><?= $block->escapeHtml(__($block->getValueLabel())); ?></th>
+            <th scope="col" class="key"><?= $escaper->escapeHtml(__($block->getKeyLabel())); ?></th>
+            <th scope="col" class="key"><?= $escaper->escapeHtml(__($block->getValueLabel())); ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($block->getItems() as $key => $value): ?>
             <tr>
                 <th scope="row"><?= /* @noEscape */ $key ?></th>
-                <td><?= /* @noEscape */ $block->getVarRenderer()->create(['variable' => $value])->render(); ?></td>
+                <td><?= /* @noEscape */ $block->getVarRenderer()->render($value); ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

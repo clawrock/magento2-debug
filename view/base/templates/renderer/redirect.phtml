@@ -1,16 +1,23 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
-<?php /** @var \ClawRock\Debug\Model\ValueObject\Redirect $redirect */ ?>
-<?php $redirect = $block->getRedirect(); ?>
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \ClawRock\Debug\Model\ValueObject\Redirect $redirect
+ */
+$redirect = $block->getRedirect();
+?>
 <dl class="metadata">
     <dt>
         <span class="label">
             <?= /* @noEscape */ $redirect->getStatusCode() ?>
         </span>
-        <?= $block->escapeHtml(__('Redirect from')) ?>
+        <?= $escaper->escapeHtml(__('Redirect from')) ?>
     </dt>
     <dd>
         <?= /* @noEscape */ $redirect->getMethod() ?>
-        <a href="<?= $block->escapeUrl($block->getProfilerUrl()) ?>">
+        <a href="<?= $escaper->escapeUrl($block->getProfilerUrl()) ?>">
             <?= /* @noEscape */ $redirect->getToken() ?>
         </a>
     </dd>

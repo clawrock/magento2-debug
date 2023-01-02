@@ -1,31 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Indexer;
 
 use ClawRock\Debug\Api\Data\ProfileInterface;
-use Magento\Framework\Exception\FileSystemException;
 
 class ProfileIndexer
 {
-    /**
-     * @var \Magento\Framework\Filesystem\Driver\File
-     */
-    private $fileSystem;
-
-    /**
-     * @var \Magento\Framework\Filesystem\File\WriteFactory
-     */
-    private $fileWriteFactory;
-
-    /**
-     * @var \ClawRock\Debug\Logger\Logger
-     */
-    private $logger;
-
-    /**
-     * @var \ClawRock\Debug\Helper\File
-     */
-    private $fileHelper;
+    private \Magento\Framework\Filesystem\Driver\File $fileSystem;
+    private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory;
+    private \ClawRock\Debug\Logger\Logger $logger;
+    private \ClawRock\Debug\Helper\File $fileHelper;
 
     public function __construct(
         \Magento\Framework\Filesystem\Driver\File $fileSystem,
@@ -39,7 +24,7 @@ class ProfileIndexer
         $this->fileHelper = $fileHelper;
     }
 
-    public function index(ProfileInterface $profile): ProfileIndexer
+    public function index(ProfileInterface $profile): void
     {
         try {
             $tmpIndexPath = $this->fileHelper->getProfileTempIndex();
@@ -49,18 +34,13 @@ class ProfileIndexer
             $tmpIndex->writeCsv($profile->getIndex());
             $index = $tmpIndex->readAll();
             $tmpIndex->close();
-
-            try {
-                $index .= $this->fileSystem->fileGetContents($this->fileHelper->getProfileIndex());
-            } catch (FileSystemException $e) {
-                $this->logger->info($e);
-            }
+            $index .= $this->fileSystem->isExists($this->fileHelper->getProfileIndex())
+                ? $this->fileSystem->fileGetContents($this->fileHelper->getProfileIndex())
+                : '';
 
             $this->fileSystem->filePutContents($this->fileHelper->getProfileIndex(), $index);
         } catch (\Exception $e) {
-            $this->logger->critical($e);
+            $this->logger->error('ClawRock_Debug: Error during profile indexation', ['exception' => $e]);
         }
-
-        return $this;
     }
 }

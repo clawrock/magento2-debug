@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -23,30 +24,11 @@ class LayoutCollector implements CollectorInterface, LoggerCollectorInterface
     const TOTAL_RENDER_TIME   = 'total_render_time';
     const RENDER_TIME         = 'render_time';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Logger\DataLogger
-     */
-    private $dataLogger;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\LayoutInfo
-     */
-    private $layoutInfo;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Logger\DataLogger $dataLogger;
+    private \ClawRock\Debug\Model\Info\LayoutInfo $layoutInfo;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -107,9 +89,6 @@ class LayoutCollector implements CollectorInterface, LoggerCollectorInterface
         return $this->dataCollector->getData(self::BLOCKS_NOT_RENDERED) ?? [];
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isLayoutCollectorEnabled();

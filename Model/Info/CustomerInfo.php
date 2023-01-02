@@ -1,30 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Info;
 
-use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Api\Data\GroupInterface;
 use Magento\Customer\Model\Customer;
 
 class CustomerInfo
 {
-    /**
-     * @var \Magento\Customer\Model\Session
-     */
-    private $session;
-
-    /**
-     * @var \Magento\Customer\Api\GroupRepositoryInterface
-     */
-    private $groupRepository;
-
-    /**
-     * @var \Magento\Customer\Api\Data\GroupInterfaceFactory
-     */
-    private $groupInterfaceFactory;
+    private \Magento\Customer\Model\Session $session;
+    private \Magento\Customer\Api\GroupRepositoryInterface $groupRepository;
+    private \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory;
 
     public function __construct(
-        \Magento\Customer\Model\Session\Proxy $session,
+        \Magento\Customer\Model\Session $session,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
     ) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Model\ValueObject;
 
@@ -7,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventObserverTest extends TestCase
 {
-    public function testObject()
+    public function testObject(): void
     {
         $name = 'observer';
         $class = 'class';

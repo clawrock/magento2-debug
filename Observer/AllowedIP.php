@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Observer;
 
@@ -7,10 +8,7 @@ use Magento\Framework\Event\ObserverInterface;
 
 class AllowedIP implements ObserverInterface
 {
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
+    private \ClawRock\Debug\Helper\Config $config;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config

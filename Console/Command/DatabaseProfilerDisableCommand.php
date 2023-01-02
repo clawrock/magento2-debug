@@ -1,17 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Console\Command;
 
+use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class DatabaseProfilerDisableCommand extends Command
 {
-    /**
-     * @var \ClawRock\Debug\Model\Config\Database\ProfilerWriter
-     */
-    private $profilerWriter;
+    private \ClawRock\Debug\Model\Config\Database\ProfilerWriter $profilerWriter;
 
     public function __construct(
         \ClawRock\Debug\Model\Config\Database\ProfilerWriter $profilerWriter
@@ -21,7 +20,7 @@ class DatabaseProfilerDisableCommand extends Command
         $this->profilerWriter = $profilerWriter;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -31,10 +30,12 @@ class DatabaseProfilerDisableCommand extends Command
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->profilerWriter->save(false);
 
         $output->writeLn('<info>Database profiler disabled!</info>');
+
+        return Cli::RETURN_SUCCESS;
     }
 }

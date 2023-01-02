@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Test\Unit\Model\ValueObject;
 
@@ -7,15 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class SearchResultTest extends TestCase
 {
-    public function testObject()
+    public function testObject(): void
     {
         $token = 'token';
         $ip = 'ip';
         $method = 'method';
         $url = 'url';
         $time = time();
-        $statusCode = 200;
-        $fileSize = 1234;
+        $statusCode = '200';
+        $fileSize = '1234';
         $parentToken = 'parent_token';
         $requestTime = '25';
 
@@ -52,15 +53,15 @@ class SearchResultTest extends TestCase
             $statusCode,
             $fileSize,
             $parentToken,
-            $requestTime
+            $requestTime,
         ]);
 
         $this->assertEquals($searchResult, $searchResultFromCsv);
 
-        $searchResult = new SearchResult($token, $ip, $method, $url, $time, 302, $fileSize, $parentToken);
+        $searchResult = new SearchResult($token, $ip, $method, $url, $time, '302', $fileSize, $parentToken);
         $this->assertEquals(SearchResult::STATUS_WARNING, $searchResult->getStatus());
 
-        $searchResult = new SearchResult($token, $ip, $method, $url, $time, 404, $fileSize, $parentToken);
+        $searchResult = new SearchResult($token, $ip, $method, $url, $time, '404', $fileSize, $parentToken);
         $this->assertEquals(SearchResult::STATUS_ERROR, $searchResult->getStatus());
     }
 }

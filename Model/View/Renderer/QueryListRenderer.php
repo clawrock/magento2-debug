@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\View\Renderer;
 
@@ -8,30 +9,12 @@ class QueryListRenderer implements RendererInterface
 {
     const TEMPLATE = 'ClawRock_Debug::renderer/query/list.phtml';
 
-    /**
-     * @var \Zend_Db_Profiler_Query[]
-     */
-    private $queries;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \Magento\Framework\Math\Random
-     */
-    private $mathRandom;
-
-    /**
-     * @var \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory
-     */
-    private $queryRendererFactory;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
+    /** @var \Zend_Db_Profiler_Query[] */
+    private array $queries;
+    private \Magento\Framework\View\LayoutInterface $layout;
+    private \Magento\Framework\Math\Random $mathRandom;
+    private \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
         array $queries,
@@ -49,8 +32,10 @@ class QueryListRenderer implements RendererInterface
 
     public function render(): string
     {
-        return $this->layout->createBlock(Template::class)
-            ->setTemplate(self::TEMPLATE)
+        /** @var \Magento\Framework\View\Element\Template $block */
+        $block = $this->layout->createBlock(Template::class);
+
+        return $block->setTemplate(self::TEMPLATE)
             ->setData([
                 'queries' => $this->queries,
                 'query_renderer' => $this->queryRendererFactory,

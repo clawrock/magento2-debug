@@ -1,0 +1,13 @@
+parameters:
+    level: 8
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    excludePaths:
+        - vendor/*
+    paths:
+        - .
+    bootstrapFiles:
+        - vendor/bitexpert/phpstan-magento/autoload.php
+includes:
+    - vendor/bitexpert/phpstan-magento/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon

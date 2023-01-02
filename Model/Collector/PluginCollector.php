@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -10,20 +11,9 @@ class PluginCollector implements CollectorInterface, LateCollectorInterface
     const AROUND = 'around';
     const AFTER  = 'after';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\PluginInfo
-     */
-    private $pluginInfo;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Info\PluginInfo $pluginInfo;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -93,9 +83,6 @@ class PluginCollector implements CollectorInterface, LateCollectorInterface
         return array_sum(array_map('count', $this->getAfterPlugins()));
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isPluginCollectorEnabled();

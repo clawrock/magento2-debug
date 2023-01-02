@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
@@ -26,40 +27,13 @@ class ConfigCollector implements CollectorInterface
     const WINCACHE_ENABLED = 'wincache_enabled';
     const OPCACHE_ENABLED  = 'zend_opcache_enabled';
 
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $url;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\MagentoInfo
-     */
-    private $magentoInfo;
-
-    /**
-     * @var \ClawRock\Debug\Model\Info\ExtensionInfo
-     */
-    private $extensionInfo;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\HttpStorage
-     */
-    private $httpStorage;
+    private \Magento\Store\Model\StoreManagerInterface $storeManager;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Helper\Url $url;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Model\Info\MagentoInfo $magentoInfo;
+    private \ClawRock\Debug\Model\Info\ExtensionInfo $extensionInfo;
+    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
 
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -81,112 +55,112 @@ class ConfigCollector implements CollectorInterface
 
     public function collect(): CollectorInterface
     {
+        $tokenHeader = $this->httpStorage->getResponse()->getHeader('X-Debug-Token');
         $this->dataCollector->setData([
-            self::STORE_ID         => $this->storeManager->getStore()->getId(),
-            self::STORE_NAME       => $this->storeManager->getStore()->getName(),
-            self::STORE_CODE       => $this->storeManager->getStore()->getCode(),
-            self::WEBSITE_ID       => $this->storeManager->getWebsite()->getId(),
-            self::WEBSITE_NAME     => $this->storeManager->getWebsite()->getName(),
-            self::WEBSITE_CODE     => $this->storeManager->getWebsite()->getCode(),
-            self::DEVELOPER_MODE   => $this->magentoInfo->isDeveloperMode(),
-            self::TOKEN            => $this->httpStorage->getResponse()->getHeader('X-Debug-Token')->getFieldValue(),
-            self::VERSION          => $this->magentoInfo->getVersion(),
-            self::MODULES          => $this->magentoInfo->getModules(),
-            self::XDEBUG_ENABLED   => $this->extensionInfo->isXdebugEnabled(),
-            self::EACCEL_ENABLED   => $this->extensionInfo->isEAcceleratorEnabled(),
-            self::APC_ENABLED      => $this->extensionInfo->isApcEnabled(),
-            self::XCACHE_ENABLED   => $this->extensionInfo->isXCacheEnabled(),
+            self::STORE_ID => $this->storeManager->getStore()->getId(),
+            self::STORE_NAME => $this->storeManager->getStore()->getName(),
+            self::STORE_CODE => $this->storeManager->getStore()->getCode(),
+            self::WEBSITE_ID => $this->storeManager->getWebsite()->getId(),
+            self::WEBSITE_NAME => $this->storeManager->getWebsite()->getName(),
+            self::WEBSITE_CODE => $this->storeManager->getWebsite()->getCode(),
+            self::DEVELOPER_MODE => $this->magentoInfo->isDeveloperMode(),
+            self::TOKEN => $tokenHeader instanceof \Laminas\Http\Header\HeaderInterface
+                ? $tokenHeader->getFieldValue()
+                : '',
+            self::VERSION => $this->magentoInfo->getVersion(),
+            self::MODULES => $this->magentoInfo->getModules(),
+            self::XDEBUG_ENABLED => $this->extensionInfo->isXdebugEnabled(),
+            self::EACCEL_ENABLED => $this->extensionInfo->isEAcceleratorEnabled(),
+            self::APC_ENABLED => $this->extensionInfo->isApcEnabled(),
+            self::XCACHE_ENABLED => $this->extensionInfo->isXCacheEnabled(),
             self::WINCACHE_ENABLED => $this->extensionInfo->isWinCacheEnabled(),
-            self::OPCACHE_ENABLED  => $this->extensionInfo->isZendOpcacheEnabled(),
+            self::OPCACHE_ENABLED => $this->extensionInfo->isZendOpcacheEnabled(),
         ]);
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isConfigCollectorEnabled();
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->dataCollector->getData(self::VERSION) ?? '2';
     }
 
-    public function getStoreId()
+    public function getStoreId(): string
     {
         return $this->dataCollector->getData(self::STORE_ID) ?? '';
     }
 
-    public function getStoreName()
+    public function getStoreName(): string
     {
         return $this->dataCollector->getData(self::STORE_NAME) ?? '';
     }
 
-    public function getStoreCode()
+    public function getStoreCode(): string
     {
         return $this->dataCollector->getData(self::STORE_CODE) ?? '';
     }
 
-    public function getWebsiteId()
+    public function getWebsiteId(): string
     {
         return $this->dataCollector->getData(self::WEBSITE_ID) ?? '';
     }
 
-    public function getWebsiteName()
+    public function getWebsiteName(): string
     {
         return $this->dataCollector->getData(self::WEBSITE_NAME) ?? '';
     }
 
-    public function getWebsiteCode()
+    public function getWebsiteCode(): string
     {
         return $this->dataCollector->getData(self::WEBSITE_CODE) ?? '';
     }
 
-    public function getToken()
+    public function getToken(): string
     {
         return $this->dataCollector->getData(self::TOKEN) ?? '';
     }
 
-    public function getProfilerUrl()
+    public function getProfilerUrl(): string
     {
         return $this->url->getProfilerUrl($this->getToken());
     }
 
-    public function getAdminUrl()
+    public function getAdminUrl(): string
     {
         return $this->url->getAdminUrl();
     }
 
-    public function getConfigurationUrl()
+    public function getConfigurationUrl(): string
     {
         return $this->url->getConfigurationUrl();
     }
 
-    public function getPHPVersion()
+    public function getPHPVersion(): string
     {
         return PHP_VERSION;
     }
 
-    public function isDeveloperMode()
+    public function isDeveloperMode(): bool
     {
         return $this->dataCollector->getData(self::DEVELOPER_MODE) ?? false;
     }
 
-    public function getModules()
+    public function getModules(): array
     {
         return $this->dataCollector->getData(self::MODULES) ?? [];
     }
 
-    public function hasXDebug()
+    public function hasXDebug(): bool
     {
         return $this->dataCollector->getData(self::XDEBUG_ENABLED) ?? false;
     }
 
-    public function hasAccelerator()
+    public function hasAccelerator(): bool
     {
         return $this->hasApc()
             || $this->hasZendOpcache()
@@ -195,32 +169,32 @@ class ConfigCollector implements CollectorInterface
             || $this->hasWinCache();
     }
 
-    public function hasApc()
+    public function hasApc(): bool
     {
         return $this->dataCollector->getData(self::APC_ENABLED) ?? false;
     }
 
-    public function hasZendOpcache()
+    public function hasZendOpcache(): bool
     {
         return $this->dataCollector->getData(self::OPCACHE_ENABLED) ?? false;
     }
 
-    public function hasEAccelerator()
+    public function hasEAccelerator(): bool
     {
         return $this->dataCollector->getData(self::EACCEL_ENABLED) ?? false;
     }
 
-    public function hasXCache()
+    public function hasXCache(): bool
     {
         return $this->dataCollector->getData(self::XCACHE_ENABLED) ?? false;
     }
 
-    public function hasWinCache()
+    public function hasWinCache(): bool
     {
         return $this->dataCollector->getData(self::WINCACHE_ENABLED) ?? false;
     }
 
-    public function getPHPSAPI()
+    public function getPHPSAPI(): string
     {
         return PHP_SAPI;
     }

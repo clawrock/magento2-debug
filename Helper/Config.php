@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Helper;
 
@@ -34,30 +35,11 @@ class Config
 
     const COLLECTORS = 'clawrock_debug/profiler/collectors';
 
-    /**
-     * @var \Magento\Framework\PhraseFactory
-     */
-    private $phraseFactory;
-
-    /**
-     * @var \Magento\Framework\App\State
-     */
-    private $appState;
-
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
-     * @var \Magento\Framework\App\DeploymentConfig
-     */
-    private $deploymentConfig;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\HttpStorage
-     */
-    private $httpStorage;
+    private \Magento\Framework\PhraseFactory $phraseFactory;
+    private \Magento\Framework\App\State $appState;
+    private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig;
+    private \Magento\Framework\App\DeploymentConfig $deploymentConfig;
+    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
 
     public function __construct(
         \Magento\Framework\PhraseFactory $phraseFactory,
@@ -84,10 +66,6 @@ class Config
 
     public function isEnabled(): bool
     {
-        if ($this->appState->getMode() !== \Magento\Framework\App\State::MODE_DEVELOPER) {
-            return false;
-        }
-
         if (!$this->isActive()) {
             return false;
         }
@@ -113,10 +91,6 @@ class Config
         return $this->scopeConfig->isSetFlag(self::CONFIG_ENABLED_ADMINHTML, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 
-    /**
-     * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
     public function isFrontend(): bool
     {
         return $this->appState->getAreaCode() === Area::AREA_FRONTEND;
@@ -140,6 +114,7 @@ class Config
             return true;
         }
 
+        // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageWarning
         return in_array($_SERVER['REMOTE_ADDR'], $this->getAllowedIPs());
     }
 
@@ -156,17 +131,12 @@ class Config
         return $this->scopeConfig->getValue(self::COLLECTORS, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 
-    /**
-     * @param string $name
-     * @return string
-     * @throws \ClawRock\Debug\Exception\CollectorNotFoundException
-     */
     public function getCollectorClass(string $name): string
     {
         if (!isset($this->getCollectors()[$name])) {
             throw new CollectorNotFoundException($this->phraseFactory->create([
                 'text' => 'Collector "%1" not found',
-                'arguments' => $name
+                'arguments' => $name,
             ]));
         }
 

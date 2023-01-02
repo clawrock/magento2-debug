@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Observer\Config;
 
@@ -9,20 +10,9 @@ use Magento\Framework\Exception\FileSystemException;
 
 class DatabaseProfiler implements ObserverInterface
 {
-    /**
-     * @var \Magento\Framework\Message\Manager
-     */
-    private $messageManager;
-
-    /**
-     * @var \ClawRock\Debug\Model\Config\Database\ProfilerWriter
-     */
-    private $dbProfilerWriter;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
+    private \Magento\Framework\Message\ManagerInterface $messageManager;
+    private \ClawRock\Debug\Model\Config\Database\ProfilerWriter $dbProfilerWriter;
+    private \ClawRock\Debug\Helper\Config $config;
 
     public function __construct(
         \Magento\Framework\Message\ManagerInterface $messageManager,
@@ -34,11 +24,7 @@ class DatabaseProfiler implements ObserverInterface
         $this->config = $config;
     }
 
-    /**
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return void
-     */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         if (!$this->isDBProfilerDependentConfigChanged($observer->getChangedPaths())) {
             return;

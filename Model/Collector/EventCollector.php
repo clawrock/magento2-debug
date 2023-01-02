@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Collector;
 
 use ClawRock\Debug\Logger\LoggableInterface;
-use ClawRock\Debug\Model\ValueObject\EventObserver;
 
 class EventCollector implements CollectorInterface, LateCollectorInterface, LoggerCollectorInterface
 {
@@ -16,30 +16,11 @@ class EventCollector implements CollectorInterface, LateCollectorInterface, Logg
     const OBSERVERS_COUNT = 'observers_count';
     const DISPATCH_COUNT  = 'events_count';
 
-    /**
-     * @var \ClawRock\Debug\Helper\Config
-     */
-    private $config;
-
-    /**
-     * @var \ClawRock\Debug\Model\DataCollector
-     */
-    private $dataCollector;
-
-    /**
-     * @var \ClawRock\Debug\Logger\DataLogger
-     */
-    private $dataLogger;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Formatter
-     */
-    private $formatter;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Debug
-     */
-    private $debug;
+    private \ClawRock\Debug\Helper\Config $config;
+    private \ClawRock\Debug\Model\DataCollector $dataCollector;
+    private \ClawRock\Debug\Logger\DataLogger $dataLogger;
+    private \ClawRock\Debug\Helper\Formatter $formatter;
+    private \ClawRock\Debug\Helper\Debug $debug;
 
     public function __construct(
         \ClawRock\Debug\Helper\Config $config,
@@ -91,21 +72,25 @@ class EventCollector implements CollectorInterface, LateCollectorInterface, Logg
         return $this;
     }
 
-    public function getTime()
+    public function getTime(): string
     {
         return $this->formatter->microtime($this->dataCollector->getData(self::TIME) ?? 0);
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         return $this->dataCollector->getData(self::EVENTS) ?? [];
     }
 
-    public function getObserversCount()
+    public function getObserversCount(): int
     {
         return array_sum(array_map('count', $this->getEvents()));
     }
 
+    /**
+     * @param \ClawRock\Debug\Model\ValueObject\EventObserver[] $observers
+     * @return \ClawRock\Debug\Model\ValueObject\EventObserver[]
+     */
     public function filterObservers(array $observers): array
     {
         $filtered = [];
@@ -127,9 +112,6 @@ class EventCollector implements CollectorInterface, LateCollectorInterface, Logg
         return $this->formatter->microtime($time);
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->config->isEventCollectorEnabled();

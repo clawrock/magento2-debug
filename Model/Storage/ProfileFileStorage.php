@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ClawRock\Debug\Model\Storage;
 
@@ -9,45 +10,13 @@ use Magento\Framework\Exception\FileSystemException;
 
 class ProfileFileStorage
 {
-    /**
-     * @var \Magento\Framework\Filesystem\Driver\File
-     */
-    private $fileSystem;
-
-    /**
-     * @var \Magento\Framework\Filesystem\File\ReadFactory
-     */
-    private $fileReadFactory;
-
-    /**
-     * @var \Magento\Framework\Filesystem\File\WriteFactory
-     */
-    private $fileWriteFactory;
-
-    /**
-     * @var \ClawRock\Debug\Logger\Logger
-     */
-    private $logger;
-
-    /**
-     * @var \ClawRock\Debug\Helper\File
-     */
-    private $fileHelper;
-
-    /**
-     * @var \ClawRock\Debug\Model\ProfileFactory
-     */
-    private $profileFactory;
-
-    /**
-     * @var \ClawRock\Debug\Model\Serializer\ProfileSerializer
-     */
-    private $profileSerializer;
-
-    /**
-     * @var \ClawRock\Debug\Model\Indexer\ProfileIndexer
-     */
-    private $profileIndexer;
+    private \Magento\Framework\Filesystem\Driver\File $fileSystem;
+    private \Magento\Framework\Filesystem\File\ReadFactory $fileReadFactory;
+    private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory;
+    private \ClawRock\Debug\Logger\Logger $logger;
+    private \ClawRock\Debug\Helper\File $fileHelper;
+    private \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializer;
+    private \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexer;
 
     public function __construct(
         \Magento\Framework\Filesystem\Driver\File $fileSystem,
@@ -55,7 +24,6 @@ class ProfileFileStorage
         \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
         \ClawRock\Debug\Logger\Logger $logger,
         \ClawRock\Debug\Helper\File $fileHelper,
-        \ClawRock\Debug\Model\ProfileFactory $profileFactory,
         \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializer,
         \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexer
     ) {
@@ -64,16 +32,10 @@ class ProfileFileStorage
         $this->fileWriteFactory = $fileWriteFactory;
         $this->logger = $logger;
         $this->fileHelper = $fileHelper;
-        $this->profileFactory = $profileFactory;
         $this->profileSerializer = $profileSerializer;
         $this->profileIndexer = $profileIndexer;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param \ClawRock\Debug\Model\Profile\Criteria $criteria
-     * @return array
-     */
     public function find(Criteria $criteria): array
     {
         $results = [];
@@ -86,7 +48,7 @@ class ProfileFileStorage
             $resource = $this->fileSystem->fileOpen($this->fileHelper->getProfileIndex(), 'r');
             $i = 0;
             while ($profile = $this->fileSystem->fileGetCsv($resource)) {
-                if ($criteria->match($profile)) {
+                if (is_array($profile) && $criteria->match($profile)) {
                     $results[] = SearchResult::createFromCsv($profile);
                     if (++$i >= $criteria->getLimit()) {
                         break;
@@ -96,38 +58,25 @@ class ProfileFileStorage
 
             $this->fileSystem->fileClose($resource);
         } catch (FileSystemException $e) {
-            $this->logger->critical($e);
+            $this->logger->error('ClawRock_Debug: error during profile search', ['exception' => $e]);
         }
 
         return $results;
     }
 
-    /**
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function purge()
+    public function purge(): void
     {
         $this->fileSystem->deleteDirectory($this->fileHelper->getProfileDirectory());
     }
 
-    /**
-     * @param $token
-     * @return \ClawRock\Debug\Api\Data\ProfileInterface
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function read($token): ProfileInterface
+    public function read(string $token): ProfileInterface
     {
         $file = $this->fileReadFactory->create($this->fileHelper->getProfileFilename($token), $this->fileSystem);
 
         return $this->profileSerializer->unserialize($file->readAll());
     }
 
-    /**
-     * @param \ClawRock\Debug\Api\Data\ProfileInterface $profile
-     * @return string
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function write(ProfileInterface $profile)
+    public function write(ProfileInterface $profile): string
     {
         $path = $this->fileHelper->getProfileFilename($profile->getToken());
         $this->fileSystem->createDirectory($this->fileSystem->getParentDirectory($path));
@@ -141,11 +90,7 @@ class ProfileFileStorage
         return $path;
     }
 
-    /**
-     * @param string $token
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function remove(string $token)
+    public function remove(string $token): void
     {
         $path = $this->fileHelper->getProfileFilename($token);
         $this->fileSystem->deleteFile($path);
