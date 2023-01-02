@@ -48,12 +48,12 @@ class CustomerCollector implements CollectorInterface
 
     public function isLoggedIn(): bool
     {
-        return $this->dataCollector->getData(self::LOGGED_IN) ?? false;
+        return (bool) $this->dataCollector->getData(self::LOGGED_IN);
     }
 
     public function getCustomerId(): string
     {
-        return $this->dataCollector->getData(self::CUSTOMER_ID) ?? '';
+        return (string) $this->dataCollector->getData(self::CUSTOMER_ID);
     }
 
     public function getCustomerEmail(): string
@@ -68,22 +68,22 @@ class CustomerCollector implements CollectorInterface
 
     public function getCustomerGroupId(): string
     {
-        return $this->dataCollector->getData(self::CUSTOMER_GROUP_ID) ?? '';
+        return (string) $this->dataCollector->getData(self::CUSTOMER_GROUP_ID);
     }
 
     public function getCustomerGroupCode(): string
     {
-        return $this->dataCollector->getData(self::CUSTOMER_GROUP_CODE) ?? '';
+        return (string) $this->dataCollector->getData(self::CUSTOMER_GROUP_CODE);
     }
 
     public function getCustomerTaxClassId(): string
     {
-        return $this->dataCollector->getData(self::CUSTOMER_TAX_CLASS_ID) ?? '';
+        return (string) $this->dataCollector->getData(self::CUSTOMER_TAX_CLASS_ID);
     }
 
     public function getCustomerTaxClassName(): string
     {
-        return $this->dataCollector->getData(self::CUSTOMER_TAX_CLASS_NAME) ?? '';
+        return (string) $this->dataCollector->getData(self::CUSTOMER_TAX_CLASS_NAME);
     }
 
     /**
