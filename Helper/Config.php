@@ -98,7 +98,7 @@ class Config
 
     public function getAllowedIPs(): array
     {
-        return array_filter(array_map('trim', explode(',', $this->scopeConfig->getValue(
+        return array_filter(array_map('trim', explode(',', (string) $this->scopeConfig->getValue(
             self::CONFIG_ALLOWED_IPS,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         ))));
