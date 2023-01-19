@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Przelewy24 Magento 2 module PHPCS">
+<ruleset name="Magento 2 module PHPCS">
     <file>.</file>
     <arg name="extensions" value="php,phtml"/>
     <arg name="parallel" value="4"/>

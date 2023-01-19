@@ -16,7 +16,7 @@
         </exclude>
     </coverage>
     <testsuites>
-        <testsuite name="Przelewy24 Magento module">
+        <testsuite name="Magento module">
             <directory>Test/Unit</directory>
         </testsuite>
     </testsuites>

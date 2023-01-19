@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="ClawRock\Debug\Controller\Profiler\Info">
+        <plugin name="Clawrock_Debug::use_magento_backend_theme_on_debug_frontend_view" type="ClawRock\Debug\Plugin\UseMagentoBackendThemeOnDebugFrontendViewPlugin"/>
+    </type>
+
+    <type name="ClawRock\Debug\Controller\Profiler\Search">
+        <plugin name="Clawrock_Debug::use_magento_backend_theme_on_debug_frontend_view" type="ClawRock\Debug\Plugin\UseMagentoBackendThemeOnDebugFrontendViewPlugin"/>
+    </type>
+
+    <type name="ClawRock\Debug\Controller\Profiler\Toolbar">
+        <plugin name="Clawrock_Debug::use_magento_backend_theme_on_debug_frontend_view" type="ClawRock\Debug\Plugin\UseMagentoBackendThemeOnDebugFrontendViewPlugin"/>
+    </type>
+</config>

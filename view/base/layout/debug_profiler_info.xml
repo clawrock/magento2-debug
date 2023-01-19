@@ -5,10 +5,19 @@
         <css src="ClawRock_Debug::css/profiler.css"/>
         <remove src="css/styles-m.css"/>
         <remove src="css/styles-l.css"/>
+        <remove src="css/styles.css"/>
+        <remove src="fonts/opensans/light/opensans-300.woff2"/>
+        <remove src="fonts/opensans/regular/opensans-400.woff2"/>
+        <remove src="fonts/opensans/semibold/opensans-600.woff2"/>
+        <remove src="fonts/opensans/bold/opensans-700.woff2"/>
+        <remove src="fonts/Luma-Icons.woff2"/>
+        <remove src="mage/calendar.css"/>
     </head>
     <body>
         <referenceBlock name="head.additional">
             <block class="Magento\Framework\View\Element\Template" name="debug.profiler.js" template="ClawRock_Debug::profiler/js.phtml"/>
         </referenceBlock>
+        <referenceContainer name="page.messages" remove="true"/>
+        <referenceContainer name="footer-container" remove="true"/> <!-- Alpaca's footer placed in root container -->
     </body>
 </page>
