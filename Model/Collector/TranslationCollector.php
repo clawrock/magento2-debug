@@ -7,11 +7,10 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class TranslationCollector implements CollectorInterface, LoggerCollectorInterface
 {
-    const NAME = 'translation';
-
-    const TRANSLATIONS = 'translations';
-    const DEFINED = 'defined';
-    const MISSING = 'missing';
+    public const NAME = 'translation';
+    public const TRANSLATIONS = 'translations';
+    public const DEFINED = 'defined';
+    public const MISSING = 'missing';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

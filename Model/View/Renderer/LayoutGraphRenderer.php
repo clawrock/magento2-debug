@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\Template;
 
 class LayoutGraphRenderer implements RendererInterface
 {
-    const TEMPLATE = 'ClawRock_Debug::renderer/layout/graph.phtml';
+    private const TEMPLATE = 'ClawRock_Debug::renderer/layout/graph.phtml';
 
     private array $blocks;
     private float $totalRenderTime;

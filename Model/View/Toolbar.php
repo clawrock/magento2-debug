@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Toolbar implements ArgumentInterface
 {
-    const COLLECTOR_PLACEHOLDER = 'debug.toolbar.collectors.%s';
+    private const COLLECTOR_PLACEHOLDER = 'debug.toolbar.collectors.%s';
 
     private ?\ClawRock\Debug\Api\Data\ProfileInterface $profile = null;
     /** @var \ClawRock\Debug\Model\Collector\CollectorInterface[]|null */

@@ -7,18 +7,17 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class CacheAction implements LoggableInterface
 {
-    const LOAD   = 'load';
-    const SAVE   = 'save';
-    const REMOVE = 'remove';
-    const CLEAN  = 'clean';
-
-    const CACHE_ID     = 'id';
-    const CACHE_TAGS   = 'tags';
-    const CACHE_TIME   = 'time';
-    const CACHE_HIT    = 'hit';
-    const CACHE_TTL    = 'ttl';
-    const CACHE_ACTION = 'action';
-    const CACHE_INFO   = 'info';
+    public const LOAD = 'load';
+    public const SAVE = 'save';
+    public const REMOVE = 'remove';
+    public const CLEAN = 'clean';
+    public const CACHE_ID = 'id';
+    public const CACHE_TAGS = 'tags';
+    public const CACHE_TIME = 'time';
+    public const CACHE_HIT = 'hit';
+    public const CACHE_TTL = 'ttl';
+    public const CACHE_ACTION = 'action';
+    public const CACHE_INFO = 'info';
 
     private string $id;
     private string $name;

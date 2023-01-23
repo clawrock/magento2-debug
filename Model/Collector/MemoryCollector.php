@@ -5,10 +5,9 @@ namespace ClawRock\Debug\Model\Collector;
 
 class MemoryCollector implements CollectorInterface, LateCollectorInterface
 {
-    const NAME = 'memory';
-
-    const MEMORY_USAGE = 'memory_usage';
-    const MEMORY_LIMIT = 'memory_limit';
+    public const NAME = 'memory';
+    public const MEMORY_USAGE = 'memory_usage';
+    public const MEMORY_LIMIT = 'memory_limit';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

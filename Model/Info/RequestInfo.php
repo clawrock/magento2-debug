@@ -10,12 +10,10 @@ use Laminas\Stdlib\ParametersInterface;
 
 class RequestInfo
 {
-    const TOKEN = 'token';
-
-    const DEFAULT_CONTENT_TYPE = 'text/html';
-
-    const PASSWORD_PLACEHOLDER = '******';
-    const REDIRECT_PARAM = 'cdbg_redirect';
+    public const TOKEN = 'token';
+    public const DEFAULT_CONTENT_TYPE = 'text/html';
+    public const PASSWORD_PLACEHOLDER = '******';
+    public const REDIRECT_PARAM = 'cdbg_redirect';
 
     private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
     private \ClawRock\Debug\Model\Session $session;

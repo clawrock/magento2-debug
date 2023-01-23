@@ -23,7 +23,7 @@ class CacheCollectorPlugin
      * @param \Magento\Framework\App\Cache $subject
      * @param callable $proceed
      * @param string $identifier
-     * @return string
+     * @return bool|string
      */
     public function aroundLoad(Cache $subject, callable $proceed, $identifier)
     {

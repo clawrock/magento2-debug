@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\Template;
 
 class RedirectRenderer implements RendererInterface
 {
-    const TEMPLATE = 'ClawRock_Debug::renderer/redirect.phtml';
+    private const TEMPLATE = 'ClawRock_Debug::renderer/redirect.phtml';
 
     /**
      * @var \ClawRock\Debug\Model\ValueObject\Redirect

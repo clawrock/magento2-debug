@@ -9,8 +9,8 @@ use Magento\Framework\HTTP\PhpEnvironment\Request;
 
 class Url
 {
-    const CONFIGURATION_URL_PATH = 'debug/profiler/config';
-    const PROFILER_URL_PATH = '_debug/profiler/info';
+    public const CONFIGURATION_URL_PATH = 'debug/profiler/config';
+    public const PROFILER_URL_PATH = '_debug/profiler/info';
 
     private \Magento\Framework\UrlInterface $url;
     private \Magento\Backend\Model\UrlInterface $backendUrl;

@@ -5,11 +5,11 @@ namespace ClawRock\Debug\Model\ValueObject;
 
 class Redirect
 {
-    const TOKEN = 'token';
-    const ACTION = 'action';
-    const METHOD = 'method';
-    const STATUS_CODE = 'status_code';
-    const STATUS_TEXT = 'status_text';
+    public const TOKEN = 'token';
+    public const ACTION = 'action';
+    public const METHOD = 'method';
+    public const STATUS_CODE = 'status_code';
+    public const STATUS_TEXT = 'status_text';
 
     private string $token;
     private string $action;

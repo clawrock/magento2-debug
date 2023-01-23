@@ -10,7 +10,7 @@ use ClawRock\Debug\Model\ValueObject\Redirect;
 
 class Profile implements ProfileInterface
 {
-    const SERIALIZE_PROPERTIES = [
+    public const SERIALIZE_PROPERTIES = [
         'token',
         'parent',
         'ip',
@@ -23,7 +23,7 @@ class Profile implements ProfileInterface
         'children',
     ];
 
-    const INDEX_PROPERTIES = [
+    public const INDEX_PROPERTIES = [
         'token',
         'ip',
         'method',

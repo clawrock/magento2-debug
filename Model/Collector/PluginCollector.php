@@ -5,11 +5,10 @@ namespace ClawRock\Debug\Model\Collector;
 
 class PluginCollector implements CollectorInterface, LateCollectorInterface
 {
-    const NAME = 'plugin';
-
-    const BEFORE = 'before';
-    const AROUND = 'around';
-    const AFTER  = 'after';
+    public const NAME = 'plugin';
+    public const BEFORE = 'before';
+    public const AROUND = 'around';
+    public const AFTER = 'after';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

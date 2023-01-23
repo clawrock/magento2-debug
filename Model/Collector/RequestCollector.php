@@ -7,36 +7,29 @@ use ClawRock\Debug\Model\ValueObject\Redirect;
 
 class RequestCollector implements CollectorInterface
 {
-    const NAME = 'request';
-
-    const REQUEST_METHOD     = 'request_method';
-    const REQUEST_GET        = 'request_get';
-    const REQUEST_POST       = 'request_post';
-    const REQUEST_HEADERS    = 'request_headers';
-    const REQUEST_SERVER     = 'request_server';
-    const REQUEST_COOKIES    = 'request_cookies';
-    const REQUEST_ATTRIBUTES = 'request_attributes';
-
-    const RESPONSE_HEADERS = 'response_headers';
-
-    const CONTENT      = 'content';
-    const CONTENT_TYPE = 'content_type';
-
-    const STATUS_TEXT    = 'status_text';
-    const STATUS_CODE    = 'status_code';
-
-    const SESSION_ATTRIBUTES = 'session_attributes';
-
-    const PATH_INFO = 'path_info';
-    const FPC_HIT   = 'fpc_hit';
-    const REDIRECT  = 'redirect';
-
-    const REQUEST_STRING    = 'request_string';
-    const REQUEST_URI       = 'request_uri';
-    const CONTROLLER_MODULE = 'controller_module';
-    const CONTROLLER_NAME   = 'controller_name';
-    const ACTION_NAME       = 'action_name';
-    const FULL_ACTION_NAME  = 'full_action_name';
+    public const NAME = 'request';
+    public const REQUEST_METHOD = 'request_method';
+    public const REQUEST_GET = 'request_get';
+    public const REQUEST_POST = 'request_post';
+    public const REQUEST_HEADERS = 'request_headers';
+    public const REQUEST_SERVER = 'request_server';
+    public const REQUEST_COOKIES = 'request_cookies';
+    public const REQUEST_ATTRIBUTES = 'request_attributes';
+    public const RESPONSE_HEADERS = 'response_headers';
+    public const CONTENT = 'content';
+    public const CONTENT_TYPE = 'content_type';
+    public const STATUS_TEXT = 'status_text';
+    public const STATUS_CODE = 'status_code';
+    public const SESSION_ATTRIBUTES = 'session_attributes';
+    public const PATH_INFO = 'path_info';
+    public const FPC_HIT = 'fpc_hit';
+    public const REDIRECT = 'redirect';
+    public const REQUEST_STRING = 'request_string';
+    public const REQUEST_URI = 'request_uri';
+    public const CONTROLLER_MODULE = 'controller_module';
+    public const CONTROLLER_NAME = 'controller_name';
+    public const ACTION_NAME = 'action_name';
+    public const FULL_ACTION_NAME = 'full_action_name';
 
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
     private \ClawRock\Debug\Model\Info\RequestInfo $requestInfo;

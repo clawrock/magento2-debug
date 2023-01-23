@@ -7,8 +7,8 @@ use Magento\Framework\App\State;
 
 class MagentoInfo
 {
-    const MODULES_CACHE_ID = 'ClawRock_Debug::modules';
-    const VERSION_CACHE_ID = 'ClawRock_Debug::version';
+    public const MODULES_CACHE_ID = 'ClawRock_Debug::modules';
+    public const VERSION_CACHE_ID = 'ClawRock_Debug::version';
 
     private \Magento\Framework\App\State $appState;
     private \Magento\Framework\App\Cache\Type\Config $cache;

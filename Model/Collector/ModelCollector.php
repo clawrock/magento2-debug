@@ -9,14 +9,12 @@ use ClawRock\Debug\Model\ValueObject\ModelAction;
 
 class ModelCollector implements CollectorInterface, LoggerCollectorInterface
 {
-    const NAME = 'model';
-
-    const LOAD_CALL_THRESHOLD = 20;
-
-    const TOTAL_TIME = 'total_time';
-    const METRICS    = 'metrics';
-    const LOG        = 'log';
-    const LOAD_LOOPS = 'load_loops';
+    public const NAME = 'model';
+    public const LOAD_CALL_THRESHOLD = 20;
+    public const TOTAL_TIME = 'total_time';
+    public const METRICS = 'metrics';
+    public const LOG = 'log';
+    public const LOAD_LOOPS = 'load_loops';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

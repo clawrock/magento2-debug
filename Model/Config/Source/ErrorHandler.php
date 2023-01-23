@@ -7,8 +7,8 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class ErrorHandler implements OptionSourceInterface
 {
-    const MAGENTO = '0';
-    const WHOOPS  = 'whoops';
+    public const MAGENTO = '0';
+    public const WHOOPS  = 'whoops';
 
     public function toOptionArray(): array
     {

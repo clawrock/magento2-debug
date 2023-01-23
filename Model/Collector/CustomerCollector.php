@@ -5,16 +5,15 @@ namespace ClawRock\Debug\Model\Collector;
 
 class CustomerCollector implements CollectorInterface
 {
-    const NAME = 'customer';
-
-    const LOGGED_IN               = 'logged_in';
-    const CUSTOMER_ID             = 'customer_id';
-    const CUSTOMER_EMAIL          = 'customer_email';
-    const CUSTOMER_NAME           = 'customer_name';
-    const CUSTOMER_GROUP_ID       = 'customer_group_id';
-    const CUSTOMER_GROUP_CODE     = 'customer_group_code';
-    const CUSTOMER_TAX_CLASS_ID   = 'customer_tax_class_id';
-    const CUSTOMER_TAX_CLASS_NAME = 'customer_tax_class_name';
+    public const NAME = 'customer';
+    public const LOGGED_IN = 'logged_in';
+    public const CUSTOMER_ID = 'customer_id';
+    public const CUSTOMER_EMAIL = 'customer_email';
+    public const CUSTOMER_NAME = 'customer_name';
+    public const CUSTOMER_GROUP_ID = 'customer_group_id';
+    public const CUSTOMER_GROUP_CODE = 'customer_group_code';
+    public const CUSTOMER_TAX_CLASS_ID = 'customer_tax_class_id';
+    public const CUSTOMER_TAX_CLASS_NAME = 'customer_tax_class_name';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

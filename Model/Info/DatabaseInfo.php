@@ -5,10 +5,9 @@ namespace ClawRock\Debug\Model\Info;
 
 class DatabaseInfo
 {
-    const PROFILE    = 'profile';
-
-    const ALL_QUERIES        = 'all';
-    const DUPLICATED_QUERIES = 'duplicated';
+    public const PROFILE = 'profile';
+    public const ALL_QUERIES = 'all';
+    public const DUPLICATED_QUERIES = 'duplicated';
 
     private \Magento\Framework\App\ResourceConnection $resourceConnection;
     private ?\Zend_Db_Profiler $profiler = null;

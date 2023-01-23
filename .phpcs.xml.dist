@@ -17,6 +17,7 @@
         <exclude name="Magento2.Less"/>
         <exclude name="Magento2.Annotation.MethodAnnotationStructure"/>
         <exclude name="Magento2.Annotation.MethodArguments.MethodArguments"/>
+        <exclude name="Magento2.Annotation.MethodArguments.NoCommentBlock"/>
     </rule>
     <rule ref="Magento2.Legacy.PhtmlTemplate.FoundDataMageInit">
         <exclude-pattern>*.phtml</exclude-pattern>

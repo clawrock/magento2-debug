@@ -7,13 +7,12 @@ use ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver;
 
 class TimeCollector implements CollectorInterface, LateCollectorInterface
 {
-    const NAME = 'time';
+    public const NAME = 'time';
+    public const EVENTS = 'events';
+    public const DURATION = 'duration';
+    public const START_TIME = 'start_time';
 
-    const EVENTS     = 'events';
-    const DURATION   = 'duration';
-    const START_TIME = 'start_time';
-
-    const EVENT_TYPES = [
+    public const EVENT_TYPES = [
         StopwatchDriver::CATEGORY_CORE,
         StopwatchDriver::CATEGORY_ROUTING,
         StopwatchDriver::CATEGORY_CONFIG,
@@ -26,8 +25,8 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
         StopwatchDriver::CATEGORY_UNKNOWN,
     ];
 
-    const ERROR_THRESHOLD = 2000;
-    const WARNING_THRESHOLD = 1000;
+    public const ERROR_THRESHOLD = 2000;
+    public const WARNING_THRESHOLD = 1000;
 
     private \Magento\Framework\Serialize\SerializerInterface $serializer;
     private \ClawRock\Debug\Helper\Config $config;

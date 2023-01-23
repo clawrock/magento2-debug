@@ -8,24 +8,23 @@ namespace ClawRock\Debug\Model\Collector;
  */
 class ConfigCollector implements CollectorInterface
 {
-    const NAME = 'config';
-
-    const STORE_ID             = 'store_id';
-    const STORE_NAME           = 'store_name';
-    const STORE_CODE           = 'store_code';
-    const WEBSITE_ID           = 'website_id';
-    const WEBSITE_NAME     = 'website_name';
-    const WEBSITE_CODE     = 'website_code';
-    const DEVELOPER_MODE   = 'developer_mode';
-    const TOKEN            = 'token';
-    const VERSION          = 'version';
-    const MODULES          = 'modules';
-    const XDEBUG_ENABLED   = 'xdebug_enabled';
-    const EACCEL_ENABLED   = 'eaccel_enabled';
-    const APC_ENABLED      = 'apc_enabled';
-    const XCACHE_ENABLED   = 'xcache_enabled';
-    const WINCACHE_ENABLED = 'wincache_enabled';
-    const OPCACHE_ENABLED  = 'zend_opcache_enabled';
+    public const NAME = 'config';
+    public const STORE_ID = 'store_id';
+    public const STORE_NAME = 'store_name';
+    public const STORE_CODE = 'store_code';
+    public const WEBSITE_ID = 'website_id';
+    public const WEBSITE_NAME = 'website_name';
+    public const WEBSITE_CODE = 'website_code';
+    public const DEVELOPER_MODE = 'developer_mode';
+    public const TOKEN = 'token';
+    public const VERSION = 'version';
+    public const MODULES = 'modules';
+    public const XDEBUG_ENABLED = 'xdebug_enabled';
+    public const EACCEL_ENABLED = 'eaccel_enabled';
+    public const APC_ENABLED = 'apc_enabled';
+    public const XCACHE_ENABLED = 'xcache_enabled';
+    public const WINCACHE_ENABLED = 'wincache_enabled';
+    public const OPCACHE_ENABLED = 'zend_opcache_enabled';
 
     private \Magento\Store\Model\StoreManagerInterface $storeManager;
     private \ClawRock\Debug\Helper\Config $config;

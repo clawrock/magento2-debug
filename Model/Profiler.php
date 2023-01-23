@@ -14,9 +14,9 @@ use Magento\Framework\Profiler as MagentoProfiler;
  */
 class Profiler
 {
-    const URL_TOKEN_PARAMETER      = 'token';
-    const URL_PANEL_PARAMETER      = 'panel';
-    const TOOLBAR_FULL_ACTION_NAME = 'debug_profiler_toolbar';
+    public const URL_TOKEN_PARAMETER = 'token';
+    public const URL_PANEL_PARAMETER = 'panel';
+    public const TOOLBAR_FULL_ACTION_NAME = 'debug_profiler_toolbar';
 
     /** @var null|\ClawRock\Debug\Model\Collector\CollectorInterface[] */
     private ?array $dataCollectors = null;

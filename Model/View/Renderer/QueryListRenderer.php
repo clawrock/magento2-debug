@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\Template;
 
 class QueryListRenderer implements RendererInterface
 {
-    const TEMPLATE = 'ClawRock_Debug::renderer/query/list.phtml';
+    private const TEMPLATE = 'ClawRock_Debug::renderer/query/list.phtml';
 
     /** @var \Zend_Db_Profiler_Query[] */
     private array $queries;

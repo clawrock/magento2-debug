@@ -5,7 +5,7 @@ namespace ClawRock\Debug\Model\Collector;
 
 class AjaxCollector implements CollectorInterface
 {
-    const NAME = 'ajax';
+    public const NAME = 'ajax';
 
     private \ClawRock\Debug\Helper\Config $config;
 

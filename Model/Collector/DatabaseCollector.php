@@ -7,11 +7,10 @@ use ClawRock\Debug\Model\Info\DatabaseInfo;
 
 class DatabaseCollector implements CollectorInterface
 {
-    const NAME = 'database';
-
-    const TOTAL_TIME  = 'total_time';
-    const QUERY_COUNT = 'query_count';
-    const QUERIES     = 'queries';
+    public const NAME = 'database';
+    public const TOTAL_TIME = 'total_time';
+    public const QUERY_COUNT = 'query_count';
+    public const QUERIES = 'queries';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

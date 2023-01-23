@@ -7,10 +7,10 @@ use ClawRock\Debug\Model\ValueObject\CacheAction;
 
 class CacheInfo
 {
-    const STATS_TOTAL = 'stats_total';
-    const STATS_HIT   = 'stats_hit';
-    const STATS_MISS  = 'stats_miss';
-    const STATS_SAVE  = 'stats_save';
+    public const STATS_TOTAL = 'stats_total';
+    public const STATS_HIT = 'stats_hit';
+    public const STATS_MISS = 'stats_miss';
+    public const STATS_SAVE = 'stats_save';
 
     private \Magento\Framework\App\Cache $cache;
     private \Magento\Framework\App\Cache\TypeListInterface $typeList;

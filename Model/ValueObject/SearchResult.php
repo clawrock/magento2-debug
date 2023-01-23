@@ -5,9 +5,9 @@ namespace ClawRock\Debug\Model\ValueObject;
 
 class SearchResult
 {
-    const STATUS_SUCCESS = 'success';
-    const STATUS_WARNING = 'warning';
-    const STATUS_ERROR = 'error';
+    public const STATUS_SUCCESS = 'success';
+    public const STATUS_WARNING = 'warning';
+    public const STATUS_ERROR = 'error';
 
     private string $token;
     private string $ip;

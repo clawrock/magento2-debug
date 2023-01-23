@@ -7,8 +7,8 @@ use Magento\Framework\View\Element\Template;
 
 class TraceCallRenderer implements RendererInterface
 {
-    const TEMPLATE = 'ClawRock_Debug::renderer/trace/call.phtml';
-    const CALL_INFO = ['function', 'class', 'line', 'file'];
+    private const TEMPLATE = 'ClawRock_Debug::renderer/trace/call.phtml';
+    private const CALL_INFO = ['function', 'class', 'line', 'file'];
 
     private array $call;
     private \Magento\Framework\View\LayoutInterface $layout;

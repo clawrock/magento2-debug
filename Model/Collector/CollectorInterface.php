@@ -5,10 +5,10 @@ namespace ClawRock\Debug\Model\Collector;
 
 interface CollectorInterface
 {
-    const STATUS_SUCCESS = 'green';
-    const STATUS_ERROR   = 'red';
-    const STATUS_WARNING = 'yellow';
-    const STATUS_DEFAULT = 'normal';
+    public const STATUS_SUCCESS = 'green';
+    public const STATUS_ERROR = 'red';
+    public const STATUS_WARNING = 'yellow';
+    public const STATUS_DEFAULT = 'normal';
 
     public function collect(): CollectorInterface;
 

@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\Template;
 
 class TableRenderer implements RendererInterface
 {
-    const TEMPLATE = 'ClawRock_Debug::renderer/table.phtml';
+    private const TEMPLATE = 'ClawRock_Debug::renderer/table.phtml';
 
     private array $items;
     private \Magento\Framework\View\LayoutInterface $layout;

@@ -8,18 +8,17 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class StopwatchDriver implements \Magento\Framework\Profiler\DriverInterface
 {
-    const ROOT_EVENT = 'magento';
-
-    const CATEGORY_CORE = 'core';
-    const CATEGORY_CONFIG = 'config';
-    const CATEGORY_LAYOUT = 'layout';
-    const CATEGORY_EVENT = 'event';
-    const CATEGORY_EAV = 'eav';
-    const CATEGORY_CONTROLLER = 'controller';
-    const CATEGORY_TEMPLATE = 'template';
-    const CATEGORY_ROUTING = 'routing';
-    const CATEGORY_DEBUG = 'debug';
-    const CATEGORY_UNKNOWN = 'unknown';
+    public const ROOT_EVENT = 'magento';
+    public const CATEGORY_CORE = 'core';
+    public const CATEGORY_CONFIG = 'config';
+    public const CATEGORY_LAYOUT = 'layout';
+    public const CATEGORY_EVENT = 'event';
+    public const CATEGORY_EAV = 'eav';
+    public const CATEGORY_CONTROLLER = 'controller';
+    public const CATEGORY_TEMPLATE = 'template';
+    public const CATEGORY_ROUTING = 'routing';
+    public const CATEGORY_DEBUG = 'debug';
+    public const CATEGORY_UNKNOWN = 'unknown';
 
     private \Symfony\Component\Stopwatch\Stopwatch $stopwatch;
 

@@ -7,14 +7,12 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class EventCollector implements CollectorInterface, LateCollectorInterface, LoggerCollectorInterface
 {
-    const NAME = 'event';
-
-    const TIME      = 'time';
-    const EVENTS    = 'events';
-    const OBSERVERS = 'observers';
-
-    const OBSERVERS_COUNT = 'observers_count';
-    const DISPATCH_COUNT  = 'events_count';
+    public const NAME = 'event';
+    public const TIME = 'time';
+    public const EVENTS = 'events';
+    public const OBSERVERS = 'observers';
+    public const OBSERVERS_COUNT = 'observers_count';
+    public const DISPATCH_COUNT = 'events_count';
 
     private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;

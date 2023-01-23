@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\Template;
 
 class ParametersRenderer implements RendererInterface
 {
-    const TEMPLATE = 'ClawRock_Debug::renderer/parameters.phtml';
+    private const TEMPLATE = 'ClawRock_Debug::renderer/parameters.phtml';
 
     private \Laminas\Stdlib\ParametersInterface $parameters;
     private \Magento\Framework\View\LayoutInterface $layout;

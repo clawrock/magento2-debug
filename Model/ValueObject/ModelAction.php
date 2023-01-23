@@ -7,11 +7,10 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class ModelAction implements LoggableInterface
 {
-    const LOAD   = 'load';
-    const SAVE   = 'save';
-    const DELETE = 'delete';
-
-    const LOOP_LOAD = 'loop_load';
+    public const LOAD = 'load';
+    public const SAVE = 'save';
+    public const DELETE = 'delete';
+    public const LOOP_LOAD = 'loop_load';
 
     private string $id;
     private string $name;
