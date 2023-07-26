@@ -8,8 +8,8 @@ declare(strict_types=1);
  * @var \ClawRock\Debug\Model\Collector\TimeCollector $collector
  */
 $viewModel = $block->getViewModel();
-$collector = $block->getCollector();
 $profile = $viewModel->getProfile();
+$collector = $profile->getCollector('time');
 $events = $collector->getEvents();
 ?>
 <h2><?= $escaper->escapeHtml(__('Performance metrics')) ?></h2>
