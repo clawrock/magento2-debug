@@ -14,13 +14,6 @@ $viewModel = $block->getViewModel();
 $profile = $viewModel->getProfile();
 $collector = $profile->getCollector(LayoutCollector::NAME);
 ?>
-<?php
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \ClawRock\Debug\Model\Collector\LayoutCollector $collector */
-$collector = $block->getCollector();
-/** @var \ClawRock\Debug\Model\View\Profiler $viewModel */
-$viewModel = $block->getViewModel();
-?>
 <h2><?= $escaper->escapeHtml(__('Render Metrics')) ?></h2>
 <div class="metrics">
     <div class="metric">
