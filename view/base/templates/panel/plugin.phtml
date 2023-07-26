@@ -7,8 +7,12 @@ declare(strict_types=1);
  * @var \ClawRock\Debug\Model\View\Profiler $viewModel
  * @var \ClawRock\Debug\Model\Collector\PluginCollector $collector
  */
+
+use ClawRock\Debug\Model\Collector\PluginCollector;
+
 $viewModel = $block->getViewModel();
-$collector = $block->getCollector();
+$profile = $viewModel->getProfile();
+$collector = $profile->getCollector(PluginCollector::NAME);
 ?>
 <div>
     <h2><?= $escaper->escapeHtml(__('Plugins')) ?></h2>

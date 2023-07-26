@@ -7,8 +7,12 @@ declare(strict_types=1);
  * @var \ClawRock\Debug\Model\View\Profiler $viewModel
  * @var \ClawRock\Debug\Model\Collector\EventCollector $collector
  */
+
+use ClawRock\Debug\Model\Collector\EventCollector;
+
 $viewModel = $block->getViewModel();
-$collector = $block->getCollector();
+$profile = $viewModel->getProfile();
+$collector = $profile->getCollector(EventCollector::NAME);
 ?>
 <div>
     <h2><?= $escaper->escapeHtml(__('Stats')) ?></h2>

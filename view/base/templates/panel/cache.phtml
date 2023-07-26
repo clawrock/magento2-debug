@@ -7,8 +7,12 @@ declare(strict_types=1);
  * @var \ClawRock\Debug\Model\View\Profiler $viewModel
  * @var \ClawRock\Debug\Model\Collector\CacheCollector $collector
  */
+
+use ClawRock\Debug\Model\Collector\CacheCollector;
+
 $viewModel = $block->getViewModel();
-$collector = $block->getCollector();
+$profile = $viewModel->getProfile();
+$collector = $profile->getCollector(CacheCollector::NAME);
 ?>
 <h2><?= $escaper->escapeHtml(__('Cache metrics')) ?></h2>
 <div class="metrics">
