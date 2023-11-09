@@ -27,7 +27,15 @@ class TraceCallRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                ],
+            ]
+        );
 
         foreach (self::CALL_INFO as $info) {
             if (isset($this->call[$info])) {
@@ -38,7 +46,7 @@ class TraceCallRenderer implements RendererInterface
             $block->setFile($this->relativizePath($block->getFile()));
         }
 
-        return $block->setTemplate(self::TEMPLATE)->toHtml();
+        return $block->toHtml();
     }
 
     private function relativizePath(string $path): string

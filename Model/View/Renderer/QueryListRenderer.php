@@ -33,15 +33,20 @@ class QueryListRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'queries' => $this->queries,
+                    'query_renderer' => $this->queryRendererFactory,
+                    'prefix' => $this->mathRandom->getUniqueHash(),
+                    'formatter' => $this->formatter,
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData([
-                'queries' => $this->queries,
-                'query_renderer' => $this->queryRendererFactory,
-                'prefix' => $this->mathRandom->getUniqueHash(),
-                'formatter' => $this->formatter,
-            ])
-            ->toHtml();
+        return $block->toHtml();
     }
 }

@@ -32,22 +32,27 @@ class QueryRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'query' => $this->query,
+                    'highlighted_query' => $this->databaseHelper->highlightQuery($this->query->getQuery()),
+                    'formatted_query' => $this->databaseHelper->formatQuery($this->query->getQuery()),
+                    'runnable_query' => $this->databaseHelper->highlightQuery(
+                        $this->databaseHelper->replaceQueryParameters(
+                            $this->query->getQuery(),
+                            $this->query->getQueryParams()
+                        )
+                    ),
+                    'var_renderer' => $this->varRenderer,
+                    'uniq_id' => $this->mathRandom->getUniqueHash(),
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData([
-                'query' => $this->query,
-                'highlighted_query' => $this->databaseHelper->highlightQuery($this->query->getQuery()),
-                'formatted_query' => $this->databaseHelper->formatQuery($this->query->getQuery()),
-                'runnable_query' => $this->databaseHelper->highlightQuery(
-                    $this->databaseHelper->replaceQueryParameters(
-                        $this->query->getQuery(),
-                        $this->query->getQueryParams()
-                    )
-                ),
-                'var_renderer' => $this->varRenderer,
-                'uniq_id' => $this->mathRandom->getUniqueHash(),
-            ])
-            ->toHtml();
+        return $block->toHtml();
     }
 }

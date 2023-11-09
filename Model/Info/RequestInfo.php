@@ -134,7 +134,7 @@ class RequestInfo
      */
     public function getSessionAttributes(): array
     {
-        return session_status() ? $_SESSION : []; // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageError
+        return $_SESSION ?? []; // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageError
     }
 
     public function getPathInfo(): string

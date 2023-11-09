@@ -16,8 +16,8 @@ Module for debugging Magento 2 performance. It works without overwriting any cor
 All settings have only default scope and config type pool is set to environment for better integration with `php bin/magento app:config:dump`
 
 ## Compatibility
-* Magento 2.4
-* PHP 7.4, 8.1
+* Magento >= 2.4.4
+* PHP 8.1, 8.2
 
 ## Profiler collectors
 - Ajax

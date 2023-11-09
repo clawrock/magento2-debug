@@ -29,14 +29,21 @@ class TableRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'items' => $this->items,
+                    'labels' => $this->labels,
+                    'var_renderer' => $this->varRenderer,
+                    'key_label' => $this->labels[0] ?? 'Key',
+                    'value_label' => $this->labels[1] ?? 'Value',
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData('items', $this->items)
-            ->setData('labels', $this->labels)
-            ->setData('var_renderer', $this->varRenderer)
-            ->setData('key_label', $this->labels[0] ?? 'Key')
-            ->setData('value_label', $this->labels[1] ?? 'Value')
-            ->toHtml();
+        return $block->toHtml();
     }
 }

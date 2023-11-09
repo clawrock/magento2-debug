@@ -28,13 +28,20 @@ class TraceRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'trace' => $this->trace,
+                    'trace_id' => $this->id,
+                    'trace_call_renderer' => $this->traceCallRendererFactory,
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData('trace', $this->trace)
-            ->setData('trace_id', $this->id)
-            ->setData('trace_call_renderer', $this->traceCallRendererFactory)
-            ->toHtml();
+        return $block->toHtml();
     }
 
     public function getId(): string

@@ -29,14 +29,19 @@ class LayoutNodeRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'node' => $this->node,
+                    'formatter' => $this->formatter,
+                    'layout_node_renderer' => $this->layoutNodeRendererFactory,
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData([
-                'node' => $this->node,
-                'formatter' => $this->formatter,
-                'layout_node_renderer' => $this->layoutNodeRendererFactory,
-            ])
-            ->toHtml();
+        return $block->toHtml();
     }
 }
