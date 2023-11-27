@@ -34,14 +34,19 @@ class LayoutGraphRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            'clawrock_layout_graph_renderer',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'nodes' => $this->createNodes(),
+                    'layout_node_renderer' => $this->layoutNodeRendererFactory,
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData([
-                'nodes' => $this->createNodes(),
-                'layout_node_renderer' => $this->layoutNodeRendererFactory,
-            ])
-            ->toHtml();
+        return $block->toHtml();
     }
 
     private function createNodes(): array

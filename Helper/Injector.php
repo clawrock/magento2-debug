@@ -9,6 +9,9 @@ use Magento\Framework\View\Element\Template;
 
 class Injector
 {
+    private const TEMPLATE_TOOLBAR = 'ClawRock_Debug::profiler/toolbar/js.phtml';
+    private const TEMPLATE_BLOCK = 'ClawRock_Debug::profiler/js.phtml';
+
     private \Magento\Framework\View\LayoutInterface $layout;
     private \ClawRock\Debug\Model\View\Toolbar $viewModel;
 
@@ -27,16 +30,29 @@ class Injector
 
         if (false !== $pos) {
             /** @var \Magento\Framework\View\Element\Template $toolbarBlock */
-            $toolbarBlock = $this->layout->createBlock(Template::class, 'debug.toolbar');
-            $toolbarBlock->setTemplate('ClawRock_Debug::profiler/toolbar/js.phtml')->setData([
-                'view_model' => $this->viewModel,
-                'token'     => $token,
-                'request'   => $request,
-            ]);
+            $toolbarBlock = $this->layout->createBlock(
+                Template::class,
+                'debug.toolbar',
+                [
+                    'data' => [
+                        'template'   => self::TEMPLATE_TOOLBAR,
+                        'view_model' => $this->viewModel,
+                        'token'      => $token,
+                        'request'    => $request,
+                    ],
+                ]
+            );
 
             /** @var \Magento\Framework\View\Element\Template $jsBlock */
-            $jsBlock = $this->layout->createBlock(Template::class, 'debug.profiler.js');
-            $jsBlock->setTemplate('ClawRock_Debug::profiler/js.phtml');
+            $jsBlock = $this->layout->createBlock(
+                Template::class,
+                'debug.profiler.js',
+                [
+                    'data' => [
+                        'template' => self::TEMPLATE_BLOCK,
+                    ],
+                ]
+            );
 
             $toolbarBlock->setChild('debug_profiler_js', $jsBlock);
 

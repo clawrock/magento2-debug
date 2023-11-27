@@ -26,11 +26,18 @@ class ParametersRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                    'parameters' => $this->parameters,
+                    'var_renderer' => $this->varRenderer,
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setData('parameters', $this->parameters)
-            ->setData('var_renderer', $this->varRenderer)
-            ->toHtml();
+        return $block->toHtml();
     }
 }

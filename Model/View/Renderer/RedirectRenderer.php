@@ -37,10 +37,17 @@ class RedirectRenderer implements RendererInterface
     public function render(): string
     {
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->layout->createBlock(Template::class);
+        $block = $this->layout->createBlock(
+            Template::class,
+            '',
+            [
+                'data' => [
+                    'template' => self::TEMPLATE,
+                ],
+            ]
+        );
 
-        return $block->setTemplate(self::TEMPLATE)
-            ->setProfilerUrl($this->url->getProfilerUrl($this->redirect->getToken()))
+        return $block->setProfilerUrl($this->url->getProfilerUrl($this->redirect->getToken()))
             ->setRedirect($this->redirect)
             ->toHtml();
     }
