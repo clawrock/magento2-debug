@@ -7,9 +7,12 @@ declare(strict_types=1);
  * @var \ClawRock\Debug\Model\View\Profiler $viewModel
  * @var \ClawRock\Debug\Model\Collector\TimeCollector $collector
  */
+
+use ClawRock\Debug\Model\Collector\TimeCollector;
+
 $viewModel = $block->getViewModel();
-$collector = $block->getCollector();
 $profile = $viewModel->getProfile();
+$collector = $profile->getCollector(TimeCollector::NAME);
 $events = $collector->getEvents();
 ?>
 <h2><?= $escaper->escapeHtml(__('Performance metrics')) ?></h2>

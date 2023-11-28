@@ -7,8 +7,12 @@ declare(strict_types=1);
  * @var \ClawRock\Debug\Model\View\Profiler $viewModel
  * @var \ClawRock\Debug\Model\Collector\RequestCollector $collector
  */
+
+use ClawRock\Debug\Model\Collector\RequestCollector;
+
 $viewModel = $block->getViewModel();
-$collector = $block->getCollector();
+$profile = $viewModel->getProfile();
+$collector = $profile->getCollector(RequestCollector::NAME);
 ?>
 <div class="sf-tabs">
     <div class="tab">
