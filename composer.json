@@ -14,7 +14,7 @@
         "filp/whoops": "^2.1",
         "jdorn/sql-formatter": "^1.2",
         "symfony/var-dumper": "*",
-        "symfony/stopwatch": "^2.8 || ^3.0 || ^4.0 || ^5.0"
+        "symfony/stopwatch": "^2.8 || ^3.0 || ^4.0 || ^5.0 || ^6.0"
     },
     "require-dev": {
         "bitexpert/phpstan-magento": "^0.30.0",
