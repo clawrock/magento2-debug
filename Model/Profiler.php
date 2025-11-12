@@ -30,7 +30,7 @@ class Profiler
         private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
         private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository,
         private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
-        private \ClawRock\Debug\Logger\Logger $logger
+        private \Psr\Log\LoggerInterface $logger
     ) {
     }
 
@@ -43,7 +43,7 @@ class Profiler
         try {
             $profile  = $this->collect($request, $response);
             $this->profileMemoryStorage->write($profile);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error($e->getMessage());
 
             return;
@@ -144,7 +144,7 @@ class Profiler
             }
 
             $this->profileRepository->save($profile);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('ClawRock_Debug: onTerminate error', ['exception' => $e]);
         }
     }

@@ -10,8 +10,8 @@ class ProfileIndexer
     public function __construct(
         private \Magento\Framework\Filesystem\Driver\File $fileSystem,
         private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
-        private \ClawRock\Debug\Logger\Logger $logger,
-        private \ClawRock\Debug\Helper\File $fileHelper
+        private \ClawRock\Debug\Helper\File $fileHelper,
+        private \Psr\Log\LoggerInterface $logger
     ) {
     }
 
@@ -30,7 +30,7 @@ class ProfileIndexer
                 : '';
 
             $this->fileSystem->filePutContents($this->fileHelper->getProfileIndex(), $index);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('ClawRock_Debug: Error during profile indexation', ['exception' => $e]);
         }
     }

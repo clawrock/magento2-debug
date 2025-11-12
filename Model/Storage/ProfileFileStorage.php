@@ -14,7 +14,7 @@ class ProfileFileStorage
         private \Magento\Framework\Filesystem\Driver\File $fileSystem,
         private \Magento\Framework\Filesystem\File\ReadFactory $fileReadFactory,
         private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
-        private \ClawRock\Debug\Logger\Logger $logger,
+        private \Psr\Log\LoggerInterface $logger,
         private \ClawRock\Debug\Helper\File $fileHelper,
         private \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializer,
         private \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexer

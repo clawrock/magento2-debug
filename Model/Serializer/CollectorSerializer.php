@@ -9,8 +9,8 @@ class CollectorSerializer
 {
     public function __construct(
         private \Magento\Framework\ObjectManagerInterface $objectManager,
-        private \ClawRock\Debug\Logger\Logger $logger,
-        private \ClawRock\Debug\Helper\Config $config
+        private \ClawRock\Debug\Helper\Config $config,
+        private \Psr\Log\LoggerInterface $logger
     ) {
     }
 

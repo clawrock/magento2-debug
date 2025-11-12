@@ -19,8 +19,8 @@ class PurgeTest extends TestCase
     private \Magento\Framework\Controller\Result\Redirect $redirectMock;
     /** @var \ClawRock\Debug\Model\Storage\ProfileFileStorage&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Storage\ProfileFileStorage $profileFileStorageMock;
-    /** @var \ClawRock\Debug\Logger\Logger&\PHPUnit\Framework\MockObject\MockObject */
-    private \ClawRock\Debug\Logger\Logger $loggerMock;
+    /** @var \Psr\Log\LoggerInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Psr\Log\LoggerInterface $loggerMock;
     private \ClawRock\Debug\Controller\Profiler\Purge $controller;
 
     protected function setUp(): void
@@ -42,9 +42,7 @@ class PurgeTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->loggerMock = $this->getMockBuilder(\ClawRock\Debug\Logger\Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->loggerMock = $this->createMock(\Psr\Log\LoggerInterface::class);
 
         $this->controller = new Purge(
             $this->resultFactoryMock,
