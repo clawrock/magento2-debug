@@ -9,24 +9,13 @@ class QueryRenderer implements RendererInterface
 {
     private const TEMPLATE = 'ClawRock_Debug::renderer/query.phtml';
 
-    private \Zend_Db_Profiler_Query $query;
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \Magento\Framework\Math\Random $mathRandom;
-    private \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer;
-    private \ClawRock\Debug\Helper\Database $databaseHelper;
-
     public function __construct(
-        \Zend_Db_Profiler_Query $query,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \Magento\Framework\Math\Random $mathRandom,
-        \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer,
-        \ClawRock\Debug\Helper\Database $databaseHelper
+        private \Zend_Db_Profiler_Query $query,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \Magento\Framework\Math\Random $mathRandom,
+        private \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer,
+        private \ClawRock\Debug\Helper\Database $databaseHelper
     ) {
-        $this->query = $query;
-        $this->layout = $layout;
-        $this->mathRandom = $mathRandom;
-        $this->varRenderer = $varRenderer;
-        $this->databaseHelper = $databaseHelper;
     }
 
     public function render(): string

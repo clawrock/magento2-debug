@@ -10,18 +10,14 @@ class PluginCollector implements CollectorInterface, LateCollectorInterface
     public const AROUND = 'around';
     public const AFTER = 'after';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Info\PluginInfo $pluginInfo;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Model\Info\PluginInfo $pluginInfo
+        private \ClawRock\Debug\Model\Info\PluginInfo $pluginInfo
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->pluginInfo = $pluginInfo;
     }
 
     public function collect(): CollectorInterface

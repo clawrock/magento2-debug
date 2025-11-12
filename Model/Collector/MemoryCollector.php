@@ -9,21 +9,15 @@ class MemoryCollector implements CollectorInterface, LateCollectorInterface
     public const MEMORY_USAGE = 'memory_usage';
     public const MEMORY_LIMIT = 'memory_limit';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Info\MemoryInfo $memoryInfo;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Model\Info\MemoryInfo $memoryInfo,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        private \ClawRock\Debug\Model\Info\MemoryInfo $memoryInfo,
+        private \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->memoryInfo = $memoryInfo;
-        $this->formatter = $formatter;
     }
 
     public function collect(): CollectorInterface

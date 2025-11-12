@@ -8,22 +8,14 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Search implements ArgumentInterface
 {
-    private \Magento\Framework\App\RequestInterface $request;
-    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
     private ?string $token = null;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-    private \ClawRock\Debug\Helper\Url $url;
 
     public function __construct(
-        \Magento\Framework\App\RequestInterface $request,
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
-        \ClawRock\Debug\Helper\Formatter $formatter,
-        \ClawRock\Debug\Helper\Url $url
+        private \Magento\Framework\App\RequestInterface $request,
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
+        private \ClawRock\Debug\Helper\Formatter $formatter,
+        private \ClawRock\Debug\Helper\Url $url
     ) {
-        $this->request = $request;
-        $this->profileMemoryStorage = $profileMemoryStorage;
-        $this->formatter = $formatter;
-        $this->url = $url;
     }
 
     public function isParamSelected(string $param, string $expected): bool

@@ -19,17 +19,12 @@ class CacheAction implements LoggableInterface
     public const CACHE_ACTION = 'action';
     public const CACHE_INFO = 'info';
 
-    private string $id;
-    private string $name;
-    private float $time;
-    private array $info;
-
-    public function __construct(string $id, string $name, float $time, array $info = [])
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->time = $time;
-        $this->info = $info;
+    public function __construct(
+        private string $id,
+        private string $name,
+        private float $time,
+        private array $info = []
+    ) {
     }
 
     public function getId(): string

@@ -10,15 +10,11 @@ use Magento\Framework\Interception\DefinitionInterface;
 class PluginInfo
 {
     private ?array $plugins = null;
-    private \Magento\Framework\Interception\PluginList\PluginList $pluginList;
-    private \ClawRock\Debug\Helper\Debug $debug;
 
     public function __construct(
-        \Magento\Framework\Interception\PluginList\PluginList $pluginList,
-        \ClawRock\Debug\Helper\Debug $debug
+        private \Magento\Framework\Interception\PluginList\PluginList $pluginList,
+        private \ClawRock\Debug\Helper\Debug $debug
     ) {
-        $this->pluginList = $pluginList;
-        $this->debug = $debug;
     }
 
     public function getBeforePlugins(): array

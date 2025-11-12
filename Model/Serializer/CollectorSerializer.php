@@ -7,18 +7,11 @@ use ClawRock\Debug\Exception\CollectorNotFoundException;
 
 class CollectorSerializer
 {
-    private \Magento\Framework\ObjectManagerInterface $objectManager;
-    private \ClawRock\Debug\Logger\Logger $logger;
-    private \ClawRock\Debug\Helper\Config $config;
-
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager,
-        \ClawRock\Debug\Logger\Logger $logger,
-        \ClawRock\Debug\Helper\Config $config
+        private \Magento\Framework\ObjectManagerInterface $objectManager,
+        private \ClawRock\Debug\Logger\Logger $logger,
+        private \ClawRock\Debug\Helper\Config $config
     ) {
-        $this->objectManager = $objectManager;
-        $this->logger = $logger;
-        $this->config = $config;
     }
 
     /**

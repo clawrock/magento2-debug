@@ -5,12 +5,9 @@ namespace ClawRock\Debug\Helper;
 
 class Formatter
 {
-    private \ClawRock\Debug\Helper\Config $config;
-
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config
+        private \ClawRock\Debug\Helper\Config $config
     ) {
-        $this->config = $config;
     }
 
     public function microtime(float $value, ?int $precision = null): string

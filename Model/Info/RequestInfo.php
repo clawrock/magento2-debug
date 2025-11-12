@@ -15,15 +15,10 @@ class RequestInfo
     public const PASSWORD_PLACEHOLDER = '******';
     public const REDIRECT_PARAM = 'cdbg_redirect';
 
-    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
-    private \ClawRock\Debug\Model\Session $session;
-
     public function __construct(
-        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
-        \ClawRock\Debug\Model\Session $session
+        private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
+        private \ClawRock\Debug\Model\Session $session
     ) {
-        $this->httpStorage = $httpStorage;
-        $this->session = $session;
     }
 
     public function getRequestGet(): ParametersInterface

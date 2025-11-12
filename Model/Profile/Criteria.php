@@ -8,30 +8,15 @@ use Magento\Framework\App\RequestInterface;
 
 class Criteria
 {
-    private string $ip;
-    private string $url;
-    private int $limit;
-    private string $method;
-    private ?\DateTime $start;
-    private ?\DateTime $end;
-    private ?int $statusCode;
-
     public function __construct(
-        string $ip = '',
-        string $url = '',
-        int $limit = 0,
-        string $method = '',
-        ?\DateTime $start = null,
-        ?\DateTime $end = null,
-        ?int $statusCode = null
+        private string $ip = '',
+        private string $url = '',
+        private int $limit = 0,
+        private string $method = '',
+        private ?\DateTime $start = null,
+        private ?\DateTime $end = null,
+        private ?int $statusCode = null
     ) {
-        $this->ip = $ip;
-        $this->url = $url;
-        $this->limit = $limit;
-        $this->method = $method;
-        $this->start = $start;
-        $this->end = $end;
-        $this->statusCode = $statusCode;
     }
 
     // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction

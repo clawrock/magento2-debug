@@ -9,29 +9,11 @@ class RedirectRenderer implements RendererInterface
 {
     private const TEMPLATE = 'ClawRock_Debug::renderer/redirect.phtml';
 
-    /**
-     * @var \ClawRock\Debug\Model\ValueObject\Redirect
-     */
-    private $redirect;
-
-    /**
-     * @var \Magento\Framework\View\LayoutInterface
-     */
-    private $layout;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $url;
-
     public function __construct(
-        \ClawRock\Debug\Model\ValueObject\Redirect $redirect,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Helper\Url $url
+        private \ClawRock\Debug\Model\ValueObject\Redirect $redirect,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \ClawRock\Debug\Helper\Url $url
     ) {
-        $this->redirect = $redirect;
-        $this->layout = $layout;
-        $this->url = $url;
     }
 
     public function render(): string

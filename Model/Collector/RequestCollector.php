@@ -32,14 +32,12 @@ class RequestCollector implements CollectorInterface
     public const FULL_ACTION_NAME = 'full_action_name';
 
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Info\RequestInfo $requestInfo;
 
     public function __construct(
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Model\Info\RequestInfo $requestInfo
+        private \ClawRock\Debug\Model\Info\RequestInfo $requestInfo
     ) {
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->requestInfo = $requestInfo;
     }
 
     public function collect(): CollectorInterface

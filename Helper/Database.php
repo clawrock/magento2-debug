@@ -7,13 +7,11 @@ use Magento\Framework\App\ResourceConnection;
 
 class Database
 {
-    private \Magento\Framework\App\ResourceConnection $resourceConnection;
     private array $formatterCache = [];
 
     public function __construct(
-        \Magento\Framework\App\ResourceConnection $resourceConnection
+        private \Magento\Framework\App\ResourceConnection $resourceConnection
     ) {
-        $this->resourceConnection = $resourceConnection;
     }
 
     public function getQueryId(\Zend_Db_Profiler_Query $query): string

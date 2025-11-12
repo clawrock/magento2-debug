@@ -20,36 +20,18 @@ class Profiler
 
     /** @var null|\ClawRock\Debug\Model\Collector\CollectorInterface[] */
     private ?array $dataCollectors = null;
-    private \Magento\Framework\ObjectManagerInterface $objectManager;
-    private \ClawRock\Debug\Helper\Config $config;
-    private \ClawRock\Debug\Model\ProfileFactory $profileFactory;
-    private \ClawRock\Debug\Helper\Url $urlHelper;
-    private \ClawRock\Debug\Helper\Injector $injector;
-    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
-    private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository;
-    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
-    private \ClawRock\Debug\Logger\Logger $logger;
 
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager,
-        \ClawRock\Debug\Helper\Config $config,
-        \ClawRock\Debug\Model\ProfileFactory $profileFactory,
-        \ClawRock\Debug\Helper\Url $urlHelper,
-        \ClawRock\Debug\Helper\Injector $injector,
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
-        \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository,
-        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
-        \ClawRock\Debug\Logger\Logger $logger
+        private \Magento\Framework\ObjectManagerInterface $objectManager,
+        private \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Model\ProfileFactory $profileFactory,
+        private \ClawRock\Debug\Helper\Url $urlHelper,
+        private \ClawRock\Debug\Helper\Injector $injector,
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
+        private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository,
+        private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage,
+        private \ClawRock\Debug\Logger\Logger $logger
     ) {
-        $this->objectManager = $objectManager;
-        $this->config = $config;
-        $this->profileFactory = $profileFactory;
-        $this->urlHelper = $urlHelper;
-        $this->injector = $injector;
-        $this->profileMemoryStorage = $profileMemoryStorage;
-        $this->profileRepository = $profileRepository;
-        $this->httpStorage = $httpStorage;
-        $this->logger = $logger;
     }
 
     public function run(Request $request, Response $response): void

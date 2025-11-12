@@ -9,18 +9,11 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Summary implements ArgumentInterface
 {
-    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
-    private \ClawRock\Debug\Helper\Url $url;
-    private \ClawRock\Debug\Model\View\Renderer\RedirectRendererFactory $redirectRendererFactory;
-
     public function __construct(
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
-        \ClawRock\Debug\Helper\Url $url,
-        \ClawRock\Debug\Model\View\Renderer\RedirectRendererFactory $redirectRendererFactory
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
+        private \ClawRock\Debug\Helper\Url $url,
+        private \ClawRock\Debug\Model\View\Renderer\RedirectRendererFactory $redirectRendererFactory
     ) {
-        $this->profileMemoryStorage = $profileMemoryStorage;
-        $this->url = $url;
-        $this->redirectRendererFactory = $redirectRendererFactory;
     }
 
     public function getProfile(): ProfileInterface

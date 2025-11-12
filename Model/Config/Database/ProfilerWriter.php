@@ -9,12 +9,9 @@ use Magento\Framework\DB\Profiler;
 
 class ProfilerWriter
 {
-    private \Magento\Framework\App\DeploymentConfig\Writer $configWriter;
-
     public function __construct(
-        \Magento\Framework\App\DeploymentConfig\Writer $configWriter
+        private \Magento\Framework\App\DeploymentConfig\Writer $configWriter
     ) {
-        $this->configWriter = $configWriter;
     }
 
     public function save(bool $flag): void

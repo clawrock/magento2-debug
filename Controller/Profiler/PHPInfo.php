@@ -9,12 +9,9 @@ use Magento\Framework\Controller\ResultInterface;
 
 class PHPInfo implements HttpGetActionInterface
 {
-    private \Magento\Framework\Controller\ResultFactory $resultFactory;
-
     public function __construct(
-        \Magento\Framework\Controller\ResultFactory $resultFactory
+        private \Magento\Framework\Controller\ResultFactory $resultFactory
     ) {
-        $this->resultFactory = $resultFactory;
     }
 
     public function execute(): ?ResultInterface

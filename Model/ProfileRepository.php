@@ -13,15 +13,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class ProfileRepository implements ProfileRepositoryInterface
 {
-    private \ClawRock\Debug\Model\Storage\ProfileFileStorage $fileStorage;
-    private \ClawRock\Debug\Model\Profile\CriteriaFactory $criteriaFactory;
-
     public function __construct(
-        \ClawRock\Debug\Model\Storage\ProfileFileStorage $fileStorage,
-        \ClawRock\Debug\Model\Profile\CriteriaFactory $criteriaFactory
+        private \ClawRock\Debug\Model\Storage\ProfileFileStorage $fileStorage,
+        private \ClawRock\Debug\Model\Profile\CriteriaFactory $criteriaFactory
     ) {
-        $this->fileStorage = $fileStorage;
-        $this->criteriaFactory = $criteriaFactory;
     }
 
     public function save(ProfileInterface $profile): void

@@ -5,10 +5,8 @@ namespace ClawRock\Debug\Helper;
 
 class File
 {
-    private \Magento\Framework\App\Filesystem\DirectoryList $directoryList;
-
     public function __construct(
-        \Magento\Framework\App\Filesystem\DirectoryList $directoryList
+        private \Magento\Framework\App\Filesystem\DirectoryList $directoryList
     ) {
         $this->directoryList = $directoryList;
     }

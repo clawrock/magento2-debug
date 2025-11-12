@@ -9,29 +9,11 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Menu implements ArgumentInterface
 {
-    /**
-     * @var \Magento\Framework\App\RequestInterface
-     */
-    private $request;
-
-    /**
-     * @var \ClawRock\Debug\Model\Storage\ProfileMemoryStorage
-     */
-    private $profileMemoryStorage;
-
-    /**
-     * @var \ClawRock\Debug\Helper\Url
-     */
-    private $url;
-
     public function __construct(
-        \Magento\Framework\App\RequestInterface $request,
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
-        \ClawRock\Debug\Helper\Url $url
+        private \Magento\Framework\App\RequestInterface $request,
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
+        private \ClawRock\Debug\Helper\Url $url
     ) {
-        $this->request = $request;
-        $this->profileMemoryStorage = $profileMemoryStorage;
-        $this->url = $url;
     }
 
     public function isActive(string $collectorName): bool

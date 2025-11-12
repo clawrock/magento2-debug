@@ -10,25 +10,17 @@ class LayoutGraphRenderer implements RendererInterface
 {
     private const TEMPLATE = 'ClawRock_Debug::renderer/layout/graph.phtml';
 
-    private array $blocks;
     private float $totalRenderTime;
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \ClawRock\Debug\Model\ValueObject\LayoutNodeFactory $layoutNodeFactory;
-    private \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory;
 
     public function __construct(
-        array $blocks,
+        private array $blocks,
         string $totalRenderTime,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Model\ValueObject\LayoutNodeFactory $layoutNodeFactory,
-        \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \ClawRock\Debug\Model\ValueObject\LayoutNodeFactory $layoutNodeFactory,
+        private \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory,
         \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->blocks = $blocks;
         $this->totalRenderTime = $formatter->revertMicrotime($totalRenderTime);
-        $this->layout = $layout;
-        $this->layoutNodeFactory = $layoutNodeFactory;
-        $this->layoutNodeRendererFactory = $layoutNodeRendererFactory;
     }
 
     public function render(): string

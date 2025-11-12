@@ -10,30 +10,15 @@ use Magento\Framework\Exception\FileSystemException;
 
 class ProfileFileStorage
 {
-    private \Magento\Framework\Filesystem\Driver\File $fileSystem;
-    private \Magento\Framework\Filesystem\File\ReadFactory $fileReadFactory;
-    private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory;
-    private \ClawRock\Debug\Logger\Logger $logger;
-    private \ClawRock\Debug\Helper\File $fileHelper;
-    private \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializer;
-    private \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexer;
-
     public function __construct(
-        \Magento\Framework\Filesystem\Driver\File $fileSystem,
-        \Magento\Framework\Filesystem\File\ReadFactory $fileReadFactory,
-        \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
-        \ClawRock\Debug\Logger\Logger $logger,
-        \ClawRock\Debug\Helper\File $fileHelper,
-        \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializer,
-        \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexer
+        private \Magento\Framework\Filesystem\Driver\File $fileSystem,
+        private \Magento\Framework\Filesystem\File\ReadFactory $fileReadFactory,
+        private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
+        private \ClawRock\Debug\Logger\Logger $logger,
+        private \ClawRock\Debug\Helper\File $fileHelper,
+        private \ClawRock\Debug\Model\Serializer\ProfileSerializer $profileSerializer,
+        private \ClawRock\Debug\Model\Indexer\ProfileIndexer $profileIndexer
     ) {
-        $this->fileSystem = $fileSystem;
-        $this->fileReadFactory = $fileReadFactory;
-        $this->fileWriteFactory = $fileWriteFactory;
-        $this->logger = $logger;
-        $this->fileHelper = $fileHelper;
-        $this->profileSerializer = $profileSerializer;
-        $this->profileIndexer = $profileIndexer;
     }
 
     public function find(Criteria $criteria): array

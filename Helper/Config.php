@@ -34,24 +34,13 @@ class Config
     public const CONFIG_COLLECTOR_TRANSLATION = 'clawrock_debug/collector/translation';
     public const COLLECTORS = 'clawrock_debug/profiler/collectors';
 
-    private \Magento\Framework\PhraseFactory $phraseFactory;
-    private \Magento\Framework\App\State $appState;
-    private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig;
-    private \Magento\Framework\App\DeploymentConfig $deploymentConfig;
-    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
-
     public function __construct(
-        \Magento\Framework\PhraseFactory $phraseFactory,
-        \Magento\Framework\App\State $appState,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\App\DeploymentConfig $deploymentConfig,
-        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
+        private \Magento\Framework\PhraseFactory $phraseFactory,
+        private \Magento\Framework\App\State $appState,
+        private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        private \Magento\Framework\App\DeploymentConfig $deploymentConfig,
+        private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
-        $this->phraseFactory = $phraseFactory;
-        $this->appState = $appState;
-        $this->scopeConfig = $scopeConfig;
-        $this->deploymentConfig = $deploymentConfig;
-        $this->httpStorage = $httpStorage;
     }
 
     public function getErrorHandler(): string

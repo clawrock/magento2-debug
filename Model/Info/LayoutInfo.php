@@ -8,12 +8,9 @@ use ClawRock\Debug\Model\ValueObject\Block;
 
 class LayoutInfo
 {
-    private \Magento\Framework\View\LayoutInterface $layout;
-
     public function __construct(
-        \Magento\Framework\View\LayoutInterface $layout
+        private \Magento\Framework\View\LayoutInterface $layout
     ) {
-        $this->layout = $layout;
     }
 
     public function getHandles(): array

@@ -26,30 +26,18 @@ class ConfigCollector implements CollectorInterface
     public const WINCACHE_ENABLED = 'wincache_enabled';
     public const OPCACHE_ENABLED = 'zend_opcache_enabled';
 
-    private \Magento\Store\Model\StoreManagerInterface $storeManager;
-    private \ClawRock\Debug\Helper\Config $config;
-    private \ClawRock\Debug\Helper\Url $url;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Info\MagentoInfo $magentoInfo;
-    private \ClawRock\Debug\Model\Info\ExtensionInfo $extensionInfo;
-    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
 
     public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \ClawRock\Debug\Helper\Config $config,
-        \ClawRock\Debug\Helper\Url $url,
+        private \Magento\Store\Model\StoreManagerInterface $storeManager,
+        private \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Url $url,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Model\Info\MagentoInfo $magentoInfo,
-        \ClawRock\Debug\Model\Info\ExtensionInfo $extensionInfo,
-        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
+        private \ClawRock\Debug\Model\Info\MagentoInfo $magentoInfo,
+        private \ClawRock\Debug\Model\Info\ExtensionInfo $extensionInfo,
+        private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
-        $this->storeManager = $storeManager;
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->magentoInfo = $magentoInfo;
-        $this->extensionInfo = $extensionInfo;
-        $this->httpStorage = $httpStorage;
-        $this->url = $url;
     }
 
     public function collect(): CollectorInterface

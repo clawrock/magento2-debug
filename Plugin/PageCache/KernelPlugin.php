@@ -8,12 +8,9 @@ namespace ClawRock\Debug\Plugin\PageCache;
  */
 class KernelPlugin
 {
-    private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage;
-
     public function __construct(
-        \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
+        private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
-        $this->httpStorage = $httpStorage;
     }
 
     /**

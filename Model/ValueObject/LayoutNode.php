@@ -5,21 +5,12 @@ namespace ClawRock\Debug\Model\ValueObject;
 
 class LayoutNode
 {
-    private \ClawRock\Debug\Model\ValueObject\Block $block;
-    private ?float $layoutRenderTime;
-    private ?string $prefix;
-    private array $children;
-
     public function __construct(
-        \ClawRock\Debug\Model\ValueObject\Block $block,
-        ?float $layoutRenderTime = null,
-        ?string $prefix = null,
-        array $children = []
+        private \ClawRock\Debug\Model\ValueObject\Block $block,
+        private ?float $layoutRenderTime = null,
+        private ?string $prefix = null,
+        private array $children = []
     ) {
-        $this->block = $block;
-        $this->layoutRenderTime = $layoutRenderTime;
-        $this->prefix = $prefix;
-        $this->children = $children;
     }
 
     public function getName(): string

@@ -11,21 +11,12 @@ use Magento\Framework\Controller\ResultInterface;
 
 class Search implements HttpGetActionInterface
 {
-    private \Magento\Framework\Controller\ResultFactory $resultFactory;
-    private \Magento\Framework\App\RequestInterface $request;
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository;
-
     public function __construct(
-        \Magento\Framework\Controller\ResultFactory $resultFactory,
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository
+        private \Magento\Framework\Controller\ResultFactory $resultFactory,
+        private \Magento\Framework\App\RequestInterface $request,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository
     ) {
-        $this->resultFactory = $resultFactory;
-        $this->request = $request;
-        $this->layout = $layout;
-        $this->profileRepository = $profileRepository;
     }
 
     public function execute(): ?ResultInterface

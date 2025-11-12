@@ -12,17 +12,13 @@ class CacheInfo
     public const STATS_MISS = 'stats_miss';
     public const STATS_SAVE = 'stats_save';
 
-    private \Magento\Framework\App\Cache $cache;
-    private \Magento\Framework\App\Cache\TypeListInterface $typeList;
     private ?array $stats = null;
     private ?float $totalTime = null;
 
     public function __construct(
-        \Magento\Framework\App\Cache $cache,
-        \Magento\Framework\App\Cache\TypeListInterface $typeList
+        private \Magento\Framework\App\Cache $cache,
+        private \Magento\Framework\App\Cache\TypeListInterface $typeList
     ) {
-        $this->cache = $cache;
-        $this->typeList = $typeList;
     }
 
     public function getBackendClass(): string

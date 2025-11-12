@@ -14,24 +14,18 @@ class EventCollector implements CollectorInterface, LateCollectorInterface, Logg
     public const OBSERVERS_COUNT = 'observers_count';
     public const DISPATCH_COUNT = 'events_count';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
     private \ClawRock\Debug\Logger\DataLogger $dataLogger;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-    private \ClawRock\Debug\Helper\Debug $debug;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
         \ClawRock\Debug\Logger\DataLoggerFactory $dataLoggerFactory,
-        \ClawRock\Debug\Helper\Formatter $formatter,
-        \ClawRock\Debug\Helper\Debug $debug
+        private \ClawRock\Debug\Helper\Formatter $formatter,
+        private \ClawRock\Debug\Helper\Debug $debug
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
         $this->dataLogger = $dataLoggerFactory->create();
-        $this->formatter = $formatter;
-        $this->debug = $debug;
     }
 
     public function collect(): CollectorInterface

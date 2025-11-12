@@ -11,16 +11,12 @@ use Magento\Framework\Phrase\Renderer\Translate;
  */
 class TranslationCollectorPlugin
 {
-    private \Magento\Framework\TranslateInterface $translate;
     private ?array $translations = null;
-    private \ClawRock\Debug\Model\Collector\TranslationCollector $translationCollector;
 
     public function __construct(
-        \Magento\Framework\TranslateInterface $translate,
-        \ClawRock\Debug\Model\Collector\TranslationCollector $translationCollector
+        private \Magento\Framework\TranslateInterface $translate,
+        private \ClawRock\Debug\Model\Collector\TranslationCollector $translationCollector
     ) {
-        $this->translate = $translate;
-        $this->translationCollector = $translationCollector;
     }
 
     public function beforeRender(Translate $subject, array $source, array $arguments): void

@@ -8,18 +8,11 @@ use Magento\Customer\Model\Customer;
 
 class CustomerInfo
 {
-    private \Magento\Customer\Model\Session $session;
-    private \Magento\Customer\Api\GroupRepositoryInterface $groupRepository;
-    private \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory;
-
     public function __construct(
-        \Magento\Customer\Model\Session $session,
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
-        \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
+        private \Magento\Customer\Model\Session $session,
+        private \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
+        private \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
     ) {
-        $this->session = $session;
-        $this->groupRepository = $groupRepository;
-        $this->groupInterfaceFactory = $groupInterfaceFactory;
     }
 
     public function isLoggedIn(): bool

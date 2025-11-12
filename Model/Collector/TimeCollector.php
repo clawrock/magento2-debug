@@ -28,27 +28,17 @@ class TimeCollector implements CollectorInterface, LateCollectorInterface
     public const ERROR_THRESHOLD = 2000;
     public const WARNING_THRESHOLD = 1000;
 
-    private \Magento\Framework\Serialize\SerializerInterface $serializer;
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
 
     public function __construct(
-        \Magento\Framework\Serialize\SerializerInterface $serializer,
-        \ClawRock\Debug\Helper\Config $config,
+        private \Magento\Framework\Serialize\SerializerInterface $serializer,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver,
-        \ClawRock\Debug\Helper\Formatter $formatter,
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage
+        private \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver,
+        private \ClawRock\Debug\Helper\Formatter $formatter,
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage
     ) {
-        $this->serializer = $serializer;
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->stopwatchDriver = $stopwatchDriver;
-        $this->formatter = $formatter;
-        $this->profileMemoryStorage = $profileMemoryStorage;
     }
 
     /**

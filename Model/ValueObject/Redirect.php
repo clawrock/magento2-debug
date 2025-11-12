@@ -11,24 +11,13 @@ class Redirect
     public const STATUS_CODE = 'status_code';
     public const STATUS_TEXT = 'status_text';
 
-    private string $token;
-    private string $action;
-    private string $method;
-    private int $statusCode;
-    private string $statusText;
-
     public function __construct(
-        string $token = '',
-        string $action = '',
-        string $method = '',
-        int $statusCode = 0,
-        string $statusText = ''
+        private string $token = '',
+        private string $action = '',
+        private string $method = '',
+        private int $statusCode = 0,
+        private string $statusText = ''
     ) {
-        $this->token = $token;
-        $this->action = $action;
-        $this->method = $method;
-        $this->statusCode = $statusCode;
-        $this->statusText = $statusText;
     }
 
     // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction

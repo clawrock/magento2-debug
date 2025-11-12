@@ -11,12 +11,9 @@ use Magento\Framework\App\Cache;
  */
 class CacheCollectorPlugin
 {
-    private \ClawRock\Debug\Model\Collector\CacheCollector $cacheCollector;
-
     public function __construct(
-        \ClawRock\Debug\Model\Collector\CacheCollector $cacheCollector
+        private \ClawRock\Debug\Model\Collector\CacheCollector $cacheCollector
     ) {
-        $this->cacheCollector = $cacheCollector;
     }
 
     /**

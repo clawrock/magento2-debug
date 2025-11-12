@@ -13,18 +13,14 @@ class ModelAction implements LoggableInterface
     public const LOOP_LOAD = 'loop_load';
 
     private string $id;
-    private string $name;
-    private string $model;
-    private float $time;
-    private array $trace;
 
-    public function __construct(string $name, string $model, float $time, array $trace = [])
-    {
+    public function __construct(
+        private string $name,
+        private string $model,
+        private float $time,
+        private array $trace = []
+    ) {
         $this->id = uniqid();
-        $this->name = $name;
-        $this->model = $model;
-        $this->time = $time;
-        $this->trace = $trace;
     }
 
     public function getId(): string

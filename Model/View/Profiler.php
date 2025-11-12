@@ -12,39 +12,18 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
  */
 class Profiler implements ArgumentInterface
 {
-    private \ClawRock\Debug\Model\View\Renderer\TraceRendererFactory $traceRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\LayoutGraphRendererFactory $layoutGraphRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\ParametersRendererFactory $parametersRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\QueryParametersRendererFactory $queryParametersRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\QueryListRendererFactory $queryListRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\TableRendererFactory $tableRendererFactory;
-    private \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer;
-    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-
     public function __construct(
-        \ClawRock\Debug\Model\View\Renderer\TraceRendererFactory $traceRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\LayoutGraphRendererFactory $layoutGraphRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\ParametersRendererFactory $parametersRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\QueryParametersRendererFactory $queryParametersRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\QueryListRendererFactory $queryListRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\TableRendererFactory $tableRendererFactory,
-        \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer,
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        private \ClawRock\Debug\Model\View\Renderer\TraceRendererFactory $traceRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\LayoutGraphRendererFactory $layoutGraphRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\ParametersRendererFactory $parametersRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\QueryParametersRendererFactory $queryParametersRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\QueryListRendererFactory $queryListRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\TableRendererFactory $tableRendererFactory,
+        private \ClawRock\Debug\Model\View\Renderer\VarRenderer $varRenderer,
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage,
+        private \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->traceRendererFactory = $traceRendererFactory;
-        $this->layoutGraphRendererFactory = $layoutGraphRendererFactory;
-        $this->parametersRendererFactory = $parametersRendererFactory;
-        $this->queryParametersRendererFactory = $queryParametersRendererFactory;
-        $this->queryRendererFactory = $queryRendererFactory;
-        $this->queryListRendererFactory = $queryListRendererFactory;
-        $this->tableRendererFactory = $tableRendererFactory;
-        $this->varRenderer = $varRenderer;
-        $this->profileMemoryStorage = $profileMemoryStorage;
-        $this->formatter = $formatter;
     }
 
     public function renderLayoutGraph(array $blocks, string $totalTime): string

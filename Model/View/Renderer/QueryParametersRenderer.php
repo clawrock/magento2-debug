@@ -5,18 +5,11 @@ namespace ClawRock\Debug\Model\View\Renderer;
 
 class QueryParametersRenderer implements RendererInterface
 {
-    private string $query;
-    private array $parameters;
-    private \Magento\Framework\App\ResourceConnection $resource;
-
     public function __construct(
-        string $query,
-        array $parameters,
-        \Magento\Framework\App\ResourceConnection $resource
+        private string $query,
+        private array $parameters,
+        private \Magento\Framework\App\ResourceConnection $resource
     ) {
-        $this->query = $query;
-        $this->parameters = $parameters;
-        $this->resource = $resource;
     }
 
     public function render(): string
