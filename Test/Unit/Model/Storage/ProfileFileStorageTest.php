@@ -21,8 +21,8 @@ class ProfileFileStorageTest extends TestCase
     private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactoryMock;
     /** @var \Magento\Framework\Filesystem\File\WriteInterface&\PHPUnit\Framework\MockObject\MockObject */
     private \Magento\Framework\Filesystem\File\WriteInterface $writeMock;
-    /** @var \ClawRock\Debug\Logger\Logger&\PHPUnit\Framework\MockObject\MockObject */
-    private \ClawRock\Debug\Logger\Logger $loggerMock;
+    /** @var \Psr\Log\LoggerInterface&\PHPUnit\Framework\MockObject\MockObject */
+    private \Psr\Log\LoggerInterface $loggerMock;
     /** @var \ClawRock\Debug\Helper\File&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Helper\File $fileHelperMock;
     /** @var \ClawRock\Debug\Model\Serializer\ProfileSerializer&\PHPUnit\Framework\MockObject\MockObject */
@@ -57,9 +57,7 @@ class ProfileFileStorageTest extends TestCase
 
         $this->writeMock = $this->getMockForAbstractClass(\Magento\Framework\Filesystem\File\WriteInterface::class);
 
-        $this->loggerMock = $this->getMockBuilder(\ClawRock\Debug\Logger\Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->loggerMock = $this->createMock(\Psr\Log\LoggerInterface::class);
 
         $this->fileHelperMock = $this->getMockBuilder(\ClawRock\Debug\Helper\File::class)
             ->disableOriginalConstructor()

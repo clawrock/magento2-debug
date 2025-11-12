@@ -9,38 +9,20 @@ class SearchResult
     public const STATUS_WARNING = 'warning';
     public const STATUS_ERROR = 'error';
 
-    private string $token;
-    private string $ip;
-    private string $method;
-    private string $url;
-    private int $time;
-    private string $statusCode;
-    private string $fileSize;
-    private string $requestTime;
-    private ?string $parentToken;
     private \DateTime $datetime;
 
     public function __construct(
-        string $token,
-        string $ip,
-        string $method,
-        string $url,
-        int $time,
-        string $statusCode,
-        string $fileSize,
-        ?string $parentToken = null,
-        string $requestTime = '0'
+        private string $token,
+        private string $ip,
+        private string $method,
+        private string $url,
+        private int $time,
+        private string $statusCode,
+        private string $fileSize,
+        private ?string $parentToken = null,
+        private string $requestTime = '0'
     ) {
-        $this->token = $token;
-        $this->ip = $ip;
-        $this->method = $method;
-        $this->url = $url;
-        $this->time = $time;
-        $this->statusCode = $statusCode;
-        $this->parentToken = $parentToken;
         $this->datetime = (new \DateTime())->setTimestamp($time);
-        $this->fileSize = $fileSize;
-        $this->requestTime = $requestTime;
     }
 
     // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction

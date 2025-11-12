@@ -12,15 +12,10 @@ class Url
     public const CONFIGURATION_URL_PATH = 'debug/profiler/config';
     public const PROFILER_URL_PATH = '_debug/profiler/info';
 
-    private \Magento\Framework\UrlInterface $url;
-    private \Magento\Backend\Model\UrlInterface $backendUrl;
-
     public function __construct(
-        \Magento\Framework\Url $url,
-        \Magento\Backend\Model\UrlInterface $backendUrl
+        private \Magento\Framework\Url $url,
+        private \Magento\Backend\Model\UrlInterface $backendUrl
     ) {
-        $this->url = $url;
-        $this->backendUrl = $backendUrl;
     }
 
     public function getAdminUrl(): string

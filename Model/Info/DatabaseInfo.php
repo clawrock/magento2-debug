@@ -9,16 +9,12 @@ class DatabaseInfo
     public const ALL_QUERIES = 'all';
     public const DUPLICATED_QUERIES = 'duplicated';
 
-    private \Magento\Framework\App\ResourceConnection $resourceConnection;
     private ?\Zend_Db_Profiler $profiler = null;
-    private \ClawRock\Debug\Helper\Database $databaseHelper;
 
     public function __construct(
-        \Magento\Framework\App\ResourceConnection $resourceConnection,
-        \ClawRock\Debug\Helper\Database $databaseHelper
+        private \Magento\Framework\App\ResourceConnection $resourceConnection,
+        private \ClawRock\Debug\Helper\Database $databaseHelper
     ) {
-        $this->resourceConnection = $resourceConnection;
-        $this->databaseHelper = $databaseHelper;
     }
 
     public function getQueries(): array

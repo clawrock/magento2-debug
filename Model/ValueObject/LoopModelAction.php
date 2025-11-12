@@ -5,15 +5,11 @@ namespace ClawRock\Debug\Model\ValueObject;
 
 class LoopModelAction
 {
-    private \ClawRock\Debug\Model\ValueObject\ModelAction $modelAction;
-    private float $time;
-    private int $count;
-
-    public function __construct(ModelAction $modelAction, float $time, int $count)
-    {
-        $this->modelAction = $modelAction;
-        $this->time = $time;
-        $this->count = $count;
+    public function __construct(
+        private ModelAction $modelAction,
+        private float $time,
+        private int $count
+    ) {
     }
 
     public function getModelAction(): ModelAction

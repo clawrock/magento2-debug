@@ -7,15 +7,11 @@ use ClawRock\Debug\Logger\LoggableInterface;
 
 class Translation implements LoggableInterface
 {
-    private string $phrase;
-    private string $translation;
-    private bool $defined;
-
-    public function __construct(string $phrase, string $translation, bool $defined)
-    {
-        $this->phrase = $phrase;
-        $this->translation = $translation;
-        $this->defined = $defined;
+    public function __construct(
+        private string $phrase,
+        private string $translation,
+        private bool $defined
+    ) {
     }
 
     public function getId(): string

@@ -11,18 +11,11 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
  */
 class ModelCollectorPlugin
 {
-    private \ClawRock\Debug\Model\Collector\ModelCollector $modelCollector;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-    private \ClawRock\Debug\Helper\Debug $debug;
-
     public function __construct(
-        \ClawRock\Debug\Model\Collector\ModelCollector $modelCollector,
-        \ClawRock\Debug\Helper\Formatter $formatter,
-        \ClawRock\Debug\Helper\Debug $debug
+        private \ClawRock\Debug\Model\Collector\ModelCollector $modelCollector,
+        private \ClawRock\Debug\Helper\Formatter $formatter,
+        private \ClawRock\Debug\Helper\Debug $debug
     ) {
-        $this->modelCollector = $modelCollector;
-        $this->formatter = $formatter;
-        $this->debug = $debug;
     }
 
     /**

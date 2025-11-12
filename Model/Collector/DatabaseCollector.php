@@ -12,21 +12,15 @@ class DatabaseCollector implements CollectorInterface
     public const QUERY_COUNT = 'query_count';
     public const QUERIES = 'queries';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Info\DatabaseInfo $databaseInfo;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        DatabaseInfo $databaseInfo,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        private DatabaseInfo $databaseInfo,
+        private \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->databaseInfo = $databaseInfo;
-        $this->formatter = $formatter;
     }
 
     public function collect(): CollectorInterface

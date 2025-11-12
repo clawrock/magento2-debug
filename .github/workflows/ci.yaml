@@ -10,6 +10,7 @@ jobs:
         php:
           - "8.1"
           - "8.2"
+          - "8.3"
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v3"
@@ -23,7 +24,7 @@ jobs:
           tools: composer:v2
 
       - name: "Cache Composer dependencies"
-        uses: "actions/cache@v2"
+        uses: "actions/cache@v4"
         with:
           path: "/tmp/composer-cache"
           key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}

@@ -9,12 +9,9 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ValidateRedirect implements ObserverInterface
 {
-    private \ClawRock\Debug\Model\Session $session;
-
     public function __construct(
-        \ClawRock\Debug\Model\Session $session
+        private \ClawRock\Debug\Model\Session $session
     ) {
-        $this->session = $session;
     }
 
     public function execute(Observer $observer)

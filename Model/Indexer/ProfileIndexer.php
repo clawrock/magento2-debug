@@ -7,21 +7,12 @@ use ClawRock\Debug\Api\Data\ProfileInterface;
 
 class ProfileIndexer
 {
-    private \Magento\Framework\Filesystem\Driver\File $fileSystem;
-    private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory;
-    private \ClawRock\Debug\Logger\Logger $logger;
-    private \ClawRock\Debug\Helper\File $fileHelper;
-
     public function __construct(
-        \Magento\Framework\Filesystem\Driver\File $fileSystem,
-        \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
-        \ClawRock\Debug\Logger\Logger $logger,
-        \ClawRock\Debug\Helper\File $fileHelper
+        private \Magento\Framework\Filesystem\Driver\File $fileSystem,
+        private \Magento\Framework\Filesystem\File\WriteFactory $fileWriteFactory,
+        private \ClawRock\Debug\Helper\File $fileHelper,
+        private \Psr\Log\LoggerInterface $logger
     ) {
-        $this->fileSystem = $fileSystem;
-        $this->fileWriteFactory = $fileWriteFactory;
-        $this->logger = $logger;
-        $this->fileHelper = $fileHelper;
     }
 
     public function index(ProfileInterface $profile): void
@@ -39,7 +30,7 @@ class ProfileIndexer
                 : '';
 
             $this->fileSystem->filePutContents($this->fileHelper->getProfileIndex(), $index);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('ClawRock_Debug: Error during profile indexation', ['exception' => $e]);
         }
     }

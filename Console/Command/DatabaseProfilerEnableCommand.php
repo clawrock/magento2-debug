@@ -10,14 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DatabaseProfilerEnableCommand extends Command
 {
-    private \ClawRock\Debug\Model\Config\Database\ProfilerWriter $profilerWriter;
-
     public function __construct(
-        \ClawRock\Debug\Model\Config\Database\ProfilerWriter $profilerWriter
+        private \ClawRock\Debug\Model\Config\Database\ProfilerWriter $profilerWriter
     ) {
         parent::__construct('debug:db-profiler:enable');
-
-        $this->profilerWriter = $profilerWriter;
     }
 
     protected function configure(): void

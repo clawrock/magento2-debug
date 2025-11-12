@@ -12,19 +12,19 @@
             <argument name="storage" xsi:type="object">ClawRock\Debug\Model\Session\Storage</argument>
         </arguments>
     </type>
-    <type name="ClawRock\Debug\Logger\Handler">
+    <virtualType name="ClawRock\Debug\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
-            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/profiler.log</argument>
         </arguments>
-    </type>
-    <type name="ClawRock\Debug\Logger\Logger">
+    </virtualType>
+    <virtualType name="ClawRock\Debug\Logger\Logger" type="Magento\Framework\Logger\Monolog">
         <arguments>
             <argument name="name" xsi:type="string">profiler</argument>
-            <argument name="handlers"  xsi:type="array">
+            <argument name="handlers" xsi:type="array">
                 <item name="system" xsi:type="object">ClawRock\Debug\Logger\Handler</item>
             </argument>
         </arguments>
-    </type>
+    </virtualType>
     <type name="ClawRock\Debug\Model\Info\CustomerInfo">
         <arguments>
             <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
@@ -108,6 +108,36 @@
                 <item name="ClawRock_Debug::enable_database_profiler" xsi:type="object">ClawRock\Debug\Console\Command\DatabaseProfilerEnableCommand</item>
                 <item name="ClawRock_Debug::disable_database_profiler" xsi:type="object">ClawRock\Debug\Console\Command\DatabaseProfilerDisableCommand</item>
             </argument>
+        </arguments>
+    </type>
+
+    <type name="ClawRock\Debug\Controller\Profiler\Purge">
+        <arguments>
+            <argument name="logger" xsi:type="object">ClawRock\Debug\Logger\Logger</argument>
+        </arguments>
+    </type>
+
+    <type name="ClawRock\Debug\Model\Indexer\ProfileIndexer">
+        <arguments>
+            <argument name="logger" xsi:type="object">ClawRock\Debug\Logger\Logger</argument>
+        </arguments>
+    </type>
+
+    <type name="ClawRock\Debug\Model\Profiler">
+        <arguments>
+            <argument name="logger" xsi:type="object">ClawRock\Debug\Logger\Logger</argument>
+        </arguments>
+    </type>
+
+    <type name="ClawRock\Debug\Model\Serializer\CollectorSerializer">
+        <arguments>
+            <argument name="logger" xsi:type="object">ClawRock\Debug\Logger\Logger</argument>
+        </arguments>
+    </type>
+
+    <type name="ClawRock\Debug\Model\Storage\ProfileFileStorage">
+        <arguments>
+            <argument name="logger" xsi:type="object">ClawRock\Debug\Logger\Logger</argument>
         </arguments>
     </type>
 </config>

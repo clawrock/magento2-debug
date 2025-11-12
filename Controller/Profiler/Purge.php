@@ -10,21 +10,12 @@ use Magento\Framework\Exception\FileSystemException;
 
 class Purge implements HttpGetActionInterface
 {
-    private \ClawRock\Debug\Model\Storage\ProfileFileStorage $profileFileStorage;
-    private \ClawRock\Debug\Logger\Logger $logger;
-    private \Magento\Framework\Controller\ResultFactory $resultFactory;
-    private \Magento\Framework\App\Response\RedirectInterface $redirect;
-
     public function __construct(
-        \Magento\Framework\Controller\ResultFactory $resultFactory,
-        \Magento\Framework\App\Response\RedirectInterface $redirect,
-        \ClawRock\Debug\Model\Storage\ProfileFileStorage $profileFileStorage,
-        \ClawRock\Debug\Logger\Logger $logger
+        private \Magento\Framework\Controller\ResultFactory $resultFactory,
+        private \Magento\Framework\App\Response\RedirectInterface $redirect,
+        private \ClawRock\Debug\Model\Storage\ProfileFileStorage $profileFileStorage,
+        private \Psr\Log\LoggerInterface $logger
     ) {
-        $this->resultFactory = $resultFactory;
-        $this->redirect = $redirect;
-        $this->profileFileStorage = $profileFileStorage;
-        $this->logger = $logger;
     }
 
     public function execute(): ?ResultInterface

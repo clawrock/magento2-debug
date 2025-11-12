@@ -8,12 +8,9 @@ use Magento\Framework\Event\ObserverInterface;
 
 class AllowedIP implements ObserverInterface
 {
-    private \ClawRock\Debug\Helper\Config $config;
-
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config
+        private \ClawRock\Debug\Helper\Config $config
     ) {
-        $this->config = $config;
     }
 
     public function execute(Observer $observer)

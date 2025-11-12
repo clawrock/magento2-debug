@@ -10,12 +10,9 @@ use Magento\Framework\Event\ObserverInterface;
 
 class LayoutCollectorAfterToHtml implements ObserverInterface
 {
-    private \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollector;
-
     public function __construct(
-        \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollector
+        private \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollector
     ) {
-        $this->layoutCollector = $layoutCollector;
     }
 
     public function execute(Observer $observer)

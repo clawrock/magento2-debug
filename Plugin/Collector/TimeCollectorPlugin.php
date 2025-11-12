@@ -7,12 +7,9 @@ use Magento\Framework\Profiler;
 
 class TimeCollectorPlugin
 {
-    private \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver;
-
     public function __construct(
-        \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver
+        private \ClawRock\Debug\Model\Profiler\Driver\StopwatchDriver $stopwatchDriver
     ) {
-        $this->stopwatchDriver = $stopwatchDriver;
     }
 
     public function beforeLaunch(): void

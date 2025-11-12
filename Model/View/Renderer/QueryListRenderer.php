@@ -9,25 +9,13 @@ class QueryListRenderer implements RendererInterface
 {
     private const TEMPLATE = 'ClawRock_Debug::renderer/query/list.phtml';
 
-    /** @var \Zend_Db_Profiler_Query[] */
-    private array $queries;
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \Magento\Framework\Math\Random $mathRandom;
-    private \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-
     public function __construct(
-        array $queries,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \Magento\Framework\Math\Random $mathRandom,
-        \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        private array $queries,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \Magento\Framework\Math\Random $mathRandom,
+        private \ClawRock\Debug\Model\View\Renderer\QueryRendererFactory $queryRendererFactory,
+        private \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->queries = $queries;
-        $this->layout = $layout;
-        $this->mathRandom = $mathRandom;
-        $this->queryRendererFactory = $queryRendererFactory;
-        $this->formatter = $formatter;
     }
 
     public function render(): string

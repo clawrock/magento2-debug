@@ -7,18 +7,11 @@ use ClawRock\Debug\Api\Data\ProfileInterface;
 
 class ProfileSerializer
 {
-    private \ClawRock\Debug\Serializer\SerializerInterface $serializer;
-    private \ClawRock\Debug\Model\Serializer\CollectorSerializer $collectorSerializer;
-    private \ClawRock\Debug\Model\ProfileFactory $profileFactory;
-
     public function __construct(
-        \ClawRock\Debug\Serializer\SerializerInterface $serializer,
-        \ClawRock\Debug\Model\Serializer\CollectorSerializer $collectorSerializer,
-        \ClawRock\Debug\Model\ProfileFactory $profileFactory
+        private \ClawRock\Debug\Serializer\SerializerInterface $serializer,
+        private \ClawRock\Debug\Model\Serializer\CollectorSerializer $collectorSerializer,
+        private \ClawRock\Debug\Model\ProfileFactory $profileFactory
     ) {
-        $this->serializer = $serializer;
-        $this->collectorSerializer = $collectorSerializer;
-        $this->profileFactory = $profileFactory;
     }
 
     public function serialize(ProfileInterface $profile): string

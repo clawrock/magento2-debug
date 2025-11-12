@@ -10,24 +10,13 @@ class MagentoInfo
     public const MODULES_CACHE_ID = 'ClawRock_Debug::modules';
     public const VERSION_CACHE_ID = 'ClawRock_Debug::version';
 
-    private \Magento\Framework\App\State $appState;
-    private \Magento\Framework\App\Cache\Type\Config $cache;
-    private \Magento\Framework\App\ProductMetadataInterface $productMetadata;
-    private \Magento\Framework\Module\ModuleListInterface $moduleList;
-    private \Magento\Framework\Serialize\SerializerInterface $serializer;
-
     public function __construct(
-        \Magento\Framework\App\State $appState,
-        \Magento\Framework\App\Cache\Type\Config $cache,
-        \Magento\Framework\App\ProductMetadataInterface $productMetadata,
-        \Magento\Framework\Module\ModuleListInterface $moduleList,
-        \Magento\Framework\Serialize\SerializerInterface $serializer
+        private \Magento\Framework\App\State $appState,
+        private \Magento\Framework\App\Cache\Type\Config $cache,
+        private \Magento\Framework\App\ProductMetadataInterface $productMetadata,
+        private \Magento\Framework\Module\ModuleListInterface $moduleList,
+        private \Magento\Framework\Serialize\SerializerInterface $serializer
     ) {
-        $this->appState = $appState;
-        $this->cache = $cache;
-        $this->productMetadata = $productMetadata;
-        $this->moduleList = $moduleList;
-        $this->serializer = $serializer;
     }
 
     public function isDeveloperMode(): bool

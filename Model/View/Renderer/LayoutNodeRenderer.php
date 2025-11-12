@@ -9,21 +9,12 @@ class LayoutNodeRenderer implements RendererInterface
 {
     private const TEMPLATE = 'ClawRock_Debug::renderer/layout/node.phtml';
 
-    private \ClawRock\Debug\Model\ValueObject\LayoutNode $node;
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
-
     public function __construct(
-        \ClawRock\Debug\Model\ValueObject\LayoutNode $node,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        private \ClawRock\Debug\Model\ValueObject\LayoutNode $node,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \ClawRock\Debug\Model\View\Renderer\LayoutNodeRendererFactory $layoutNodeRendererFactory,
+        private \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->node = $node;
-        $this->layout = $layout;
-        $this->layoutNodeRendererFactory = $layoutNodeRendererFactory;
-        $this->formatter = $formatter;
     }
 
     public function render(): string

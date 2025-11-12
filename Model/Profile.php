@@ -35,7 +35,6 @@ class Profile implements ProfileInterface
         'requestTime',
     ];
 
-    private string $token;
     private array $collectors = [];
     private string $ip;
     private string $method;
@@ -50,10 +49,8 @@ class Profile implements ProfileInterface
     private int $fileSize;
     private string $requestTime = '0.0';
 
-    public function __construct(
-        string $token
-    ) {
-        $this->token = $token;
+    public function __construct(private string $token)
+    {
     }
 
     public function getToken(): string

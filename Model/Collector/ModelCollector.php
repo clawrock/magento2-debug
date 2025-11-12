@@ -16,16 +16,14 @@ class ModelCollector implements CollectorInterface, LoggerCollectorInterface
     public const LOG = 'log';
     public const LOAD_LOOPS = 'load_loops';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
     private \ClawRock\Debug\Logger\DataLogger $dataLogger;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
         \ClawRock\Debug\Logger\DataLoggerFactory $dataLoggerFactory
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
         $this->dataLogger = $dataLoggerFactory->create();
     }

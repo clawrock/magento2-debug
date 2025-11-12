@@ -12,12 +12,9 @@ use Magento\Framework\Event\Observer;
  */
 class EventCollectorPlugin
 {
-    private \ClawRock\Debug\Model\Collector\EventCollector $eventCollector;
-
     public function __construct(
-        \ClawRock\Debug\Model\Collector\EventCollector $eventCollector
+        private \ClawRock\Debug\Model\Collector\EventCollector $eventCollector
     ) {
-        $this->eventCollector = $eventCollector;
     }
 
     public function aroundDispatch(

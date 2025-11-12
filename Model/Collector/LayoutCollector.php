@@ -22,24 +22,18 @@ class LayoutCollector implements CollectorInterface, LoggerCollectorInterface
     public const TOTAL_RENDER_TIME = 'total_render_time';
     public const RENDER_TIME = 'render_time';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
     private \ClawRock\Debug\Logger\DataLogger $dataLogger;
-    private \ClawRock\Debug\Model\Info\LayoutInfo $layoutInfo;
-    private \ClawRock\Debug\Helper\Formatter $formatter;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
         \ClawRock\Debug\Logger\DataLoggerFactory $dataLogger,
-        \ClawRock\Debug\Model\Info\LayoutInfo $layoutInfo,
-        \ClawRock\Debug\Helper\Formatter $formatter
+        private \ClawRock\Debug\Model\Info\LayoutInfo $layoutInfo,
+        private \ClawRock\Debug\Helper\Formatter $formatter
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
         $this->dataLogger = $dataLogger->create();
-        $this->layoutInfo = $layoutInfo;
-        $this->formatter = $formatter;
     }
 
     public function collect(): CollectorInterface

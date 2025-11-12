@@ -8,15 +8,10 @@ use Magento\Framework\Event\ObserverInterface;
 
 class BeforeSendResponse implements ObserverInterface
 {
-    private \ClawRock\Debug\Helper\Config $config;
-    private \ClawRock\Debug\Model\Profiler $profiler;
-
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
-        \ClawRock\Debug\Model\Profiler $profiler
+        private \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Model\Profiler $profiler
     ) {
-        $this->config = $config;
-        $this->profiler = $profiler;
     }
 
     public function execute(Observer $observer)

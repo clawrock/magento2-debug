@@ -17,7 +17,7 @@ All settings have only default scope and config type pool is set to environment 
 
 ## Compatibility
 * Magento >= 2.4.4
-* PHP 8.1, 8.2
+* PHP >= 8.1
 
 ## Profiler collectors
 - Ajax

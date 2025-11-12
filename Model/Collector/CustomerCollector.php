@@ -15,18 +15,14 @@ class CustomerCollector implements CollectorInterface
     public const CUSTOMER_TAX_CLASS_ID = 'customer_tax_class_id';
     public const CUSTOMER_TAX_CLASS_NAME = 'customer_tax_class_name';
 
-    private \ClawRock\Debug\Helper\Config $config;
     private \ClawRock\Debug\Model\DataCollector $dataCollector;
-    private \ClawRock\Debug\Model\Info\CustomerInfo $customerInfo;
 
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
+        private \ClawRock\Debug\Helper\Config $config,
         \ClawRock\Debug\Model\DataCollectorFactory $dataCollectorFactory,
-        \ClawRock\Debug\Model\Info\CustomerInfo $customerInfo
+        private \ClawRock\Debug\Model\Info\CustomerInfo $customerInfo
     ) {
-        $this->config = $config;
         $this->dataCollector = $dataCollectorFactory->create();
-        $this->customerInfo = $customerInfo;
     }
 
     public function collect(): CollectorInterface

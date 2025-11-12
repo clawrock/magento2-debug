@@ -9,18 +9,11 @@ use Magento\Framework\App\Http;
 
 class WhoopsPlugin
 {
-    private \ClawRock\Debug\Helper\Config $config;
-    private \Whoops\RunFactory $whoopsFactory;
-    private \Whoops\Handler\PrettyPageHandlerFactory $prettyPageHandlerFactory;
-
     public function __construct(
-        \ClawRock\Debug\Helper\Config $config,
-        \Whoops\RunFactory $whoopsFactory,
-        \Whoops\Handler\PrettyPageHandlerFactory $prettyPageHandlerFactory
+        private \ClawRock\Debug\Helper\Config $config,
+        private \Whoops\RunFactory $whoopsFactory,
+        private \Whoops\Handler\PrettyPageHandlerFactory $prettyPageHandlerFactory
     ) {
-        $this->config = $config;
-        $this->whoopsFactory = $whoopsFactory;
-        $this->prettyPageHandlerFactory = $prettyPageHandlerFactory;
     }
 
     /**

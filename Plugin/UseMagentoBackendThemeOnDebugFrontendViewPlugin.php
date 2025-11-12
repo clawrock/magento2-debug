@@ -7,12 +7,9 @@ use Magento\Framework\App\Area;
 
 class UseMagentoBackendThemeOnDebugFrontendViewPlugin
 {
-    private \Magento\Framework\View\DesignInterface $design;
-
     public function __construct(
-        \Magento\Framework\View\DesignInterface $design
+        private \Magento\Framework\View\DesignInterface $design
     ) {
-        $this->design = $design;
     }
 
     public function beforeExecute(): void

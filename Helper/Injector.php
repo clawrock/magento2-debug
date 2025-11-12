@@ -12,15 +12,10 @@ class Injector
     private const TEMPLATE_TOOLBAR = 'ClawRock_Debug::profiler/toolbar/js.phtml';
     private const TEMPLATE_BLOCK = 'ClawRock_Debug::profiler/js.phtml';
 
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \ClawRock\Debug\Model\View\Toolbar $viewModel;
-
     public function __construct(
-        \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Model\View\Toolbar $viewModel
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \ClawRock\Debug\Model\View\Toolbar $viewModel
     ) {
-        $this->layout = $layout;
-        $this->viewModel = $viewModel;
     }
 
     public function inject(Request $request, Response $response, ?string $token = null): void

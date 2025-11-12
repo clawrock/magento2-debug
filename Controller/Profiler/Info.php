@@ -11,24 +11,13 @@ use Magento\Framework\Exception\LocalizedException;
 
 class Info implements HttpGetActionInterface
 {
-    private \Magento\Framework\View\LayoutInterface $layout;
-    private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository;
-    private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage;
-    private \Magento\Framework\Controller\ResultFactory $resultFactory;
-    private \Magento\Framework\App\RequestInterface $request;
-
     public function __construct(
-        \Magento\Framework\Controller\ResultFactory $resultFactory,
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\View\LayoutInterface $layout,
-        \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository,
-        \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage
+        private \Magento\Framework\Controller\ResultFactory $resultFactory,
+        private \Magento\Framework\App\RequestInterface $request,
+        private \Magento\Framework\View\LayoutInterface $layout,
+        private \ClawRock\Debug\Api\ProfileRepositoryInterface $profileRepository,
+        private \ClawRock\Debug\Model\Storage\ProfileMemoryStorage $profileMemoryStorage
     ) {
-        $this->resultFactory = $resultFactory;
-        $this->request = $request;
-        $this->layout = $layout;
-        $this->profileRepository = $profileRepository;
-        $this->profileMemoryStorage = $profileMemoryStorage;
     }
 
     public function execute(): ?ResultInterface
