@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_WebsiteRestriction:etc/webrestrictions.xsd">
+    <action path="debug_profiler_info" type="generic" />
+    <action path="debug_profiler_phpinfo" type="generic" />
+    <action path="debug_profiler_purge" type="generic" />
+    <action path="debug_profiler_search" type="generic" />
+    <action path="debug_profiler_toolbar" type="generic" />
+    <action path="debug_cache_clean" type="generic" />
+    <action path="debug_cache_disable" type="generic" />
+    <action path="debug_cache_enable" type="generic" />
+    <action path="debug_cache_flush" type="generic" />
+</config>
