@@ -31,14 +31,10 @@ jobs:
           restore-keys: |
             php${{ matrix.php }}-composer-
 
-      - name: Create auth.json
-        run: echo '${{ secrets.COMPOSER_AUTH_JSON }}' > $GITHUB_WORKSPACE/auth.json
-
       - name: Composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH_JSON }}
         run: composer install --no-interaction --prefer-dist
-
-      - name: Remove auth.json
-        run: rm -f $GITHUB_WORKSPACE/auth.json
 
       - name: PHPUnit
         run: vendor/bin/phpunit -c phpunit.xml.dist Test --no-interaction
