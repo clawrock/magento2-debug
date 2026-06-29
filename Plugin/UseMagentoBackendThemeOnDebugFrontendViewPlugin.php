@@ -7,6 +7,7 @@ namespace ClawRock\Debug\Plugin;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Area;
 use Magento\Framework\Controller\ResultInterface;
+
 class UseMagentoBackendThemeOnDebugFrontendViewPlugin
 {
     private string $currentTheme = '';
