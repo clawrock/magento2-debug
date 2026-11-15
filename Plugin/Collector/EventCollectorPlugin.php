@@ -27,6 +27,10 @@ class EventCollectorPlugin
         $proceed($configuration, $observer);
         $end = microtime(true);
 
+        if (!empty($configuration['disabled']) || !isset($configuration['instance'])) {
+            return;
+        }
+
         $this->eventCollector->log(new EventObserver(
             $configuration['name'],
             $configuration['instance'],
