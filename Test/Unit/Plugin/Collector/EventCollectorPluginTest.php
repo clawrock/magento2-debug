@@ -54,4 +54,25 @@ class EventCollectorPluginTest extends TestCase
 
         $this->plugin->aroundDispatch($this->subjectMock, $this->proceedMock, $configuration, $this->observerMock);
     }
+
+    public function testAroundDispatchSkipsLoggingWithoutInstanceOrWhenDisabled(): void
+    {
+        $configurations = [
+            ['name' => 'observer_name'],
+            ['name' => 'observer_name', 'disabled' => true],
+            ['name' => 'observer_name', 'instance' => 'observer_instance', 'disabled' => true],
+        ];
+        $proceeded = 0;
+        $proceed = function () use (&$proceeded) {
+            $proceeded++;
+        };
+
+        $this->eventCollectorMock->expects($this->never())->method('log');
+
+        foreach ($configurations as $configuration) {
+            $this->plugin->aroundDispatch($this->subjectMock, $proceed, $configuration, $this->observerMock);
+        }
+
+        $this->assertSame(count($configurations), $proceeded);
+    }
 }
