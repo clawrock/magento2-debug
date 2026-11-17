@@ -28,10 +28,29 @@ class CacheInfo
 
     public function getBackendOptions(): array
     {
+        $backend = $this->cache->getFrontend()->getBackend();
+
+        if ($backend instanceof \Magento\Framework\Cache\Frontend\Adapter\Symfony\BackendWrapper) {
+            $frontendPool = (new \ReflectionProperty(\Magento\Framework\App\Cache::class, '_frontendPool'))
+                ->getValue($this->cache);
+            $frontendIdentifier = (new \ReflectionProperty(
+                \Magento\Framework\App\Cache::class,
+                '_frontendIdentifier'
+            ))->getValue($this->cache);
+            $cacheSettings = (new \ReflectionMethod($frontendPool, '_getCacheSettings'))->invoke($frontendPool);
+            $frontendSettings = $cacheSettings[$frontendIdentifier]
+                ?? $cacheSettings[\Magento\Framework\App\Cache\Frontend\Pool::DEFAULT_FRONTEND_ID]
+                ?? [];
+
+            $backendOptions = $frontendSettings['backend_options'] ?? [];
+
+            return is_array($backendOptions) ? $backendOptions : [];
+        }
+
         $backendOptions = new \ReflectionProperty(\Zend_Cache_Backend::class, '_options');
         $backendOptions->setAccessible(true);
 
-        return $backendOptions->getValue($this->cache->getFrontend()->getBackend());
+        return $backendOptions->getValue($backend);
     }
 
     public function getCacheList(): array
