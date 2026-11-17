@@ -9,8 +9,17 @@ use Magento\Framework\Event\ObserverInterface;
 
 class LayoutCollectorBeforeToHtml implements ObserverInterface
 {
+    public function __construct(
+        private \ClawRock\Debug\Helper\Config $config
+    ) {
+    }
+
     public function execute(Observer $observer): void
     {
+        if (!$this->config->isEnabled()) {
+            return;
+        }
+
         /** @var \Magento\Framework\View\Element\AbstractBlock $block */
         $block = $observer->getBlock();
         $id = uniqid();

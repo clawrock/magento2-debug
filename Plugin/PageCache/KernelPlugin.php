@@ -9,6 +9,7 @@ namespace ClawRock\Debug\Plugin\PageCache;
 class KernelPlugin
 {
     public function __construct(
+        private \ClawRock\Debug\Helper\Config $config,
         private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorage
     ) {
     }
@@ -20,7 +21,7 @@ class KernelPlugin
      */
     public function afterLoad(\Magento\Framework\App\PageCache\Kernel $subject, $result)
     {
-        if ($result !== false) {
+        if ($this->config->isEnabled() && $result !== false) {
             $this->httpStorage->markAsFPCRequest();
         }
 

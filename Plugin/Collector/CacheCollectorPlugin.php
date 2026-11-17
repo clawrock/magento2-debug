@@ -12,6 +12,7 @@ use Magento\Framework\App\Cache;
 class CacheCollectorPlugin
 {
     public function __construct(
+        private \ClawRock\Debug\Helper\Config $config,
         private \ClawRock\Debug\Model\Collector\CacheCollector $cacheCollector
     ) {
     }
@@ -24,6 +25,10 @@ class CacheCollectorPlugin
      */
     public function aroundLoad(Cache $subject, callable $proceed, $identifier)
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($identifier);
+        }
+
         $start = microtime(true);
         $result = $proceed($identifier);
         $time = microtime(true) - $start;
@@ -45,6 +50,10 @@ class CacheCollectorPlugin
      */
     public function aroundSave(Cache $subject, callable $proceed, $data, $identifier, $tags = [], $lifeTime = null)
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($data, $identifier, $tags, $lifeTime);
+        }
+
         $start = microtime(true);
         $result = $proceed($data, $identifier, $tags, $lifeTime);
         $time = microtime(true) - $start;
@@ -64,6 +73,10 @@ class CacheCollectorPlugin
      */
     public function aroundRemove(Cache $subject, callable $proceed, $identifier)
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($identifier);
+        }
+
         $start = microtime(true);
         $result = $proceed($identifier);
         $time = microtime(true) - $start;
@@ -80,6 +93,10 @@ class CacheCollectorPlugin
      */
     public function aroundClean(Cache $subject, callable $proceed, $tags = [])
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($tags);
+        }
+
         $start = microtime(true);
         $result = $proceed($tags);
         $time = microtime(true) - $start;

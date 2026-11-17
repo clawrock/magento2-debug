@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class LayoutCollectorBeforeToHtmlTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \Magento\Framework\View\Element\AbstractBlock&\PHPUnit\Framework\MockObject\MockObject */
     private \Magento\Framework\View\Element\AbstractBlock $blockMock;
     /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
@@ -16,6 +18,11 @@ class LayoutCollectorBeforeToHtmlTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->blockMock = $this->getMockBuilder(\Magento\Framework\View\Element\AbstractBlock::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -25,7 +32,7 @@ class LayoutCollectorBeforeToHtmlTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->observer = new LayoutCollectorBeforeToHtml();
+        $this->observer = new LayoutCollectorBeforeToHtml($this->configMock);
     }
 
     public function testExecute(): void

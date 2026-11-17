@@ -22,6 +22,7 @@ class WhoopsPluginTest extends TestCase
         $configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $configMock->method('isEnabled')->willReturn(true);
 
         $whoopsFactoryMock = $this->getMockBuilder(\Whoops\RunFactory::class)
             ->setMethods(['create'])

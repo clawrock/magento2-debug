@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class CacheCollectorPluginTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \ClawRock\Debug\Model\Collector\CacheCollector&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Collector\CacheCollector $cacheCollectorMock;
     private \Closure $proceedMock;
@@ -17,6 +19,11 @@ class CacheCollectorPluginTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->cacheCollectorMock = $this->getMockBuilder(\ClawRock\Debug\Model\Collector\CacheCollector::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -29,7 +36,7 @@ class CacheCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = new CacheCollectorPlugin($this->cacheCollectorMock);
+        $this->plugin = new CacheCollectorPlugin($this->configMock, $this->cacheCollectorMock);
     }
 
     public function testAroundLoad(): void
@@ -68,5 +75,17 @@ class CacheCollectorPluginTest extends TestCase
         $this->cacheCollectorMock->expects($this->once())->method('log');
 
         $this->assertTrue($this->plugin->aroundClean($this->subjectMock, $this->proceedMock, $tags));
+    }
+
+    public function testAroundLoadWhenDisabled(): void
+    {
+        $disabledConfigMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $disabledConfigMock->method('isEnabled')->willReturn(false);
+        $plugin = new CacheCollectorPlugin($disabledConfigMock, $this->cacheCollectorMock);
+        $this->cacheCollectorMock->expects($this->never())->method('log');
+
+        $this->assertTrue($plugin->aroundLoad($this->subjectMock, $this->proceedMock, 'cache_id'));
     }
 }

@@ -9,6 +9,11 @@ use ClawRock\Debug\Model\Collector\TimeCollector;
 
 class RequestTimePlugin
 {
+    public function __construct(
+        private \ClawRock\Debug\Helper\Config $config
+    ) {
+    }
+
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
@@ -18,6 +23,10 @@ class RequestTimePlugin
      */
     public function beforeSave(ProfileRepositoryInterface $subject, ProfileInterface $profile): array
     {
+        if (!$this->config->isEnabled()) {
+            return [$profile];
+        }
+
         try {
             /** @var \ClawRock\Debug\Model\Collector\TimeCollector $timeCollector */
             $timeCollector = $profile->getCollector(TimeCollector::NAME);

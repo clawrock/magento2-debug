@@ -16,9 +16,11 @@ class DebugHandle implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        if ($this->config->isEnabled()) {
-            $observer->getLayout()->getUpdate()->addHandle('clawrock_debug');
+        if (!$this->config->isEnabled()) {
+            return;
         }
+
+        $observer->getLayout()->getUpdate()->addHandle('clawrock_debug');
 
         if ($observer->getFullActionName() === Profiler::TOOLBAR_FULL_ACTION_NAME) {
             $observer->getLayout()->getUpdate()->removeHandle('default');

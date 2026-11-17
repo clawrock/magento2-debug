@@ -15,6 +15,10 @@ class AllowedIP implements ObserverInterface
 
     public function execute(Observer $observer)
     {
+        if (!$this->config->isEnabled()) {
+            return;
+        }
+
         if ($this->config->isAllowedIP()) {
             return;
         }

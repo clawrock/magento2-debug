@@ -36,6 +36,7 @@ class AllowedIPTest extends TestCase
 
     public function testExecuteAllowed(): void
     {
+        $this->configMock->expects($this->once())->method('isEnabled')->willReturn(true);
         $this->configMock->expects($this->once())->method('isAllowedIP')->willReturn(true);
         $this->observerMock->expects($this->never())->method('getRequest');
         $this->observer->execute($this->observerMock);
@@ -43,6 +44,7 @@ class AllowedIPTest extends TestCase
 
     public function testExecuteNotAllowed(): void
     {
+        $this->configMock->expects($this->once())->method('isEnabled')->willReturn(true);
         $this->configMock->expects($this->once())->method('isAllowedIP')->willReturn(false);
         $this->observerMock->expects($this->once())->method('getRequest')->willReturn($this->requestMock);
         $this->requestMock->expects($this->once())->method('initForward');

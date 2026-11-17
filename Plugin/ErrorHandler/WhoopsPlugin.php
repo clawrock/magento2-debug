@@ -26,11 +26,13 @@ class WhoopsPlugin
      */
     public function beforeCatchException(Http $subject, Bootstrap $bootstrap, \Exception $exception): array
     {
-        if ($this->config->getErrorHandler() === ErrorHandler::WHOOPS) {
-            $whoops = $this->whoopsFactory->create();
-            $whoops->pushHandler($this->prettyPageHandlerFactory->create());
-            $whoops->handleException($exception);
+        if (!$this->config->isEnabled() || $this->config->getErrorHandler() !== ErrorHandler::WHOOPS) {
+            return [$bootstrap, $exception];
         }
+
+        $whoops = $this->whoopsFactory->create();
+        $whoops->pushHandler($this->prettyPageHandlerFactory->create());
+        $whoops->handleException($exception);
 
         return [$bootstrap, $exception];
     }

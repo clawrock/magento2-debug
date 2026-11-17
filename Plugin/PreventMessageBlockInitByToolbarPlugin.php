@@ -7,6 +7,11 @@ use Magento\Framework\View\LayoutInterface;
 
 class PreventMessageBlockInitByToolbarPlugin
 {
+    public function __construct(
+        private \ClawRock\Debug\Helper\Config $config
+    ) {
+    }
+
     /**
      * @param \Magento\Framework\View\LayoutInterface $subject
      * @param callable $proceed
@@ -15,6 +20,10 @@ class PreventMessageBlockInitByToolbarPlugin
      */
     public function aroundInitMessages(LayoutInterface $subject, callable $proceed, $messageGroups = [])
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($messageGroups);
+        }
+
         $handles = $subject->getUpdate()->getHandles();
         if ($handles === ['clawrock_debug']) {
             // Block is initialized by layout collector, messages can't be initialized

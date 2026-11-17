@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class EventCollectorPluginTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \ClawRock\Debug\Model\Collector\EventCollector&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Collector\EventCollector $eventCollectorMock;
     /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
@@ -21,6 +23,11 @@ class EventCollectorPluginTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->eventCollectorMock = $this->getMockBuilder(\ClawRock\Debug\Model\Collector\EventCollector::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -41,7 +48,7 @@ class EventCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = new EventCollectorPlugin($this->eventCollectorMock);
+        $this->plugin = new EventCollectorPlugin($this->configMock, $this->eventCollectorMock);
     }
 
     public function testAroundDispatch(): void
@@ -53,5 +60,21 @@ class EventCollectorPluginTest extends TestCase
         $this->eventMock->expects($this->once())->method('getName')->willReturn('event_name');
 
         $this->plugin->aroundDispatch($this->subjectMock, $this->proceedMock, $configuration, $this->observerMock);
+    }
+
+    public function testAroundDispatchWhenConfigurationHasNoInstance(): void
+    {
+        $configuration = ['name' => 'observer_name'];
+        $proceedCalled = false;
+        $proceed = function () use (&$proceedCalled): void {
+            $proceedCalled = true;
+        };
+
+        $this->eventCollectorMock->expects($this->never())->method('log');
+        $this->observerMock->expects($this->never())->method('getEvent');
+
+        $this->plugin->aroundDispatch($this->subjectMock, $proceed, $configuration, $this->observerMock);
+
+        $this->assertTrue($proceedCalled);
     }
 }

@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class ValidateRedirectTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \ClawRock\Debug\Model\Session&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Session $sessionMock;
     /** @var \Magento\Framework\Event\Observer&\PHPUnit\Framework\MockObject\MockObject */
@@ -18,6 +20,11 @@ class ValidateRedirectTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->sessionMock = $this->getMockBuilder(\ClawRock\Debug\Model\Session::class)
             ->setMethods(['getData'])
             ->disableOriginalConstructor()
@@ -32,7 +39,7 @@ class ValidateRedirectTest extends TestCase
             ->setMethods(['setParam'])
             ->getMockForAbstractClass();
 
-        $this->observer = new ValidateRedirect($this->sessionMock);
+        $this->observer = new ValidateRedirect($this->configMock, $this->sessionMock);
     }
 
     public function testExecute(): void
