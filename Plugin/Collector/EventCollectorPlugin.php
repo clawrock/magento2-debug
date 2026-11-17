@@ -13,6 +13,7 @@ use Magento\Framework\Event\Observer;
 class EventCollectorPlugin
 {
     public function __construct(
+        private \ClawRock\Debug\Helper\Config $config,
         private \ClawRock\Debug\Model\Collector\EventCollector $eventCollector
     ) {
     }
@@ -23,15 +24,23 @@ class EventCollectorPlugin
         array $configuration,
         Observer $observer
     ): void {
+        if (!$this->config->isEnabled()) {
+            $proceed($configuration, $observer);
+
+            return;
+        }
+
         $start = microtime(true);
         $proceed($configuration, $observer);
         $end = microtime(true);
 
-        $this->eventCollector->log(new EventObserver(
-            $configuration['name'],
-            $configuration['instance'],
-            $observer->getEvent()->getName(),
-            $end - $start
-        ));
+        if (array_key_exists('name', $configuration) && array_key_exists('instance', $configuration)) {
+            $this->eventCollector->log(new EventObserver(
+                $configuration['name'],
+                $configuration['instance'],
+                $observer->getEvent()->getName(),
+                $end - $start
+            ));
+        }
     }
 }

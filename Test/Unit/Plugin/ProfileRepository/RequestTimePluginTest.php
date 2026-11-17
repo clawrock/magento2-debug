@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTimePluginTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \ClawRock\Debug\Model\Collector\TimeCollector&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Collector\TimeCollector $timeCollectorMock;
     /** @var \ClawRock\Debug\Api\Data\ProfileInterface&\PHPUnit\Framework\MockObject\MockObject */
@@ -19,10 +21,15 @@ class RequestTimePluginTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->timeCollectorMock = $this->createMock(\ClawRock\Debug\Model\Collector\TimeCollector::class);
         $this->profileMock = $this->createMock(\ClawRock\Debug\Api\Data\ProfileInterface::class);
         $this->subjectMock = $this->createMock(\ClawRock\Debug\Api\ProfileRepositoryInterface::class);
-        $this->plugin = new RequestTimePlugin();
+        $this->plugin = new RequestTimePlugin($this->configMock);
     }
 
     public function testBeforeSave(): void

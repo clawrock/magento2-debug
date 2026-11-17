@@ -10,6 +10,11 @@ class TranslationCollectorPluginTest extends TestCase
 {
     public function testBeforeRender(): void
     {
+        $configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $configMock->method('isEnabled')->willReturn(true);
+
         $subjectMock = $this->getMockBuilder(\Magento\Framework\Phrase\Renderer\Translate::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -20,7 +25,7 @@ class TranslationCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $plugin = new TranslationCollectorPlugin($translateMock, $translationCollectorMock);
+        $plugin = new TranslationCollectorPlugin($configMock, $translateMock, $translationCollectorMock);
 
         $translateMock->expects($this->once())->method('getData')->willReturn(['text' => 'translation']);
 

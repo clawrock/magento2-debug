@@ -11,12 +11,17 @@ use Magento\Framework\Event\ObserverInterface;
 class LayoutCollectorAfterToHtml implements ObserverInterface
 {
     public function __construct(
+        private \ClawRock\Debug\Helper\Config $config,
         private \ClawRock\Debug\Model\Collector\LayoutCollector $layoutCollector
     ) {
     }
 
     public function execute(Observer $observer)
     {
+        if (!$this->config->isEnabled()) {
+            return;
+        }
+
         /** @var \Magento\Framework\View\Element\AbstractBlock $block */
         $block = $observer->getBlock();
 

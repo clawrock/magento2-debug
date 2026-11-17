@@ -14,6 +14,7 @@ class TranslationCollectorPlugin
     private ?array $translations = null;
 
     public function __construct(
+        private \ClawRock\Debug\Helper\Config $config,
         private \Magento\Framework\TranslateInterface $translate,
         private \ClawRock\Debug\Model\Collector\TranslationCollector $translationCollector
     ) {
@@ -21,6 +22,10 @@ class TranslationCollectorPlugin
 
     public function beforeRender(Translate $subject, array $source, array $arguments): void
     {
+        if (!$this->config->isEnabled()) {
+            return;
+        }
+
         /** @var string $text */
         $text = end($source);
         $text = str_replace('\"', '"', $text);

@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class ModelCollectorPluginTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \ClawRock\Debug\Model\Collector\ModelCollector&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Collector\ModelCollector $modelCollectorMock;
     /** @var \ClawRock\Debug\Helper\Formatter&\PHPUnit\Framework\MockObject\MockObject */
@@ -23,6 +25,11 @@ class ModelCollectorPluginTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->modelCollectorMock = $this->getMockBuilder(\ClawRock\Debug\Model\Collector\ModelCollector::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -47,7 +54,12 @@ class ModelCollectorPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = new ModelCollectorPlugin($this->modelCollectorMock, $this->formatterMock, $this->debugMock);
+        $this->plugin = new ModelCollectorPlugin(
+            $this->configMock,
+            $this->modelCollectorMock,
+            $this->formatterMock,
+            $this->debugMock
+        );
     }
 
     public function testAroundSave(): void

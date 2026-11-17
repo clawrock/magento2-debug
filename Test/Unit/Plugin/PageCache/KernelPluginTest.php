@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class KernelPluginTest extends TestCase
 {
+    /** @var \ClawRock\Debug\Helper\Config&\PHPUnit\Framework\MockObject\MockObject */
+    private \ClawRock\Debug\Helper\Config $configMock;
     /** @var \ClawRock\Debug\Model\Storage\HttpStorage&\PHPUnit\Framework\MockObject\MockObject */
     private \ClawRock\Debug\Model\Storage\HttpStorage $httpStorageMock;
     /** @var \Magento\Framework\App\PageCache\Kernel&\PHPUnit\Framework\MockObject\MockObject */
@@ -16,6 +18,11 @@ class KernelPluginTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->configMock = $this->getMockBuilder(\ClawRock\Debug\Helper\Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configMock->method('isEnabled')->willReturn(true);
+
         $this->httpStorageMock = $this->getMockBuilder(\ClawRock\Debug\Model\Storage\HttpStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -24,7 +31,7 @@ class KernelPluginTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->plugin = new KernelPlugin($this->httpStorageMock);
+        $this->plugin = new KernelPlugin($this->configMock, $this->httpStorageMock);
     }
 
     public function testAfterLoad(): void

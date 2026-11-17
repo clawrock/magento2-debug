@@ -12,6 +12,7 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
 class ModelCollectorPlugin
 {
     public function __construct(
+        private \ClawRock\Debug\Helper\Config $config,
         private \ClawRock\Debug\Model\Collector\ModelCollector $modelCollector,
         private \ClawRock\Debug\Helper\Formatter $formatter,
         private \ClawRock\Debug\Helper\Debug $debug
@@ -28,6 +29,10 @@ class ModelCollectorPlugin
      */
     public function aroundLoad(AbstractResource $subject, callable $proceed, $object, $value, $field = null)
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($object, $value, $field);
+        }
+
         $time = microtime(true);
         $result = $proceed($object, $value, $field);
         $trace = $this->debug->getBacktrace([
@@ -54,6 +59,10 @@ class ModelCollectorPlugin
      */
     public function aroundSave(AbstractResource $subject, callable $proceed, $object)
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($object);
+        }
+
         $time = microtime(true);
         $result = $proceed($object);
         $trace = $this->debug->getBacktrace([
@@ -80,6 +89,10 @@ class ModelCollectorPlugin
      */
     public function aroundDelete(AbstractResource $subject, callable $proceed, $object)
     {
+        if (!$this->config->isEnabled()) {
+            return $proceed($object);
+        }
+
         $time = microtime(true);
         $result = $proceed($object);
         $trace = $this->debug->getBacktrace([
